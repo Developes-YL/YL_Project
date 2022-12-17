@@ -1,46 +1,44 @@
 def checkImports(files="all", libraries="all") -> bool:
-    """проверка на наличие файлов и библиотек;
-    files передаётся в виде списка, 
-    элемент -> название_папки/название_файла.расширение
-    название папки указывается, если она есть;
-    libraries передаётся в виде списка названий библиотек"""
+    """checking for files and libraries"""
 
     try:
         import os.path
     except:
         return False
-
+    
     if files == "all":
         try:
-            from Support.Consts import FILES
+            from files.Support.Consts import FILES
             files = FILES
         except:
             return False
 
     if libraries == "all":
         try:
-            from Support.Consts import LIBRARIES
+            from files.Support.Consts import LIBRARIES
             libraries = LIBRARIES
         except:
             return False
-
-    unfound_files = []
+        
+    unfounded_files = []
     for name in files:
-        if not os.path.exists("./files/" + name):
-            unfound_files.append(name)
-    if unfound_files:
-        print("не найдены все необходимые файлы, а точнее:\n" + '\n'.join(unfound_files))
+        try:
+            file = open(name)
+        except:
+            unfounded_files.append(name)
+    if unfounded_files:
+        print("не найдены все необходимые файлы, а точнее:\n" + '\n'.join(unfounded_files))
 
-    unfound_libraries = []
+    unfounded_libraries = []
     for name in libraries:
         try:
             exec("import " + name)
         except:
-            unfound_libraries.append(name)
-    if unfound_libraries:
-        print("не найдены все необходимые библиотеки, а точнее:\n" + '\n'.join(unfound_libraries))
+            unfounded_libraries.append(name)
+    if unfounded_libraries:
+        print("не найдены все необходимые библиотеки, а точнее:\n" + '\n'.join(unfounded_libraries))
 
-    return (not (unfound_files and unfound_libraries))
+    return not (unfounded_files + unfounded_libraries)
 
 
 class Manager:
@@ -48,14 +46,17 @@ class Manager:
     def __init__(self):
         self.pygameStart()
 
-        self.stage = 0 # состояние игры
+        self.stage = 0  # состояние игры
 
         self.running = False
         self.musicOn = False
         self.soundsOn = False
 
-        self.keydown_handlers = defaultdict(list) # обработчики событий в других классах
-        self.keyup_handlers = defaultdict(list) # обработчики событий в других классах
+        self.render_handlers = []
+        self.process_handlers = []
+        self.create_handlers = []
+
+        self.process_handlers.append(lambda x: self.changeWindow(x))
 
     def pygameStart(self):
         pygame.init()
@@ -63,14 +64,13 @@ class Manager:
         self.size = self.width, self.height = WINDOW_SIZE
         self.screen = pygame.display.set_mode(self.size)
         pygame.display.set_caption(TITLE)
-        self.window = Window()
+        self.window = Window(self.screen)
 
     def run(self):
-        """запуск главного цикла"""
         self.running = True
         while self.running:
-            self.render() # отрисовка деталей
-            self.handle_events() # обработка событий
+            self.screen.fill((0, 0, 0))
+            self.handle_events()  # обработка событий
             if not self.running:
                 break
             self.clock.tick(FPS)
@@ -78,35 +78,46 @@ class Manager:
         pygame.quit()
 
     def handle_events(self):
-        """вызов обработчиков событий"""
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                self.running = False
-                break
-            for type in range(COUNT_USER_EVENTS):
-                # обработка пользоваетльских событий
-                if event.type == pygame.USEREVENT + type:
-                    for handler in self.keydown_handlers[event.type]:
-                        handler(event)
-                    break
+        if pygame.event.get(pygame.QUIT):
+            self.running = False
+            return None
 
-    def render(self):
-        """отрисовка элементов окна и подобных элементов"""
-        # добавление нового обработчика событий
-        self.keydown_handlers[pygame.USEREVENT].append(self.window.render)
+        events = pygame.event.get()
+        
+        # обработка первостепенных событий  (переключение окон и закртие приложения)
+        self.window.createEvents(events) 
+        for event in events:
+            for handler in self.create_handlers:
+                handler(event)
+            
+        events += pygame.event.get()
 
-        # создание события
-        pygame.time.set_timer(pygame.USEREVENT, 1)
-        # pygame.USEREVENT + 0 -> отрисовка деталей
+        if pygame.event.get(pygame.QUIT):
+            self.running = False
+            return None
+
+        self.window.processEvents(events) # обработка событий и выполнение действий между кадрами 
+        for event in events:
+            for handler in self.process_handlers:
+                handler(event)
+
+        self.window.render() # отрисовка окна
+        for handler in self.render_handlers:
+            handler()
+
+    def changeWindow(self, event):
+        pass
+        # создаем события для переключения окон в других классах
+        # а здесь их обрабатываем
+        #if event.type == PLANE_WINDOW:
+        #    self.window = PlaneWindow(self.screen)
 
 
 if __name__ == "__main__":
     if checkImports():
-        from Objects.Windows import *
-        from Support.Consts import *
+        from files.Objects.Windows import *
+        from files.Support.Consts import *
         import pygame
-        from collections import defaultdict
 
         manager = Manager()
         manager.run()
