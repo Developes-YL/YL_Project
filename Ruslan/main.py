@@ -146,11 +146,11 @@ player2 = 20
 fight = 0
 go = False
 done = False
-menu = font3.render(u'1 Player', 1, (255, 255, 10))
+menu = font3.render(u'1 Player', 1, (255, 0, 0))
 menupos = pygame.Rect(220, 340,247,75)
-menu2 = font3.render(u'Exit', 1, (255, 255, 10))
+menu2 = font3.render(u'Exit', 1, (255, 0, 0))
 menupos2 = pygame.Rect(600, 450,154,45)
-menu3 = font3.render(u'2 Players', 1, (255, 255, 10))
+menu3 = font3.render(u'2 Players', 1, (255, 0, 0))
 menupos3 = pygame.Rect(220, 400,247,75)
 def mmenu(go):
         global menu, menu2,menupos,menupos2, done, menu3, menupos3
@@ -161,24 +161,24 @@ def mmenu(go):
                                 go = True
                         elif event.type == pygame.MOUSEMOTION:
                                 if menupos2.collidepoint(event.pos):
-                                    menu3 = font3.render(u'2 Players', 1, (255, 255, 10))
-                                    menu2 = font3.render(u'Exit', 1, (255, 0, 0))
-                                    menu = font3.render(u'1 Player', 1, (255, 255, 10))
+                                    menu3 = font3.render(u'2 Players', 1, (255, 0, 0))
+                                    menu2 = font3.render(u'Exit', 1, (255, 255, 255))
+                                    menu = font3.render(u'1 Player', 1, (255, 0, 0))
                                     game = 2
                                 elif menupos.collidepoint(event.pos):
-                                    menu3 = font3.render(u'2 Players', 1, (255, 255, 10))
-                                    menu = font3.render(u'1 Player', 1, (255, 0, 0))
-                                    menu2 = font3.render(u'Exit', 1, (255, 255, 10))
+                                    menu3 = font3.render(u'2 Players', 1, (255, 0, 0))
+                                    menu = font3.render(u'1 Player', 1, (255, 255, 255))
+                                    menu2 = font3.render(u'Exit', 1, (255, 0, 0))
                                     game = 1
                                 elif menupos3.collidepoint(event.pos):
-                                    menu3 = font3.render(u'2 Players', 1, (255, 0, 0))
-                                    menu = font3.render(u'1 Player', 1, (255, 225, 10))
-                                    menu2 = font3.render(u'Exit', 1, (255, 255, 10))
+                                    menu3 = font3.render(u'2 Players', 1, (255, 255, 255))
+                                    menu = font3.render(u'1 Player', 1, (255, 0, 0))
+                                    menu2 = font3.render(u'Exit', 1, (255, 0, 0))
                                     game = 3
                                 else:
-                                    menu3 = font3.render(u'2 Players', 1, (255, 255, 10))
-                                    menu = font3.render(u'1 Player', 1, (255, 255, 10))
-                                    menu2 = font3.render(u'Exit', 1, (255, 255, 10))
+                                    menu3 = font3.render(u'2 Players', 1, (255, 0, 0))
+                                    menu = font3.render(u'1 Player', 1, (255, 0, 0))
+                                    menu2 = font3.render(u'Exit', 1, (255, 0, 0))
                                     game = 0
                         elif event.type == pygame.MOUSEBUTTONDOWN:
                                 if game == 1:

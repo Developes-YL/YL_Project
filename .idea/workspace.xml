@@ -25,7 +25,7 @@
     &quot;last_opened_file_path&quot;: &quot;D:/anaconda/envs&quot;
   }
 }</component>
-  <component name="RunManager" selected="Python.loading (1)">
+  <component name="RunManager" selected="Python.main">
     <configuration name="loading (1)" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="YL_Project" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -91,8 +91,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.loading (1)" />
         <item itemvalue="Python.main" />
+        <item itemvalue="Python.loading (1)" />
         <item itemvalue="Python.loading" />
       </list>
     </recent_temporary>
