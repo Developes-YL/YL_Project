@@ -9,21 +9,21 @@ def check_imports(files_list="all", libraries_list="all") -> bool:
     if files_list == "all":
         try:
             from files.Support.Consts import FILES
-            files = FILES
+            files_list = FILES
         except:
             return False
 
     if libraries_list == "all":
         try:
             from files.Support.Consts import LIBRARIES
-            libraries = LIBRARIES
+            libraries_list = LIBRARIES
         except:
             return False
         
     unfounded_files = []
     for name in files_list:
         try:
-            file = open(name)
+            open(name)
         except:
             unfounded_files.append(name)
     if unfounded_files:
@@ -73,7 +73,7 @@ class Manager:
             self.running = False
             return None
 
-        # обработка первостепенных событий  (переключение окон и закртие приложения)
+        # обработка первостепенных событий  (переключение окон и закрытие приложения)
         events = pygame.event.get()
         self.window.create_events(events)
 

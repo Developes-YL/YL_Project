@@ -3,7 +3,7 @@
 from pygame import image
 
 
-BACK = image.load('images/back.png')
+BG1 = image.load('images/bg1.png')
 
 fs = image.load('images/fs.png')  # надо бы переименовать названия в CAPS
 kir = image.load('images/kir.png')

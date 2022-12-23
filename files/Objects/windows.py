@@ -36,14 +36,20 @@ class Window:
 class StartWindow(Window):
     def set_presets(self):
         self.game = 0
-        self.back = BACK
-        self.colors = [(255, 255, 10), (255, 0, 0)]
-        self.one_player = [(220, 340, 247, 75), 0]
-        self.two_player = [(220, 400, 247, 75), 0]
-        self.exit = [(600, 450, 154, 45), 0]
+        w, h = BG1.get_size()
+        w_sc = self.width / w
+        h_sc = self.height / 2 / h
+        sc = min(w_sc, h_sc)
+        self.bg = pygame.transform.scale(BG1, (w * sc, h * sc))
+        self.colors = [(255, 0, 0), (255, 255, 255)]
+        size = [247, 75]
+        self.one_player = [((self.width - size[0]) // 2, self.height * 6 // 10, *size), 0]
+        self.two_player = [((self.width - size[0]) // 2, self.height * 7 // 10, *size), 0]
+        size = [154, 45]
+        self.exit = [(self.width * 75 // 100, self.height * 9 // 10, *size), 0]
 
     def render(self):
-        self.screen.blit(self.back, (0, 0))
+        self.screen.blit(self.bg, ((self.width - self.bg.get_size()[0]) // 2, 0))
         self.render_text(64, '1 Player', self.colors[self.one_player[1]], self.one_player[0])
         self.render_text(64, '2 Player', self.colors[self.two_player[1]], self.two_player[0])
         self.render_text(64, 'Exit', self.colors[self.exit[1]], self.exit[0])
@@ -83,6 +89,10 @@ class StartWindow(Window):
                     self.game = 0
 
 
+class LevelSelectionWindow(Window):
+    pass
+
+
 class LoadingWindow(Window):
     pass
 
@@ -93,7 +103,7 @@ class GameWindow(Window):
         super().__init__(screen)
 
     def set_presets(self):
-        self.game = Game(self.screen, self.count_players, self.size)
+        self.game = Game(self.screen, self.count_players)
 
         self.game.start()
 
