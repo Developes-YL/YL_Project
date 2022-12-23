@@ -7,13 +7,11 @@ CLOCK = pygame.time.Clock()
 
 WORK = 10000000
 
-loading_bar = pygame.image.load("Loading Bar.png")
+loading_bar = pygame.image.load("../images/Loading Bar.png")
 loading_bar_rect = loading_bar.get_rect(midleft=(0, 500))
 loading_finished = False
 loading_progress = 0
 loading_bar_width = 1
-
-
 
 font = pygame.font.SysFont(None, 50)
 img = font.render('LOADING...', True, 'RED')
@@ -39,7 +37,6 @@ while True:
 			sys.exit()
 
 	screen.fill("BLACK")
-
 
 	loading_bar_width = loading_progress / WORK * 500
 

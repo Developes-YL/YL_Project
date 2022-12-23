@@ -1,0 +1,111 @@
+def check_imports(files_list="all", libraries_list="all") -> bool:
+    """checking for files and libraries"""
+
+    try:
+        import os.path
+    except:
+        return False
+    
+    if files_list == "all":
+        try:
+            from files.Support.Consts import FILES
+            files = FILES
+        except:
+            return False
+
+    if libraries_list == "all":
+        try:
+            from files.Support.Consts import LIBRARIES
+            libraries = LIBRARIES
+        except:
+            return False
+        
+    unfounded_files = []
+    for name in files_list:
+        try:
+            file = open(name)
+        except:
+            unfounded_files.append(name)
+    if unfounded_files:
+        print("не найдены все необходимые файлы, а точнее:\n" + '\n'.join(unfounded_files))
+
+    unfounded_libraries = []
+    for name in libraries_list:
+        try:
+            exec("import " + name)
+        except:
+            unfounded_libraries.append(name)
+    if unfounded_libraries:
+        print("не найдены все необходимые библиотеки, а точнее:\n" + '\n'.join(unfounded_libraries))
+
+    return not (unfounded_files + unfounded_libraries)
+
+
+class Manager:
+    """данный класс отвечает за работу приложения в целом"""
+    def __init__(self):
+        self.running = False
+        self.musicOn = False
+        self.soundsOn = False
+        self.pygame_start()
+
+    def pygame_start(self):
+        pygame.init()
+        self.clock = pygame.time.Clock()
+        self.size = self.width, self.height = WINDOW_SIZE
+        self.screen = pygame.display.set_mode(self.size, pygame.DOUBLEBUF | pygame.HWSURFACE)
+        pygame.display.set_caption(TITLE)
+        self.window = StartWindow(self.screen)
+
+    def run(self):
+        self.running = True
+        while self.running:
+            self.screen.fill(BLACK)
+            self.handle_events()  # обработка событий
+            if not self.running:
+                break
+            self.clock.tick(FPS)
+            pygame.display.flip()
+        pygame.quit()
+
+    def handle_events(self):
+        if pygame.event.get(pygame.QUIT):
+            self.running = False
+            return None
+
+        # обработка первостепенных событий  (переключение окон и закртие приложения)
+        events = pygame.event.get()
+        self.window.create_events(events)
+
+        events += pygame.event.get()
+        if pygame.QUIT in [event.type for event in events]:
+            self.running = False
+            return None
+        #
+        for event in events:
+            self.change_window(event)
+
+        # обработка событий и выполнение действий между кадрами
+        self.window.process_events(events)
+
+        if pygame.QUIT in pygame.event.get():
+            self.running = False
+            return None
+
+        self.window.render()  # отрисовка окна
+
+    def change_window(self, event):
+        # смена окон происходит посредством создания новых событий
+        # пользовательские события смотри в файле files/Support/events.py
+        if event.type == GAME_WINDOW:
+            self.window = GameWindow(self.screen, event.count)
+
+
+if __name__ == "__main__":
+    if check_imports():
+        from Objects.windows import *
+        from Support.Consts import *
+        import pygame
+
+        manager = Manager()
+        manager.run()

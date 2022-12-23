@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="2cef0443-d985-4e00-949b-2294cbe82840" name="Changes" comment="" />
+    <list default="true" id="d5700cc2-da64-454a-a048-8be12e76d0fe" name="Changes" comment="разархивировал zip файл" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -13,7 +16,7 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
-  <component name="ProjectId" id="2JHB0K8iQMhLOFJU0zFWAqj8b3U" />
+  <component name="ProjectId" id="2J979lWTZBMAW1lcuedMsnDMvky" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -22,11 +25,17 @@
   &quot;keyToString&quot;: {
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/anaconda/envs&quot;
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/maksi/source/repos/Developes-YL/YL_Project&quot;
   }
 }</component>
-  <component name="RunManager" selected="Python.main">
-    <configuration name="loading (1)" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\maksi\source\repos\Developes-YL\YL_Project\files\Ruslan" />
+      <recent name="C:\Users\maksi\source\repos\Developes-YL\YL_Project\files\images" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Python.loading">
+    <configuration name="loading" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="YL_Project" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -38,28 +47,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Ruslan/loading window(alpha version 0.0.0.1)/loading.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="loading" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="YL_Project" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Ruslan/loading window" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Ruslan/loading window/loading.py" />
+      <option name="SCRIPT_NAME" value="C:\Users\maksi\source\repos\Developes-YL\YL_Project\files\Ruslan\loading.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -91,21 +79,28 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.main" />
-        <item itemvalue="Python.loading (1)" />
         <item itemvalue="Python.loading" />
+        <item itemvalue="Python.main" />
       </list>
     </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="2cef0443-d985-4e00-949b-2294cbe82840" name="Changes" comment="" />
-      <created>1671724913122</created>
+      <changelist id="d5700cc2-da64-454a-a048-8be12e76d0fe" name="Changes" comment="" />
+      <created>1671478295693</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1671724913122</updated>
+      <updated>1671478295693</updated>
     </task>
+    <task id="LOCAL-00001" summary="разархивировал zip файл">
+      <created>1671800882113</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1671800882113</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -118,5 +113,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="разархивировал zip файл" />
+    <option name="LAST_COMMIT_MESSAGE" value="разархивировал zip файл" />
   </component>
 </project>
