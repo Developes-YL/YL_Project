@@ -4,5 +4,7 @@ WINDOW_SIZE = (0, 0)
 FPS = 60
 TITLE = "TANK 1990"
 
+FIELD_SIZE = (26, 26)
+
 FILES = []
 LIBRARIES = []

@@ -11,8 +11,8 @@ color2 = 255, 0, 153
 
 fs = pygame.image.load('../images/fs.png')
 back = pygame.image.load('../images/bg1.png')
-kir = pygame.image.load('../images/kir.png')
-beton = pygame.image.load('../images/beton.png')
+kir = pygame.image.load('../images/brick.png')
+beton = pygame.image.load('../images/concrete.png')
 forest = pygame.image.load('../images/forest.png')
 base = pygame.image.load('../images/base.png')
 dbase = pygame.image.load('../images/dbase.png')

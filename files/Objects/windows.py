@@ -22,7 +22,7 @@ class Window:
     def set_presets(self):
         pass
 
-    def process_events(self, events):
+    def update(self, events):
         pass
 
     def render_text(self, text_size=0, text='text', color=WHITE, rect=(0, 0), font='Comic Sans MS'):
@@ -64,7 +64,7 @@ class StartWindow(Window):
                 elif self.game == 3:
                     pygame.event.post(pygame.event.Event(pygame.QUIT))
 
-    def process_events(self, events):
+    def update(self, events):
         for event in events:
             if event.type == pygame.MOUSEMOTION:
                 if pygame.Rect(self.one_player[0]).collidepoint(event.pos):
@@ -107,7 +107,7 @@ class GameWindow(Window):
 
         self.game.start()
 
-    def process_events(self, events):
+    def update(self, events):
         self.game.process_events(events)
 
     def render(self):

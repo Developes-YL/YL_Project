@@ -86,7 +86,7 @@ class Manager:
             self.change_window(event)
 
         # обработка событий и выполнение действий между кадрами
-        self.window.process_events(events)
+        self.window.update(events)
 
         if pygame.QUIT in pygame.event.get():
             self.running = False
