@@ -1,4 +1,4 @@
-def checkImports(files="all", libraries="all") -> bool:
+def check_imports(files_list="all", libraries_list="all") -> bool:
     """checking for files and libraries"""
 
     try:
@@ -6,31 +6,31 @@ def checkImports(files="all", libraries="all") -> bool:
     except:
         return False
     
-    if files == "all":
+    if files_list == "all":
         try:
             from files.Support.Consts import FILES
-            files = FILES
+            files_list = FILES
         except:
             return False
 
-    if libraries == "all":
+    if libraries_list == "all":
         try:
             from files.Support.Consts import LIBRARIES
-            libraries = LIBRARIES
+            libraries_list = LIBRARIES
         except:
             return False
         
     unfounded_files = []
-    for name in files:
+    for name in files_list:
         try:
-            file = open(name)
+            open(name)
         except:
             unfounded_files.append(name)
     if unfounded_files:
         print("не найдены все необходимые файлы, а точнее:\n" + '\n'.join(unfounded_files))
 
     unfounded_libraries = []
-    for name in libraries:
+    for name in libraries_list:
         try:
             exec("import " + name)
         except:
@@ -44,32 +44,27 @@ def checkImports(files="all", libraries="all") -> bool:
 class Manager:
     """данный класс отвечает за работу приложения в целом"""
     def __init__(self):
-        self.pygameStart()
-
-        self.stage = 0  # состояние игры
-
+        # настройка игры
         self.running = False
         self.musicOn = False
         self.soundsOn = False
 
-        self.render_handlers = []
-        self.process_handlers = []
-        self.create_handlers = []
+        self.pygame_start()
 
-        self.process_handlers.append(lambda x: self.changeWindow(x))
-
-    def pygameStart(self):
+    def pygame_start(self):
+        """настройка pygame элементов"""
         pygame.init()
         self.clock = pygame.time.Clock()
         self.size = self.width, self.height = WINDOW_SIZE
-        self.screen = pygame.display.set_mode(self.size)
+        self.screen = pygame.display.set_mode(self.size, pygame.DOUBLEBUF | pygame.HWSURFACE)
         pygame.display.set_caption(TITLE)
-        self.window = Window(self.screen)
+        self.window = StartWindow(self.screen)
 
     def run(self):
+        """start main loop"""
         self.running = True
         while self.running:
-            self.screen.fill((0, 0, 0))
+            self.screen.fill(BLACK)
             self.handle_events()  # обработка событий
             if not self.running:
                 break
@@ -82,41 +77,42 @@ class Manager:
             self.running = False
             return None
 
+        # обработка первостепенных событий  (переключение окон и закрытие приложения)
         events = pygame.event.get()
-        
-        # обработка первостепенных событий  (переключение окон и закртие приложения)
-        self.window.createEvents(events) 
-        for event in events:
-            for handler in self.create_handlers:
-                handler(event)
-            
-        events += pygame.event.get()
+        self.window.create_events(events)
 
-        if pygame.event.get(pygame.QUIT):
+        events += pygame.event.get()
+        if pygame.QUIT in [event.type for event in events]:
+            self.running = False
+            return None
+        #
+        for event in events:
+            self.change_window(event)
+
+        # обработка событий и выполнение действий между кадрами
+        self.window.update(events)
+
+        if pygame.QUIT in pygame.event.get():
             self.running = False
             return None
 
-        self.window.processEvents(events) # обработка событий и выполнение действий между кадрами 
-        for event in events:
-            for handler in self.process_handlers:
-                handler(event)
+        self.window.render()  # отрисовка окна
 
-        self.window.render() # отрисовка окна
-        for handler in self.render_handlers:
-            handler()
+    def change_window(self, event):
+        # смена окон происходит посредством создания новых событий
+        # пользовательские события смотри в файле files/Support/events.py
+        if event.type == GAME_WINDOW:
+            self.window = GameWindow(self.screen, event.count)
 
-    def changeWindow(self, event):
-        pass
-        # создаем события для переключения окон в других классах
-        # а здесь их обрабатываем
-        #if event.type == PLANE_WINDOW:
-        #    self.window = PlaneWindow(self.screen)
+        # остальные окна добавляем так:
+        # if event.type == <NAME_WINDOW>:
+        #    self.window = <NameClassWindow>(self.screen)
 
 
 if __name__ == "__main__":
-    if checkImports():
-        from files.Objects.Windows import *
-        from files.Support.Consts import *
+    if check_imports():
+        from Objects.windows import *
+        from Support.Consts import *
         import pygame
 
         manager = Manager()

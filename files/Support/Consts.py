@@ -1,6 +1,10 @@
+# главные константы приложения и механик игры
+
 WINDOW_SIZE = (0, 0)
 FPS = 60
-TITLE = "Battle Tank"
+TITLE = "TANK 1990"
 
-FILES = ["./files/Objects/Windows.py"]
-LIBRARIES = ["pygame", "os.path"]
+FIELD_SIZE = (26, 26)
+
+FILES = []
+LIBRARIES = []
