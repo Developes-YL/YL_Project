@@ -44,12 +44,15 @@ def check_imports(files_list="all", libraries_list="all") -> bool:
 class Manager:
     """данный класс отвечает за работу приложения в целом"""
     def __init__(self):
+        # настройка игры
         self.running = False
         self.musicOn = False
         self.soundsOn = False
+
         self.pygame_start()
 
     def pygame_start(self):
+        """настройка pygame элементов"""
         pygame.init()
         self.clock = pygame.time.Clock()
         self.size = self.width, self.height = WINDOW_SIZE
@@ -58,6 +61,7 @@ class Manager:
         self.window = StartWindow(self.screen)
 
     def run(self):
+        """start main loop"""
         self.running = True
         while self.running:
             self.screen.fill(BLACK)
@@ -99,6 +103,10 @@ class Manager:
         # пользовательские события смотри в файле files/Support/events.py
         if event.type == GAME_WINDOW:
             self.window = GameWindow(self.screen, event.count)
+
+        # остальные окна добавляем так:
+        # if event.type == <NAME_WINDOW>:
+        #    self.window = <NameClassWindow>(self.screen)
 
 
 if __name__ == "__main__":

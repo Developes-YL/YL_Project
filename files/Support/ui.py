@@ -1,5 +1,3 @@
-# различные константы для окон
-
 from pygame import image
 
 
@@ -9,6 +7,7 @@ CONCRETE = image.load('images/concrete.png')
 WATER = image.load('images/water.png')
 FOREST = image.load('images/forest.png')
 ICE = image.load('images/ice.png')
+TANK = image.load('images/tank.jpg')
 
 
 fs = image.load('images/fs.png')
