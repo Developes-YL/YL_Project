@@ -42,9 +42,7 @@ class Game:
     def process_events(self, events):
         self.all_sprites.update()
         self.ai_time += 1 / FPS
-        print(self.ai_time)
         if self.ai_time >= self.ai_time_max:
             self.ai_time = 0
-            print("-" * 100)
             n = random.randrange(0, 3)
             AI(self.cell_size * 2, self.positions["ai"][n], self.all_sprites)
