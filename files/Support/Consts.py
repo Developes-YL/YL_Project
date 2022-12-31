@@ -8,3 +8,9 @@ FIELD_SIZE = (26, 26)
 
 FILES = []
 LIBRARIES = []
+
+
+DOWN = 0
+RIGHT = 1
+UP = 2
+LEFT = 3

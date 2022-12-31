@@ -3,6 +3,21 @@ import pygame.sprite
 from files.Support.ui import *
 
 
+class Cell(pygame.sprite.Sprite):
+    image = pygame.Surface([0, 0])
+
+    def __init__(self, size, pos, group):
+        self.type = "None"
+        super().__init__(group)
+        self.image = pygame.transform.scale(Cell.image, (size, size))
+        self.rect = self.image.get_rect()
+        self.rect.x = pos[0]
+        self.rect.y = pos[1]
+
+    def get_type(self):
+        return "None"
+
+
 class Brick(pygame.sprite.Sprite):
     image = BRICK
 

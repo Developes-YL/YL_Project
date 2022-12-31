@@ -21,17 +21,24 @@ class Field1:
 
     def get_positions(self):
         positions = {"ai": [], "player": []}
-        pos = (self.left + self.cell_size * (FIELD_SIZE[1] // 2 - 5), self.top + self.cell_size * (FIELD_SIZE[1] - 2))
+
+        # 1st
+        pos = (self.left + self.cell_size * (FIELD_SIZE[0] // 2 - 5), self.top + self.cell_size * (FIELD_SIZE[1] - 2))
         positions["player"].append(pos)
-        pos = (self.left + self.cell_size * (FIELD_SIZE[1] // 2 + 3), self.top + self.cell_size * (FIELD_SIZE[1] - 2))
+        # 2nd
+        pos = (self.left + self.cell_size * (FIELD_SIZE[0] // 2 + 3), self.top + self.cell_size * (FIELD_SIZE[1] - 2))
         positions["player"].append(pos)
 
-        pos = (self.left + self.cell_size * (FIELD_SIZE[1] // 2 - 1), self.top)
-        positions["ai"].append(pos)
+        # 1st
         pos = (self.left, self.top)
-        positions["ai"].append(pos)
-        pos = (self.left + self.cell_size * (FIELD_SIZE[1] - 1), self.top)
-        positions["ai"].append(pos)
+        positions["ai"].append([*pos, 0, 0])
+        # 2nd
+        pos = (self.left + self.cell_size * (FIELD_SIZE[0] // 2 - 1), self.top)
+        positions["ai"].append([*pos, 13, 0])
+        # 3rd
+        pos = (self.left + self.cell_size * (FIELD_SIZE[0] - 2), self.top)
+        positions["ai"].append([*pos, 25, 0])
+
         return positions
 
     def get_cell_size(self):
@@ -56,10 +63,16 @@ class Field1:
                     Water(self.cell_size, pos, self.group)
 
         # границы поля
-        Border(self.group, (self.left, self.top, 1, self.cell_size * FIELD_SIZE[1]))
-        Border(self.group, (self.left + self.cell_size * FIELD_SIZE[0], self.top, 1, self.cell_size * FIELD_SIZE[1]))
-        Border(self.group, (self.left, self.top, self.cell_size * FIELD_SIZE[0], 1))
-        Border(self.group, (self.left, self.top + self.cell_size * FIELD_SIZE[1], self.cell_size * FIELD_SIZE[0], 1))
+        # left
+        Border(self.group, (self.left - 1, self.top - 1, 1, self.cell_size * FIELD_SIZE[1]))
+        # right
+        Border(self.group, (self.left + self.cell_size * FIELD_SIZE[0],
+                            self.top - 1, 1, self.cell_size * FIELD_SIZE[1]))
+        # top
+        Border(self.group, (self.left - 1, self.top - 1, self.cell_size * FIELD_SIZE[0], 1))
+        # bottom
+        Border(self.group, (self.left - 1, self.top + self.cell_size * FIELD_SIZE[1] + 1,
+                            self.cell_size * FIELD_SIZE[0], 1))
 
 
 class Border(pygame.sprite.Sprite):

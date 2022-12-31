@@ -1,6 +1,7 @@
 import pygame.sprite
 
-from files.Support.ui import TANK
+from files.Support.Consts import UP, DOWN, RIGHT, LEFT
+from files.Support.ui import TANK, BULLET
 
 
 class Player(pygame.sprite.Sprite):
@@ -133,5 +134,31 @@ class PlayerDemo:
             return False
 
 
-class Bullet:
-    pass
+class Bullet(pygame.sprite.Sprite):
+    def __init__(self, speed, direction, rect, group, from_player=True):
+        super().__init__(group)
+        pos, size = [rect.x, rect.y], rect.size[0]
+        self.image = pygame.transform.scale(BULLET, (size // 8, size // 8))
+        self.rect = self.image.get_rect()
+        self.rect.x, self.rect.y = pos
+        self.speed = speed
+        self.direction = direction
+        self.image = pygame.transform.rotate(self.image, 90 * self.direction)
+        if direction == UP:
+            self.speed = [0, -speed]
+            self.rect.x += size // 2 - size // 16
+        if direction == DOWN:
+            self.speed = [0, speed]
+            self.rect.x += size // 2 - size // 16
+            self.rect.y += size
+        if direction == RIGHT:
+            self.speed = [speed, 0]
+            self.rect.y += size // 2 - size // 16
+            self.rect.x += size
+        if direction == LEFT:
+            self.speed = [-speed, 0]
+            self.rect.y += size // 2 - size // 16
+
+    def update(self, *args):
+        self.rect.x += self.speed[0]
+        self.rect.y += self.speed[1]
