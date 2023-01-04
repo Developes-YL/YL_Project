@@ -132,3 +132,10 @@ class GameWindow(Window):
 
 # надо добавить класс окна настроек,
 # выбора уровня и редактор уровней
+
+class LoadingWindow(Window):
+    def __init__(self, screen):
+        self.screen = screen
+        self.size = self.width, self.height = map(int, self.screen.get_size())
+        self.min_size = min(self.width, self.height)
+        self._set_presets()

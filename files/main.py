@@ -103,7 +103,8 @@ class Manager:
         # пользовательские события смотри в файле files/Support/events.py
         if event.type == GAME_WINDOW:
             self.window = GameWindow(self.screen, event.count)
-
+        #if event.type == LOADING_WINDOW:
+            #self.window =
         # остальные окна добавляем так:
         # if event.type == <NAME_WINDOW>:
         #    self.window = <NameClassWindow>(self.screen)
@@ -111,7 +112,7 @@ class Manager:
 
 if __name__ == "__main__":
     if check_imports():
-        from Objects.windows import *
+        from Objects.Windows import *
         from Support.Consts import *
         import pygame
 
