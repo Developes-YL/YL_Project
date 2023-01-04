@@ -1,5 +1,5 @@
 # главные константы приложения
-WINDOW_SIZE = (0, 0)
+WINDOW_SIZE = (1900, 1020)
 FPS = 60
 TITLE = "TANK 1990"
 
