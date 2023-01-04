@@ -3,61 +3,53 @@ import pygame.sprite
 from files.Support.ui import *
 
 
-class Brick(pygame.sprite.Sprite):
-    image = BRICK
-
+class Cell(pygame.sprite.Sprite):
     def __init__(self, size, pos, group):
-        super().__init__(group)
-        self.image = pygame.transform.scale(Brick.image, (size, size))
+        self._layer = 0
+        self.set_up()
+        self.image = pygame.transform.scale(self.image, (size, size))
         self.rect = self.image.get_rect()
         self.mask = pygame.mask.from_surface(self.image)
         self.rect.x = pos[0]
         self.rect.y = pos[1]
-
-
-class Water(pygame.sprite.Sprite):
-    image = WATER
-
-    def __init__(self, size, pos, group):
         super().__init__(group)
-        self.image = pygame.transform.scale(Water.image, (size, size))
-        self.rect = self.image.get_rect()
-        self.mask = pygame.mask.from_surface(self.image)
-        self.rect.x = pos[0]
-        self.rect.y = pos[1]
+        group.change_layer(self, self._layer)
+
+    def set_up(self):
+        self.image = pygame.Surface([0, 0])
+
+    def boom(self, flag) -> bool:
+        return False
 
 
-class Concrete(pygame.sprite.Sprite):
-    image = CONCRETE
+class Brick(Cell):
+    def set_up(self):
+        self.image = BRICK_IMAGE
 
-    def __init__(self, size, pos, group):
-        super().__init__(group)
-        self.image = pygame.transform.scale(Concrete.image, (size, size))
-        self.rect = self.image.get_rect()
-        self.mask = pygame.mask.from_surface(self.image)
-        self.rect.x = pos[0]
-        self.rect.y = pos[1]
+    def boom(self, flag) -> bool:
+        self.kill()
+        return True
 
 
-class Forest(pygame.sprite.Sprite):
-    image = FOREST
-
-    def __init__(self, size, pos, group):
-        super().__init__(group)
-        self.image = pygame.transform.scale(Forest.image, (size, size))
-        self.rect = self.image.get_rect()
-        self.mask = pygame.mask.from_surface(self.image)
-        self.rect.x = pos[0]
-        self.rect.y = pos[1]
+class Water(Cell):
+    def set_up(self):
+        self.image = WATER_IMAGE
 
 
-class Ice(pygame.sprite.Sprite):
-    image = ICE
+class Concrete(Cell):
+    def set_up(self):
+        self.image = CONCRETE_IMAGE
 
-    def __init__(self, size, pos, group):
-        super().__init__(group)
-        self.image = pygame.transform.scale(Ice.image, (size, size))
-        self.rect = self.image.get_rect()
-        self.mask = pygame.mask.from_surface(self.image)
-        self.rect.x = pos[0]
-        self.rect.y = pos[1]
+    def boom(self, flag) -> bool:
+        return True
+
+
+class Bush(Cell):
+    def set_up(self):
+        self.image = BUSH_IMAGE
+        self._layer = 3
+
+
+class Ice(Cell):
+    def set_up(self):
+        self.image = ICE_IMAGE
