@@ -56,7 +56,7 @@ class Manager:
         pygame.init()
         self.clock = pygame.time.Clock()
         self.size = self.width, self.height = WINDOW_SIZE
-        self.screen = pygame.display.set_mode(self.size, pygame.DOUBLEBUF | pygame.HWSURFACE)
+        self.screen = pygame.display.set_mode(self.size, pygame.HWSURFACE)
         pygame.display.set_caption(TITLE)
         self.window = StartWindow(self.screen)
 
@@ -103,8 +103,7 @@ class Manager:
         # пользовательские события смотри в файле files/Support/events.py
         if event.type == GAME_WINDOW:
             self.window = GameWindow(self.screen, event.count)
-        #if event.type == LOADING_WINDOW:
-            #self.window =
+
         # остальные окна добавляем так:
         # if event.type == <NAME_WINDOW>:
         #    self.window = <NameClassWindow>(self.screen)
@@ -112,7 +111,7 @@ class Manager:
 
 if __name__ == "__main__":
     if check_imports():
-        from Objects.Windows import *
+        from Objects.windows import *
         from Support.Consts import *
         import pygame
 

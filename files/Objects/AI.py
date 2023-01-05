@@ -140,7 +140,7 @@ class AI(pygame.sprite.Sprite):
         self.images[1] = pygame.transform.rotate(self.default_images[1], 90 * self.direction)
 
     def change_direction(self):
-        self.freeze = 3
+        self.freeze = 4
         amounts = [0, FIELD_SIZE[0] // 2 - 1]
         if self.pos[0] in amounts and self.pos[1] in amounts:
             # в углу
@@ -196,5 +196,4 @@ class AI(pygame.sprite.Sprite):
         # self.default_images = self.images.copy()
 
     def __del__(self):
-        pass
-        #BigExplosion(self.group, self.rect.size[0], self.rect.x, self.rect.y)
+        BigExplosion(self.group, self.rect.size[0], self.rect.x, self.rect.y)

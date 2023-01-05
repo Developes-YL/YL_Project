@@ -1,13 +1,39 @@
 from pygame import image
 
-
+# backgrounds
 BG1 = image.load('images/bg1.png')
-BRICK = image.load('images/brick.png')
-CONCRETE = image.load('images/concrete.png')
-WATER = image.load('images/water.png')
-FOREST = image.load('images/forest.png')
-ICE = image.load('images/ice.png')
+
+# cells
+BRICK_IMAGE = image.load('images/original/brick.png')
+CONCRETE_IMAGE = image.load('images/original/concrete.png')
+WATER_IMAGE = image.load('images/original/water1.png')
+BUSH_IMAGE = image.load('images/original/bush.png')
+ICE_IMAGE = image.load('images/original/ice.png')
+
+# tanks
 TANK = image.load('images/tank.jpg')
+
+TANK_AI_1_1 = image.load('images/original/TANK_AI_1_1.png')
+TANK_AI_1_2 = image.load('images/original/TANK_AI_1_2.png')
+TANK_AI_1 = [TANK_AI_1_1, TANK_AI_1_2]
+
+TANK_AI_2_1 = image.load('images/original/TANK_AI_2_1.png')
+TANK_AI_2_2 = image.load('images/original/TANK_AI_2_2.png')
+TANK_AI_2 = [TANK_AI_2_1, TANK_AI_2_2]
+
+TANK_AI_1_ = image.load('images/original/tank_1_ai.png')
+TANK_AI_2_ = image.load('images/original/tank_2_ai.png')
+TANK_AI_3 = image.load('images/original/tank_3_ai.png')
+TANK_AI_4 = image.load('images/original/tank_4_ai.png')
+
+TANK_AI = [TANK_AI_1, TANK_AI_2]
+
+# other
+BULLET_IMAGE = image.load('images/original/bullet.png')
+
+EXPLOSION_1 = image.load('images/original/explosion_1.png')
+EXPLOSION_2 = image.load('images/original/explosion_2.png')
+EXPLOSION_3 = image.load('images/original/explosion_3.png')
 
 
 fs = image.load('images/fs.png')
