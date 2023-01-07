@@ -5,6 +5,7 @@ from files.Objects.Game import Game
 from files.Support.events import *
 from files.Support.ui import *
 from files.Support.colors import *
+from files.Support.Consts import VOL
 
 
 class Window:
@@ -150,6 +151,7 @@ class GameWindow(Window):
                 self.button = -1
                 if pygame.Rect(self.back).collidepoint(event.pos):
                     self.button = 2
+                    pygame.mixer.music.set_volume(0.06)
                 if pygame.Rect(self.pause_button).collidepoint(event.pos):
                     self.button = 1
                     self.pause_images = self.pause_images_selected
@@ -275,6 +277,7 @@ class SelectionLevel(Window):
             if pygame.MOUSEBUTTONDOWN in [event.type for event in events]:
                 if self.button in range(self.level_count):
                     pygame.event.post(pygame.event.Event(GAME_WINDOW, count=self.count_players, level=self.button))
+                    pygame.mixer.music.set_volume(0.02)
                 elif self.button == -2:
                     pygame.event.post(pygame.event.Event(START_WINDOW))
 
@@ -338,7 +341,11 @@ class SettingsWindow(Window):
 
         self.colors = [RED, WHITE]
         size = [247, 75]
-        self.change_difficulty = ((self.width - size[0]) // 2, self.height * 2 // 10, *size)
+        self.change_music_volume = ((self.width - size[0]) // 2, self.height * 3 // 10, *size)
+
+        size = [150, 150]
+        self.music_volume_plus = ((self.width - size[0]) // 1.5, self.height * 2.7 // 10, *size)
+        self.music_volume_minus = ((self.width - size[0]) // 3, self.height * 2.7 // 10, *size)
 
         # кнопка back
         size = [154, 45]
@@ -347,25 +354,35 @@ class SettingsWindow(Window):
     def render(self):
         # отрисовка фона и кнопок
         self.screen.blit(self.bg, ((self.width - self.bg.get_size()[0]) // 2, 0))
-        self._render_text(64, 'Difficulty', self.colors[self.button == 1], self.change_difficulty)
+        self._render_text(64, 'Music volume', self.colors[self.button == 1], self.change_music_volume)
         self._render_text(64, 'Back', self.colors[self.button == 2], self.exit)
+        self._render_text(64, '+', self.colors[self.button == 3], self.music_volume_plus)
+        self._render_text(64, '-', self.colors[self.button == 4], self.music_volume_minus)
 
     def create_events(self, events):
         for event in events:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if self.button == 1:
-                    pass
+                    pygame.mixer.music.set_volume(VOL)
                 elif self.button == 2:
                     pygame.event.post(pygame.event.Event(START_WINDOW))
+                elif self.button == 3:
+                    pygame.mixer.music.set_volume(VOL + 0.08)
+                elif self.button == 4:
+                    pygame.mixer.music.set_volume(VOL - 0.05)
 
     def update(self, events):
         for event in events:
             if event.type == pygame.MOUSEMOTION:
                 # подсветка текста у кнопок
-                if pygame.Rect(self.change_difficulty).collidepoint(event.pos):
+                if pygame.Rect(self.change_music_volume).collidepoint(event.pos):
                     self.button = 1
                 elif pygame.Rect(self.exit).collidepoint(event.pos):
                     self.button = 2
+                elif pygame.Rect(self.music_volume_plus).collidepoint(event.pos):
+                    self.button = 3
+                elif pygame.Rect(self.music_volume_minus).collidepoint(event.pos):
+                    self.button = 4
                 else:
                     self.button = 0
 

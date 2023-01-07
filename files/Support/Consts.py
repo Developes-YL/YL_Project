@@ -33,3 +33,7 @@ MOVE_ANIMATION = FPS // 30
 
 SPEED_ON_ICE = 0.5
 BULLET_SPEED = 0.05
+
+#Музыка
+
+VOL = 0.06

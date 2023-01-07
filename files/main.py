@@ -1,3 +1,11 @@
+import pygame
+
+pygame.init()
+
+pygame.mixer.music.load("sounds/background_music.mp3")
+pygame.mixer.music.play(-1)
+pygame.mixer.music.set_volume(0.06)
+
 def check_imports(files_list="all", libraries_list="all") -> bool:
     """checking for files and libraries"""
 
