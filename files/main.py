@@ -49,16 +49,13 @@ class Manager:
         self.musicOn = False
         self.soundsOn = False
 
-        self.pygame_start()
-
-    def pygame_start(self):
-        """настройка pygame элементов"""
         pygame.init()
         self.clock = pygame.time.Clock()
         self.size = self.width, self.height = WINDOW_SIZE
         self.screen = pygame.display.set_mode(self.size, pygame.HWSURFACE)
         pygame.display.set_caption(TITLE)
-        self.window = StartWindow(self.screen)
+        # self.window = SelectionLevel(self.screen)
+        self.window = LoadingWindow(self.screen)
 
     def run(self):
         """start main loop"""
@@ -102,7 +99,11 @@ class Manager:
         # смена окон происходит посредством создания новых событий
         # пользовательские события смотри в файле files/Support/events.py
         if event.type == GAME_WINDOW:
-            self.window = GameWindow(self.screen, event.count)
+            self.window = GameWindow(self.screen, event.count, event.level)
+        elif event.type == START_WINDOW:
+            self.window = StartWindow(self.screen)
+        elif event.type == LEVEL_SELECTION:
+            self.window = SelectionLevel(self.screen, event.count)
 
         # остальные окна добавляем так:
         # if event.type == <NAME_WINDOW>:

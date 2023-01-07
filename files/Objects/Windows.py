@@ -1,4 +1,5 @@
 # все окна
+import pygame
 
 from files.Objects.Game import Game
 from files.Support.events import *
@@ -78,9 +79,9 @@ class StartWindow(Window):
         for event in events:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if self.game == 1:
-                    pygame.event.post(pygame.event.Event(GAME_WINDOW, count=1))
+                    pygame.event.post(pygame.event.Event(LEVEL_SELECTION, count=1))
                 elif self.game == 2:
-                    pygame.event.post(pygame.event.Event(GAME_WINDOW, count=2))
+                    pygame.event.post(pygame.event.Event(LEVEL_SELECTION, count=2))
                 elif self.game == 3:
                     pygame.event.post(pygame.event.Event(pygame.QUIT))
 
@@ -111,12 +112,13 @@ class StartWindow(Window):
 
 
 class GameWindow(Window):
-    def __init__(self, screen, count):
+    def __init__(self, screen, count, level):
         self.count_players = count  # количество игроков
+        self.level = level
         super().__init__(screen)
 
     def _set_presets(self):
-        self.game = Game(self.screen, self.count_players)
+        self.game = Game(self.screen, self.count_players, self.level)
 
     def update(self, events):
         # надо добавить кнопки перезапуска уровня,
@@ -128,6 +130,138 @@ class GameWindow(Window):
         # надо добавить кнопки перезапуска уровня,
         # выхода из него и кнопки активации бонусов
         self.game.render()
+
+
+class LoadingWindow(Window):
+    def _set_presets(self):
+        self.max_loading = 600
+        self.loading = 0
+        self.label = "LOADING"
+        self.number = 0
+
+        self.font = pygame.font.SysFont('Comic Sans MS', self.min_size // 15)
+
+        text_surface = self.font.render(self.label, False, RED)
+        rect = text_surface.get_rect(center=(self.width // 2, self.height // 3))
+        self.point = rect.midleft
+
+        self.count = 0
+        self.max_count = 50
+
+        self.pause = True
+
+    def create_events(self, events):
+        if self.loading == self.max_loading:
+            pygame.event.post(pygame.event.Event(START_WINDOW))
+
+    def render(self):
+        pass
+
+    def update(self, events):
+        if self.count < self.max_count and self.loading % 100 == 20:
+            self.count += 1
+
+        if self.count < self.max_count and self.loading % 100 == 20:
+            pass
+        elif self.loading < self.max_loading * 0.4:
+            self.loading += 7
+        elif self.loading < self.max_loading * 0.6:
+            self.loading += 5
+        elif self.loading < self.max_loading * 0.8:
+            self.loading += 3
+        else:
+            self.loading += 1
+
+        if self.count == self.max_count:
+            self.count = 0
+
+        if self.loading % 20 == 0 and not (self.count < self.max_count and self.loading % 100 == 20):
+            self.number = (self.number + 1) % 4
+
+        text_surface = self.font.render(self.label + "." * self.number, False, RED)
+        rect = text_surface.get_rect(midleft=self.point)
+        self.screen.blit(text_surface, rect)
+
+        rect = pygame.Rect(self.width // 100, self.height // 2, self.width // 100 * 98, self.height // 50)
+        pygame.draw.rect(self.screen, GREY, rect)
+        rect = pygame.Rect(self.width // 100, self.height // 2,
+                           self.width // 100 * 98 / self.max_loading * self.loading, self.height // 50)
+        pygame.draw.rect(self.screen, RED, rect)
+
+
+class SelectionLevel(Window):
+    def __init__(self, screen, count):
+        self.count_players = count
+        super().__init__(screen)
+
+    def _set_presets(self):
+        self.level_count = 0
+        with open("./Support/levels.txt", 'r') as f:
+            self.level_count = len(f.readlines())
+        self.labels = ["level " + str(number + 1) for number in range(self.level_count)]
+        self.label_size = (self.width // 10, self.height // 15)
+        self.left = self.width // 20 * 9
+        self.label_space = self.label_size[1] // 3
+        self.top = self.label_space
+        self.button = -1
+        self.min_top = self.top - (self.label_size[1] + self.label_space) * self.level_count + self.height
+        self.max_top = self.top
+        self.down_pressed = False
+        self.up_pressed = False
+        self.back = [0, 0, self.width // 10, self.height // 20]
+
+    def create_events(self, events):
+        if pygame.MOUSEBUTTONDOWN in [event.type for event in events]:
+            if self.button in range(self.level_count):
+                pygame.event.post(pygame.event.Event(GAME_WINDOW, count=self.count_players, level=self.button))
+            elif self.button == -2:
+                pygame.event.post(pygame.event.Event(START_WINDOW))
+
+    def update(self, events):
+        for event in events:
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_UP:
+                self.up_pressed = True
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_DOWN:
+                self.down_pressed = True
+            if event.type == pygame.KEYUP and event.key == pygame.K_UP:
+                self.up_pressed = False
+            if event.type == pygame.KEYUP and event.key == pygame.K_DOWN:
+                self.down_pressed = False
+            if event.type == pygame.MOUSEWHEEL:
+                self.top += event.y * 3
+            if event.type == pygame.MOUSEMOTION:
+                # подсветка текста у кнопок
+                self.button = -1
+                for number in range(self.level_count):
+                    rect = (self.left, self.top + (self.label_space + self.label_size[1]) * number, *self.label_size)
+                    if pygame.Rect(rect).collidepoint(event.pos):
+                        self.button = number
+                        break
+                if pygame.Rect(self.back).collidepoint(event.pos):
+                    self.button = -2
+
+        if self.up_pressed:
+            self.top += 15
+        if self.down_pressed:
+            self.top -= 15
+
+        if self.top < self.min_top:
+            self.top = self.min_top
+        if self.top > self.max_top:
+            self.top = self.max_top
+
+    def render(self):
+        for number, label in enumerate(self.labels):
+            rect = (self.left, self.top + (self.label_space + self.label_size[1]) * number, *self.label_size)
+            if rect[1] in range(-self.label_size[1], self.height + self.label_space + self.label_size[1]):
+                color = RED
+                if self.button == number:
+                    color = WHITE
+                self._render_text(self.min_size // 20, label, color, rect)
+        if self.button == -2:
+            self._render_text(self.min_size // 15, "BACK", WHITE, self.back)
+        else:
+            self._render_text(self.min_size // 15, "BACK", RED, self.back)
 
 
 # надо добавить класс окна настроек,
