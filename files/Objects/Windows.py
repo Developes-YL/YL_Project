@@ -52,8 +52,8 @@ class StartWindow(Window):
 
         # надпись 'Tank 1990'
         w, h = BG1.get_size()
-        w_sc = self.width / w
-        h_sc = self.height / 2 / h
+        w_sc = self.width / w / 2
+        h_sc = self.height / 2 / h / 2
         sc = min(w_sc, h_sc)
         self.bg = pygame.transform.scale(BG1, (w * sc, h * sc))
 
