@@ -2,6 +2,7 @@ from pygame import image
 
 # backgrounds
 BG1 = image.load('images/bg1.png')
+SETTINGS1 = image.load('images/settings.png')
 
 # cells
 BRICK_IMAGE = image.load('images/original/brick.png')
@@ -34,6 +35,13 @@ BULLET_IMAGE = image.load('images/original/bullet.png')
 EXPLOSION_1 = image.load('images/original/explosion_1.png')
 EXPLOSION_2 = image.load('images/original/explosion_2.png')
 EXPLOSION_3 = image.load('images/original/explosion_3.png')
+
+PAUSE_RED = image.load('images/PAUSE_RED.png')
+PAUSE_WHITE = image.load('images/PAUSE_WHITE.png')
+PLAY_RED = image.load('images/PLAY_RED.png')
+PLAY_WHITE = image.load('images/PLAY_WHITE.png')
+RESTART_RED = image.load('images/RESTART_RED.png')
+RESTART_WHITE = image.load('images/RESTART_WHITE.png')
 
 
 fs = image.load('images/fs.png')

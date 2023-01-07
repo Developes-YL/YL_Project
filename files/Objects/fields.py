@@ -45,6 +45,9 @@ class Field1:
     def get_cell_size(self) -> int:
         return self.cell_size
 
+    def get_size(self) -> list:
+        return [self.left, self.top, self.cell_size * FIELD_SIZE[0], self.cell_size * FIELD_SIZE[1]]
+
     def reset(self):
         self.create_cells()
 

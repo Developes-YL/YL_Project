@@ -60,6 +60,7 @@ class Game:
         self.all_sprites.update()
         if PAUSE in [event.type for event in events]:
             self.pause = not self.pause
+            self.all_sprites.update(pygame.event.Event(PAUSE))
         if self.pause:
             return
         self.ai_time += 1 / FPS
@@ -67,7 +68,10 @@ class Game:
             self.ai_time = 0
             n = random.choice(range(3))
             ai = AI(self.all_sprites, self.cell_size * 2, self.positions["ai"][n],
-                    self.queue[0], self.number_bot % 5 == 0)
+                    self.queue[0], 1, self.number_bot % 5 == 0)
             self.queue.pop(0)
             self.all_sprites.change_layer(ai, 1)
             self.number_bot += 1
+
+    def get_size(self):
+        return self.field.get_size()

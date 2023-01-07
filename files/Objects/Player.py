@@ -1,6 +1,7 @@
 import pygame.sprite
 
 from files.Support.Consts import *
+from files.Support.events import PAUSE
 from files.Support.ui import TANK, BULLET_IMAGE, EXPLOSION_1, EXPLOSION_2, EXPLOSION_3
 
 
@@ -176,8 +177,14 @@ class Bullet(pygame.sprite.Sprite):
             self.speed = [-speed, 0]
             self.rect.y += self.size // 2 - self.size // 16
             self.rect.x -= self.size // 8
+        self.pause = False
 
-    def update(self, *args):
+    def update(self, *events):
+        if PAUSE in [event.type for event in events]:
+            self.pause = not self.pause
+        if self.pause:
+            return
+
         self.rect.x += self.speed[0]
         self.rect.y += self.speed[1]
 
@@ -216,8 +223,14 @@ class Explosion(pygame.sprite.Sprite):
         self.time = 0
         self.death_time_1 = 2
         self.death_time_2 = 5
+        self.pause = False
 
-    def update(self):
+    def update(self, *events):
+        if PAUSE in [event.type for event in events]:
+            self.pause = not self.pause
+        if self.pause:
+            return
+
         self.time += 1
         if self.time > self.death_time_2:
             self.kill()
@@ -237,8 +250,14 @@ class BigExplosion(pygame.sprite.Sprite):
         self.time = 0
         self.start_time = 4
         self.death_time = 8
+        self.pause = False
 
-    def update(self):
+    def update(self, *events):
+        if PAUSE in [event.type for event in events]:
+            self.pause = not self.pause
+        if self.pause:
+            return
+
         self.time += 1
         if self.time > self.death_time:
             self.kill()
