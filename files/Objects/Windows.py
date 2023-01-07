@@ -211,11 +211,12 @@ class SelectionLevel(Window):
         self.back = [0, 0, self.width // 10, self.height // 20]
 
     def create_events(self, events):
-        if pygame.MOUSEBUTTONDOWN in [event.type for event in events]:
-            if self.button in range(self.level_count):
-                pygame.event.post(pygame.event.Event(GAME_WINDOW, count=self.count_players, level=self.button))
-            elif self.button == -2:
-                pygame.event.post(pygame.event.Event(START_WINDOW))
+        if pygame.MOUSEWHEEL not in [event.type for event in events]:
+            if pygame.MOUSEBUTTONDOWN in [event.type for event in events]:
+                if self.button in range(self.level_count):
+                    pygame.event.post(pygame.event.Event(GAME_WINDOW, count=self.count_players, level=self.button))
+                elif self.button == -2:
+                    pygame.event.post(pygame.event.Event(START_WINDOW))
 
     def update(self, events):
         for event in events:
@@ -228,7 +229,7 @@ class SelectionLevel(Window):
             if event.type == pygame.KEYUP and event.key == pygame.K_DOWN:
                 self.down_pressed = False
             if event.type == pygame.MOUSEWHEEL:
-                self.top += event.y * 3
+                self.top += event.y * 50
             if event.type == pygame.MOUSEMOTION:
                 # подсветка текста у кнопок
                 self.button = -1
