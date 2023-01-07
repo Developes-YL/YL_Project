@@ -48,6 +48,7 @@ class StartWindow(Window):
         # 1 - один игрок
         # 2 - два игрока
         # 3 - выйти
+        # 4 - настройки
         self.game = 0
 
         # надпись 'Tank 1990'
@@ -59,9 +60,9 @@ class StartWindow(Window):
 
         self.colors = [RED, WHITE]  # цвета для кнопок
         size = [247, 75]
-        # кнопки '1 player' и '2 players'
         self.one_player = [((self.width - size[0]) // 2, self.height * 6 // 10, *size), 0]
         self.two_player = [((self.width - size[0]) // 2, self.height * 7 // 10, *size), 0]
+        self.settings_main_window = [((self.width - size[0]) // 2, self.height * 5 // 10, *size), 0]
 
         # кнопка exit
         size = [154, 45]
@@ -72,6 +73,7 @@ class StartWindow(Window):
         self.screen.blit(self.bg, ((self.width - self.bg.get_size()[0]) // 2, 0))
         self._render_text(64, '1 Player', self.colors[self.one_player[1]], self.one_player[0])
         self._render_text(64, '2 Players', self.colors[self.two_player[1]], self.two_player[0])
+        self._render_text(64, 'Settings', self.colors[self.settings_main_window[1]], self.settings_main_window[0])
         self._render_text(64, 'Exit', self.colors[self.exit[1]], self.exit[0])
 
     def create_events(self, events):
@@ -84,6 +86,8 @@ class StartWindow(Window):
                     pygame.event.post(pygame.event.Event(LEVEL_SELECTION, count=2))
                 elif self.game == 3:
                     pygame.event.post(pygame.event.Event(pygame.QUIT))
+                elif self.game == 4:
+                    pygame.event.post(pygame.event.Event(SETTINGS1, count=0))
 
     def update(self, events):
         for event in events:
@@ -104,6 +108,11 @@ class StartWindow(Window):
                     self.two_player[1] = 0
                     self.exit[1] = 1
                     self.game = 3
+                elif pygame.Rect(self.settings_main_window[0]).collidepoint(event.pos):
+                    self.one_player[1] = 0
+                    self.two_player[1] = 0
+                    self.exit[1] = 0
+                    self.game = 4
                 else:
                     self.one_player[1] = 0
                     self.two_player[1] = 0
@@ -263,6 +272,68 @@ class SelectionLevel(Window):
             self._render_text(self.min_size // 15, "BACK", WHITE, self.back)
         else:
             self._render_text(self.min_size // 15, "BACK", RED, self.back)
+
+
+class SettingsWindow(Window):
+    def _set_presets(self):
+        self.difficulty = 0
+
+        w, h = SETTINGS1.get_size()
+        w_sc = self.width / w / 2
+        h_sc = self.height / 2 / h / 2
+        sc = min(w_sc, h_sc)
+        self.bg = pygame.transform.scale(SETTINGS1, (w * sc, h * sc))
+
+        self.colors = [RED, WHITE]
+        size = [247, 75]
+        self.change_difficulty = [((self.width - size[0]) // 2, self.height * 2 // 10, *size), 0]
+
+        # кнопка back
+        size = [154, 45]
+        self.exit = [(self.width * 75 // 100, self.height * 9 // 10, *size), 0]
+
+    def render(self):
+        # отрисовка фона и кнопок
+        self.screen.blit(self.bg, ((self.width - self.bg.get_size()[0]) // 2, 0))
+        self._render_text(64, 'Difficulty', self.colors[self.change_difficulty[1]], self.change_difficulty[0])
+        self._render_text(64, 'Back', self.colors[self.exit[1]], self.exit[0])
+
+    def create_events(self, events):
+        """обработка нажатий на кнопки"""
+        for event in events:
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if self.game == 1:
+                    pygame.event.post(pygame.event.Event(LEVEL_SELECTION, count=1))
+                elif self.game == 2:
+                    pygame.event.post(pygame.event.Event(LEVEL_SELECTION, count=2))
+                elif self.game == 3:
+                    pygame.event.post(pygame.event.Event(pygame.QUIT))
+
+    def update(self, events):
+        for event in events:
+            if event.type == pygame.MOUSEMOTION:
+                # подсветка текста у кнопок
+                if pygame.Rect(self.one_player[0]).collidepoint(event.pos):
+                    self.one_player[1] = 1
+                    self.two_player[1] = 0
+                    self.exit[1] = 0
+                    self.game = 1
+                elif pygame.Rect(self.two_player[0]).collidepoint(event.pos):
+                    self.one_player[1] = 0
+                    self.two_player[1] = 1
+                    self.exit[1] = 0
+                    self.game = 2
+                elif pygame.Rect(self.exit[0]).collidepoint(event.pos):
+                    self.one_player[1] = 0
+                    self.two_player[1] = 0
+                    self.exit[1] = 1
+                    self.game = 3
+                else:
+                    self.one_player[1] = 0
+                    self.two_player[1] = 0
+                    self.exit[1] = 0
+                    self.game = 0
+
 
 
 # надо добавить класс окна настроек,

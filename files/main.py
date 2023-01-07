@@ -104,6 +104,8 @@ class Manager:
             self.window = StartWindow(self.screen)
         elif event.type == LEVEL_SELECTION:
             self.window = SelectionLevel(self.screen, event.count)
+        elif event.type == SETTINGS1:
+            self.window = SettingsWindow(self.screen, event.count)
 
         # остальные окна добавляем так:
         # if event.type == <NAME_WINDOW>:

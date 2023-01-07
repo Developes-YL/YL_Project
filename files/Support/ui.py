@@ -2,6 +2,7 @@ from pygame import image
 
 # backgrounds
 BG1 = image.load('images/bg1.png')
+SETTINGS1 = image.load('images/settings.png')
 
 # cells
 BRICK_IMAGE = image.load('images/original/brick.png')
