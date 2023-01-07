@@ -1,13 +1,13 @@
 # поля для игры и для рисования новых уровней
 import pygame
 
-from files.Objects.cells import *
-from files.Support.Consts import *
-from files.Support.colors import *
+from files.Objects.cells import Water, Ice, Bush, Concrete, Brick
+from files.Support.Consts import FIELD_SIZE
 
 
 class Field1:
-    def __init__(self, screen, group, level=0, size=(500, 500)):
+    def __init__(self, screen: pygame.display, group: pygame.sprite.LayeredUpdates,
+                 level: int = 0, size: tuple = (500, 500)):
         self.screen = screen
         self.level = level
         self.group = group
@@ -19,51 +19,78 @@ class Field1:
 
         self.create_cells()
 
-    def get_positions(self):
+    def get_positions(self) -> dict:
+        # точки появления танков
         positions = {"ai": [], "player": []}
-        pos = (self.left + self.cell_size * (FIELD_SIZE[1] // 2 - 5), self.top + self.cell_size * (FIELD_SIZE[1] - 2))
+
+        # 1st
+        pos = (self.left + self.cell_size * (FIELD_SIZE[0] // 2 - 5), self.top + self.cell_size * (FIELD_SIZE[1] - 2))
         positions["player"].append(pos)
-        pos = (self.left + self.cell_size * (FIELD_SIZE[1] // 2 + 3), self.top + self.cell_size * (FIELD_SIZE[1] - 2))
+        # 2nd
+        pos = (self.left + self.cell_size * (FIELD_SIZE[0] // 2 + 3), self.top + self.cell_size * (FIELD_SIZE[1] - 2))
         positions["player"].append(pos)
 
-        pos = (self.left + self.cell_size * (FIELD_SIZE[1] // 2 - 1), self.top)
-        positions["ai"].append(pos)
+        # 1st
         pos = (self.left, self.top)
-        positions["ai"].append(pos)
-        pos = (self.left + self.cell_size * (FIELD_SIZE[1] - 1), self.top)
-        positions["ai"].append(pos)
+        positions["ai"].append([*pos, 0, 0])
+        # 2nd
+        pos = (self.left + self.cell_size * (FIELD_SIZE[0] // 2 - 1), self.top)
+        positions["ai"].append([*pos, 13, 0])
+        # 3rd
+        pos = (self.left + self.cell_size * (FIELD_SIZE[0] - 2), self.top)
+        positions["ai"].append([*pos, 25, 0])
+
         return positions
 
-    def get_cell_size(self):
+    def get_cell_size(self) -> int:
         return self.cell_size
+
+    def get_size(self) -> list:
+        return [self.left, self.top, self.cell_size * FIELD_SIZE[0], self.cell_size * FIELD_SIZE[1]]
+
+    def reset(self):
+        self.create_cells()
 
     def create_cells(self):
         field = ""
         with open("./Support/levels.txt", 'r') as f:
             field += f.readlines()[self.level]
+
         for x in range(FIELD_SIZE[0]):
             for y in range(FIELD_SIZE[1]):
                 pos = (self.left + x * self.cell_size, self.top + y * self.cell_size)
-                if field[x * FIELD_SIZE[0] + y] == "1":
-                    Brick(self.cell_size, pos, self.group)
-                if field[x * FIELD_SIZE[0] + y] == "2":
-                    Concrete(self.cell_size, pos, self.group)
-                if field[x * FIELD_SIZE[0] + y] == "3":
-                    Forest(self.cell_size, pos, self.group)
-                if field[x * FIELD_SIZE[0] + y] == "4":
-                    Ice(self.cell_size, pos, self.group)
-                if field[x * FIELD_SIZE[0] + y] == "5":
-                    Water(self.cell_size, pos, self.group)
+                preset = self.cell_size, pos, self.group
+                cell = field[x * FIELD_SIZE[0] + y]
+
+                if cell == "1":
+                    Brick(*preset)
+                elif cell == "2":
+                    Concrete(*preset)
+                elif cell == "3":
+                    Bush(*preset)
+                elif cell == "4":
+                    Ice(*preset)
+                elif cell == "5":
+                    Water(*preset)
 
         # границы поля
-        Border(self.group, (self.left, self.top, 1, self.cell_size * FIELD_SIZE[1]))
-        Border(self.group, (self.left + self.cell_size * FIELD_SIZE[0], self.top, 1, self.cell_size * FIELD_SIZE[1]))
-        Border(self.group, (self.left, self.top, self.cell_size * FIELD_SIZE[0], 1))
-        Border(self.group, (self.left, self.top + self.cell_size * FIELD_SIZE[1], self.cell_size * FIELD_SIZE[0], 1))
+        # left
+        Border(self.group, (self.left - 51, self.top - 1, 50, self.cell_size * FIELD_SIZE[1]))
+        # right
+        Border(self.group, (self.left + self.cell_size * FIELD_SIZE[0],
+                            self.top - 1, 51, self.cell_size * FIELD_SIZE[1]))
+        # top
+        Border(self.group, (self.left - 1, self.top - 51, self.cell_size * FIELD_SIZE[0], 50))
+        # bottom
+        Border(self.group, (self.left - 1, self.top + self.cell_size * FIELD_SIZE[1] + 1,
+                            self.cell_size * FIELD_SIZE[0], 50))
 
 
 class Border(pygame.sprite.Sprite):
-    def __init__(self, group, rect):
+    def __init__(self, group: pygame.sprite.LayeredUpdates, rect: tuple = (0, 0, 0, 0)):
         super().__init__(group)
         self.image = pygame.Surface(rect[2:])
         self.rect = pygame.Rect(rect)
+
+    def boom(self, flag: bool = False) -> bool:
+        return True
