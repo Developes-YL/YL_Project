@@ -37,3 +37,4 @@ BULLET_SPEED = 0.05
 #Музыка
 
 VOL = 0.06
+VOL_EFFECTS = 0.2

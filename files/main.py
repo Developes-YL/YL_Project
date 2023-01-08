@@ -5,6 +5,8 @@ pygame.init()
 pygame.mixer.music.load("sounds/background_music.mp3")
 pygame.mixer.music.play(-1)
 pygame.mixer.music.set_volume(0.06)
+game_start = pygame.mixer.Sound('sounds/game_start.ogg')
+game_start.set_volume(0.06)
 
 def check_imports(files_list="all", libraries_list="all") -> bool:
     """checking for files and libraries"""
@@ -108,6 +110,8 @@ class Manager:
         # пользовательские события смотри в файле files/Support/events.py
         if event.type == GAME_WINDOW:
             self.window = GameWindow(self.screen, event.count, event.level)
+            game_start.set_volume(VOL_EFFECTS)
+            game_start.play()
         elif event.type == START_WINDOW:
             self.window = StartWindow(self.screen)
         elif event.type == LEVEL_SELECTION:

@@ -1,13 +1,14 @@
 # все окна
 import pygame
 
+
 from files.Objects.Game import Game
 from files.Support.events import *
 from files.Support.ui import *
 from files.Support.colors import *
-from files.Support.Consts import VOL
-
-
+from files.Support.Consts import VOL, VOL_EFFECTS
+game_start = pygame.mixer.Sound('sounds/game_start.ogg')
+test_effect_sound = pygame.mixer.Sound('sounds/effect_test.ogg')
 class Window:
     """общий класс окон для данного проекта"""
     def __init__(self, screen):
@@ -342,10 +343,14 @@ class SettingsWindow(Window):
         self.colors = [RED, WHITE]
         size = [247, 75]
         self.change_music_volume = ((self.width - size[0]) // 2, self.height * 3 // 10, *size)
+        self.change_effect_volume = ((self.width - size[0]) // 2, self.height * 4 // 10, *size)
+
 
         size = [150, 150]
         self.music_volume_plus = ((self.width - size[0]) // 1.5, self.height * 2.7 // 10, *size)
         self.music_volume_minus = ((self.width - size[0]) // 3, self.height * 2.7 // 10, *size)
+        self.effect_volume_plus = ((self.width - size[0]) // 1.5, self.height * 3.7 // 10, *size)
+        self.effect_volume_minus = ((self.width - size[0]) // 3, self.height * 3.7 // 10, *size)
 
         # кнопка back
         size = [154, 45]
@@ -358,6 +363,9 @@ class SettingsWindow(Window):
         self._render_text(64, 'Back', self.colors[self.button == 2], self.exit)
         self._render_text(64, '+', self.colors[self.button == 3], self.music_volume_plus)
         self._render_text(64, '-', self.colors[self.button == 4], self.music_volume_minus)
+        self._render_text(64, 'Effect volume', self.colors[self.button == 5], self.change_effect_volume)
+        self._render_text(64, '+', self.colors[self.button == 6], self.effect_volume_plus)
+        self._render_text(64, '-', self.colors[self.button == 7], self.effect_volume_minus)
 
     def create_events(self, events):
         for event in events:
@@ -370,6 +378,18 @@ class SettingsWindow(Window):
                     pygame.mixer.music.set_volume(VOL + 0.08)
                 elif self.button == 4:
                     pygame.mixer.music.set_volume(VOL - 0.05)
+                elif self.button == 5:
+                    game_start.set_volume(VOL_EFFECTS)
+                    test_effect_sound.set_volume(VOL_EFFECTS)
+                    test_effect_sound.play()
+                elif self.button == 6:
+                    game_start.set_volume(VOL_EFFECTS + 0.2)
+                    test_effect_sound.set_volume(VOL_EFFECTS)
+                    test_effect_sound.play()
+                elif self.button == 7:
+                    game_start.set_volume(VOL_EFFECTS - 0.1)
+                    test_effect_sound.set_volume(VOL_EFFECTS)
+                    test_effect_sound.play()
 
     def update(self, events):
         for event in events:
@@ -383,6 +403,13 @@ class SettingsWindow(Window):
                     self.button = 3
                 elif pygame.Rect(self.music_volume_minus).collidepoint(event.pos):
                     self.button = 4
+                elif pygame.Rect(self.change_effect_volume).collidepoint(event.pos):
+                    self.button = 5
+                elif pygame.Rect(self.effect_volume_plus).collidepoint(event.pos):
+                    self.button = 6
+                elif pygame.Rect(self.effect_volume_minus).collidepoint(event.pos):
+                    self.button = 7
+
                 else:
                     self.button = 0
 
