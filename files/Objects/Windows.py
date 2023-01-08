@@ -152,7 +152,6 @@ class GameWindow(Window):
                 self.button = -1
                 if pygame.Rect(self.back).collidepoint(event.pos):
                     self.button = 2
-                    pygame.mixer.music.set_volume(0.06)
                 if pygame.Rect(self.pause_button).collidepoint(event.pos):
                     self.button = 1
                     self.pause_images = self.pause_images_selected
@@ -189,6 +188,7 @@ class GameWindow(Window):
                 self.pause_images_selected = self.pause_images_selected[::-1]
             elif self.button == 2:
                 pygame.event.post(pygame.event.Event(START_WINDOW))
+                pygame.mixer.music.set_volume(VOL)
             elif self.button == 3:
                 self.game.new_game()
 
