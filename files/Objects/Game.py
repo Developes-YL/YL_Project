@@ -70,7 +70,7 @@ class Game:
             self.ai_time = 0
             n = random.choice(range(3))
             ai = AI(self.all_sprites, self.cell_size * 2, self.positions["ai"][n],
-                    self.queue[0], 1, self.number_bot % 5 == 0)
+                    self.queue[0], self.number_bot % 5 == 0)
             self.queue.pop(0)
             self.all_sprites.change_layer(ai, 1)
             self.number_bot += 1

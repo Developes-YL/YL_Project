@@ -3,12 +3,31 @@ WINDOW_SIZE = (0, 0)
 FPS = 60
 TITLE = "TANK 1990"
 
-FILES = []
-LIBRARIES = []
+# sounds
+BACKGROUND_MUSIC = "sounds/background_music.mp3"
+START_EFFECT = "sounds/game_start.ogg"
+TEST_EFFECT = "sounds/test_effect.ogg"
+HIT_EFFECT = "sounds/hit_effect.ogg"
+READY_EFFECT = "sounds/ready.ogg"
+
+# игровые файлы
+SOUNDS = [BACKGROUND_MUSIC, START_EFFECT, TEST_EFFECT, HIT_EFFECT, READY_EFFECT]
+FILES = ["Objects/AI.py", "Objects/cells.py", "Objects/fields.py",
+         "Objects/Game.py", "Objects/Player.py", "Objects/SoundManager.py", "Objects/Windows.py",
+         "Support/colors.py", "Support/Consts.py", "Support/events.py", "Support/ui.py",
+         "Support/levels.txt", "Support/ai_settings.txt"]
+LIBRARIES = ["pygame"]
 
 # игровые константы
 FIELD_SIZE = (26, 26)
 
+RELOAD_TIME = FPS * 1 // 2
+MOVE_ANIMATION = FPS // 30
+
+SPEED_ON_ICE = 0.5
+BULLET_SPEED = 0.09
+
+# константы, используемые для удобства разработки
 RIGHT = 0
 UP = 1
 LEFT = 2
@@ -28,13 +47,7 @@ BIG_EXPLOSION = "BigExplosion"
 
 NON_CONFLICT_OBJECTS = [BUSH, ICE, EXPLOSION, BIG_EXPLOSION]
 
-RELOAD_TIME = FPS * 3 // 2
-MOVE_ANIMATION = FPS // 30
-
-SPEED_ON_ICE = 0.5
-BULLET_SPEED = 0.05
-
 # Музыка
-
-VOL = 0.06
-VOL_EFFECTS = 0.2
+NORMAL_MUSIC_VOLUME = 0.08
+NORMAL_EFFECTS_VOLUME = 0.2
+STEP_VOLUME = 0.02

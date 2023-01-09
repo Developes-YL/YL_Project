@@ -1,17 +1,22 @@
+
 def check_imports(files_list="all", libraries_list="all") -> bool:
-    """checking for files and libraries"""
+    """проверка на наличие файлов"""
+    # скрипты, текстовые документы и спрайты
     if files_list == "all":
         try:
-            from files.Support.Consts import FILES
-            files_list = FILES
+            from files.Support.Consts import FILES, SOUNDS
+            files_list = FILES + SOUNDS
         except ImportError:
+            print("Файл files.Support.Consts не найден")
             return False
 
+    # библиотеки
     if libraries_list == "all":
         try:
             from files.Support.Consts import LIBRARIES
             libraries_list = LIBRARIES
         except ImportError:
+            print("Файл files.Support.Consts не найден")
             return False
         
     unfounded_files = []
@@ -39,9 +44,7 @@ class Manager:
     """данный класс отвечает за работу приложения в целом"""
     def __init__(self):
         # настройка игры
-        self.running = False
-        self.musicOn = False
-        self.soundsOn = False
+        self.running = True
 
         pygame.init()
         self.clock = pygame.time.Clock()
@@ -50,12 +53,11 @@ class Manager:
         pygame.display.set_caption(TITLE)
         self.window = LoadingWindow(self.screen)
 
-    def run(self):
-        """start main loop"""
-        self.running = True
-
-        # Настройка звука и музыки
         self.soundManager = SoundManager()
+
+    def run(self):
+        """запуск главного цикла"""
+        # включение фоновой музыки
         pygame.event.post(pygame.event.Event(BACKGROUND_MUSIC_EVENT))
 
         while self.running:
@@ -68,15 +70,17 @@ class Manager:
         pygame.quit()
 
     def handle_events(self):
+        """обработка событий"""
         if pygame.event.get(pygame.QUIT):
             self.running = False
             return None
 
-        # обработка первостепенных событий  (переключение окон и закрытие приложения)
+        # обработка первостепенных событий (например, переключение окон и закрытие приложения)
         events = pygame.event.get()
         self.window.create_events(events)
 
-        events += pygame.event.get()
+        events += pygame.event.get()  # обновление новых событий
+
         if pygame.QUIT in [event.type for event in events]:
             self.running = False
             return None
@@ -89,10 +93,14 @@ class Manager:
         # обработка событий и выполнение действий между кадрами
         self.window.update(events)
 
+        events += pygame.event.get()
+
         # обработка событий со звуком
         self.soundManager.update(events)
 
-        if pygame.QUIT in pygame.event.get():
+        events += pygame.event.get()
+
+        if pygame.QUIT in events:
             self.running = False
             return None
 
@@ -100,8 +108,7 @@ class Manager:
         self.window.render()
 
     def change_window(self, event):
-        # смена окон происходит посредством создания новых событий
-        # пользовательские события смотри в файле files/Support/events.py
+        """смена окон посредством обработки событий"""
         if event.type == GAME_WINDOW:
             self.window = GameWindow(self.screen, event.count, event.level)
         elif event.type == START_WINDOW:
@@ -111,17 +118,13 @@ class Manager:
         elif event.type == SETTINGS_WINDOW:
             self.window = SettingsWindow(self.screen)
 
-        # остальные окна добавляем так:
-        # if event.type == <NAME_WINDOW>:
-        #    self.window = <NameClassWindow>(self.screen)
-
 
 if __name__ == "__main__":
     if check_imports():
         from Objects.Windows import *
-        from Support.Consts import *
+        from Support.Consts import WINDOW_SIZE, TITLE, FPS
         from Objects.SoundManager import SoundManager
         import pygame
 
         manager = Manager()
-        manager.run()
+        manager.run()  # запуск игры

@@ -1,8 +1,8 @@
 import pygame.sprite
 
 from files.Support.Consts import *
-from files.Support.events import PAUSE
-from files.Support.ui import TANK, BULLET_IMAGE, EXPLOSION_1, EXPLOSION_2, EXPLOSION_3
+from files.Support.events import PAUSE, TEST_EFFECT_EVENT
+from files.Support.ui import TANK_PLAYER_1, BULLET_IMAGE, EXPLOSION_1, EXPLOSION_2, EXPLOSION_3
 
 
 class Player(pygame.sprite.Sprite):
@@ -12,14 +12,20 @@ class Player(pygame.sprite.Sprite):
         self.number = number
         self.start = pos
         self.lives = 3
-        self.rect = pygame.Rect(*pos, cell_size, cell_size)
-        self.image = pygame.transform.scale(TANK, (cell_size, cell_size))
-        self.orient = 1
-        self.hp = 100
-        self.lives = 3
-        self.move = 0
-        self.wall = 0
-        self.power = 2
+        self.rect = pygame.Rect(*pos, cell_size * 90 // 100, cell_size * 90 // 100)
+        self.normal_image = pygame.transform.scale(TANK_PLAYER_1, (cell_size * 90 // 100, cell_size * 90 // 100))
+        self.speed = cell_size // 32
+        self.bullet_speed = int(cell_size * BULLET_SPEED)
+        self.direction = UP
+        self.pos = pos[0], pos[1]
+        self.is_move = False
+        self.image = pygame.transform.rotate(self.normal_image, 90).copy()
+        self.fire_time = 0
+        self.pause = False
+        if number == 1:
+            self.buttons = [pygame.K_w, pygame.K_a, pygame.K_d, pygame.K_s, pygame.K_SPACE]
+        if number == 2:
+            self.buttons = [pygame.K_UP, pygame.K_LEFT, pygame.K_RIGHT, pygame.K_DOWN, pygame.K_KP_0]
 
     def boom(self, flag):
         if not flag:
@@ -31,87 +37,75 @@ class Player(pygame.sprite.Sprite):
                 self.kill()
         return True
 
-    def moveP(self, key):
-        if self.orient == 1 and self.wall != 1:
-            if key == 1:
-                self.rect.y -= 1
-                self.wall = 0
-            elif key != 0:
-                self.orient = key
-                self.move = 0
-            if (self.rect.y % 10) == 0:
-                key = 0
-                self.move = 0
+    def update(self, events):
+        if PAUSE in [event.type for event in events]:
+            self.pause = not self.pause
+        if self.pause:
+            return
+        self.fire_time += 1
+        for event in events:
+            if event.type == pygame.KEYDOWN and event.key == self.buttons[0]:
+                self.direction = UP
+                self.is_move = True
+                self.rotate()
+            if event.type == pygame.KEYDOWN and event.key == self.buttons[1]:
+                self.direction = LEFT
+                self.is_move = True
+                self.rotate()
+            if event.type == pygame.KEYDOWN and event.key == self.buttons[2]:
+                self.direction = RIGHT
+                self.is_move = True
+                self.rotate()
+            if event.type == pygame.KEYDOWN and event.key == self.buttons[3]:
+                self.direction = DOWN
+                self.is_move = True
+                self.rotate()
+            if event.type == pygame.KEYUP and event.key == self.buttons[0]:
+                self.is_move = False
+            if event.type == pygame.KEYUP and event.key == self.buttons[1]:
+                self.is_move = False
+            if event.type == pygame.KEYUP and event.key == self.buttons[2]:
+                self.is_move = False
+            if event.type == pygame.KEYUP and event.key == self.buttons[3]:
+                self.is_move = False
+            if event.type == pygame.KEYDOWN and event.key == self.buttons[4]:
+                if self.fire_time > RELOAD_TIME:
+                    self.fire_time = 0
+                    self.make_shot(self.direction)
+        if self.is_move:
+            self.move()
 
-            elif key == 0:
-                self.rect.y -= 1
-                self.move = 1
+    def move(self):
+        coord = self.rect.x, self.rect.y
+        speed = self.speed
+        if ICE in [a.__class__.__name__ for a in pygame.sprite.spritecollide(self, self.group, False)]:
+            speed = int(speed * SPEED_ON_ICE)
 
-        elif self.orient == 2 and self.wall != 2:
-            if key == 2:
-                self.rect.y += 1
-                self.wall = 0
-            elif key != 0:
-                self.orient = key
-                self.move = 0
-            if (self.rect.y % 10) == 0:
-                key = 0
-                self.move = 0
+        if self.direction == UP:
+            self.rect.y -= speed
+        if self.direction == DOWN:
+            self.rect.y += speed
+        if self.direction == LEFT:
+            self.rect.x -= speed
+        if self.direction == RIGHT:
+            self.rect.x += speed
 
-            elif key == 0:
-                self.rect.y += 1
-                self.move = 1
+        sprites = pygame.sprite.spritecollide(self, self.group, False)
+        for sprite in sprites:
+            if sprite.__class__.__name__ not in NON_CONFLICT_OBJECTS:
+                if sprite == self:
+                    continue
+                self.is_move = False
 
-        elif self.orient == 3 and self.wall != 3:
-            if key == 3:
-                self.rect.x -= 1
-                self.wall = 0
-            elif key != 0:
-                self.orient = key
-                self.move = 0
-            if (self.rect.x % 10) == 0:
-                key = 0
-                self.move = 0
+                self.rect.x, self.rect.y = coord
+                break
 
-            elif key == 0:
-                self.rect.x -= 1
-                self.move = 1
+    def make_shot(self, dir):
+        pygame.event.post(pygame.event.Event(TEST_EFFECT_EVENT))
+        Bullet(self.bullet_speed, dir, self.rect, self.group, True)
 
-        elif self.orient == 4 and self.wall != 4:
-            if key == 4:
-                self.rect.x += 1
-                self.wall = 0
-            elif key != 0:
-                self.orient = key
-                self.move = 0
-            if (self.rect.x % 10) == 0:
-                key = 0
-                self.move = 0
-
-            elif key == 0:
-                self.rect.x += 1
-                self.move = 1
-
-        else:
-            self.move = 0
-
-    def walls(self, matrix):
-        if (self.rect.y % 10) == 0 and (self.rect.x % 10) == 0:
-            Y_axisd = matrix[self.rect.y // 10 + 1][self.rect.x // 10]
-            Y_axisu = matrix[self.rect.y // 10 - 1][self.rect.x // 10]
-            X_axisr = matrix[self.rect.y // 10][self.rect.x // 10 + 1]
-            X_axisl = matrix[self.rect.y // 10][self.rect.x // 10 - 1]
-            if (Y_axisd == 1 or Y_axisd == 2 or Y_axisd == 4 or Y_axisd == 6) and self.orient == 2:
-                self.wall = 2
-            elif (Y_axisu == 1 or Y_axisu == 2 or Y_axisu == 4 or Y_axisu == 6) and self.orient == 1:
-                self.wall = 1
-            elif (X_axisr == 1 or X_axisr == 2 or X_axisr == 4 or X_axisr == 6) and self.orient == 4:
-                self.wall = 4
-            elif (X_axisl == 1 or X_axisl == 2 or X_axisl == 4 or X_axisl == 6) and self.orient == 3:
-                self.wall = 3
-
-    def render(self, screen):
-        screen.blit(self.pu, (self.rect.x * 2, self.rect.y * 2))
+    def rotate(self):
+        self.image = pygame.transform.rotate(self.normal_image, 90 * self.direction)
 
 
 class Bullet(pygame.sprite.Sprite):
