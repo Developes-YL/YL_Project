@@ -1,10 +1,11 @@
 # все окна
-import pygame
+import pygame.event
 
 from files.Objects.Game import Game
 from files.Support.events import *
 from files.Support.ui import *
 from files.Support.colors import *
+from files.Support.Consts import VOL, VOL_EFFECTS
 
 
 class Window:
@@ -209,13 +210,21 @@ class LoadingWindow(Window):
         self.pause = True
 
     def create_events(self, events):
-        if pygame.K_p in [e.key for e in events if e.type == pygame.KEYDOWN]:
+        if pygame.K_p in [event.key for event in events if event.type == pygame.KEYDOWN]:
             self.loading = self.max_loading
         if self.loading == self.max_loading:
             pygame.event.post(pygame.event.Event(START_WINDOW))
 
     def render(self):
-        pass
+        text_surface = self.font.render(self.label + "." * self.number, False, RED)
+        rect = text_surface.get_rect(midleft=self.point)
+        self.screen.blit(text_surface, rect)
+
+        rect = pygame.Rect(self.width // 100, self.height // 2, self.width // 100 * 98, self.height // 50)
+        pygame.draw.rect(self.screen, GREY, rect)
+        rect = pygame.Rect(self.width // 100, self.height // 2,
+                           self.width // 100 * 98 / self.max_loading * self.loading, self.height // 50)
+        pygame.draw.rect(self.screen, RED, rect)
 
     def update(self, events):
         if self.count < self.max_count and self.loading % 100 == 20:
@@ -237,16 +246,6 @@ class LoadingWindow(Window):
 
         if self.loading % 20 == 0 and not (self.count < self.max_count and self.loading % 100 == 20):
             self.number = (self.number + 1) % 4
-
-        text_surface = self.font.render(self.label + "." * self.number, False, RED)
-        rect = text_surface.get_rect(midleft=self.point)
-        self.screen.blit(text_surface, rect)
-
-        rect = pygame.Rect(self.width // 100, self.height // 2, self.width // 100 * 98, self.height // 50)
-        pygame.draw.rect(self.screen, GREY, rect)
-        rect = pygame.Rect(self.width // 100, self.height // 2,
-                           self.width // 100 * 98 / self.max_loading * self.loading, self.height // 50)
-        pygame.draw.rect(self.screen, RED, rect)
 
 
 class SelectionLevel(Window):
@@ -338,7 +337,14 @@ class SettingsWindow(Window):
 
         self.colors = [RED, WHITE]
         size = [247, 75]
-        self.change_difficulty = ((self.width - size[0]) // 2, self.height * 2 // 10, *size)
+        self.change_music_volume = ((self.width - size[0]) // 2, self.height * 3 // 10, *size)
+        self.change_effect_volume = ((self.width - size[0]) // 2, self.height * 4 // 10, *size)
+
+        size = [150, 150]
+        self.music_volume_plus = ((self.width - size[0]) // 1.5, self.height * 2.7 // 10, *size)
+        self.music_volume_minus = ((self.width - size[0]) // 3, self.height * 2.7 // 10, *size)
+        self.effect_volume_plus = ((self.width - size[0]) // 1.5, self.height * 3.7 // 10, *size)
+        self.effect_volume_minus = ((self.width - size[0]) // 3, self.height * 3.7 // 10, *size)
 
         # кнопка back
         size = [154, 45]
@@ -347,25 +353,55 @@ class SettingsWindow(Window):
     def render(self):
         # отрисовка фона и кнопок
         self.screen.blit(self.bg, ((self.width - self.bg.get_size()[0]) // 2, 0))
-        self._render_text(64, 'Difficulty', self.colors[self.button == 1], self.change_difficulty)
+        self._render_text(64, 'Music volume', self.colors[self.button == 1], self.change_music_volume)
         self._render_text(64, 'Back', self.colors[self.button == 2], self.exit)
+        self._render_text(64, '+', self.colors[self.button == 3], self.music_volume_plus)
+        self._render_text(64, '-', self.colors[self.button == 4], self.music_volume_minus)
+        self._render_text(64, 'Effect volume', self.colors[self.button == 5], self.change_effect_volume)
+        self._render_text(64, '+', self.colors[self.button == 6], self.effect_volume_plus)
+        self._render_text(64, '-', self.colors[self.button == 7], self.effect_volume_minus)
 
     def create_events(self, events):
         for event in events:
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if self.button == 1:
-                    pass
-                elif self.button == 2:
+                if self.button == 2:
                     pygame.event.post(pygame.event.Event(START_WINDOW))
+
+                elif self.button == 3:
+                    pygame.event.post(pygame.event.Event(VOLUME_UP, music=True))
+                elif self.button == 4:
+                    pygame.event.post(pygame.event.Event(VOLUME_DOWN, music=True))
+                elif self.button == 1:
+                    pygame.event.post(pygame.event.Event(STANDART_VOLUME, music=True))
+
+                elif self.button == 6:
+                    pygame.event.post(pygame.event.Event(VOLUME_UP, music=False))
+                    pygame.event.post(pygame.event.Event(TEST_EFFECT_EVENT))
+                elif self.button == 7:
+                    pygame.event.post(pygame.event.Event(VOLUME_DOWN, music=False))
+                    pygame.event.post(pygame.event.Event(TEST_EFFECT_EVENT))
+                elif self.button == 5:
+                    pygame.event.post(pygame.event.Event(STANDART_VOLUME, music=False))
+                    pygame.event.post(pygame.event.Event(TEST_EFFECT_EVENT))
 
     def update(self, events):
         for event in events:
             if event.type == pygame.MOUSEMOTION:
                 # подсветка текста у кнопок
-                if pygame.Rect(self.change_difficulty).collidepoint(event.pos):
+                if pygame.Rect(self.change_music_volume).collidepoint(event.pos):
                     self.button = 1
                 elif pygame.Rect(self.exit).collidepoint(event.pos):
                     self.button = 2
+                elif pygame.Rect(self.music_volume_plus).collidepoint(event.pos):
+                    self.button = 3
+                elif pygame.Rect(self.music_volume_minus).collidepoint(event.pos):
+                    self.button = 4
+                elif pygame.Rect(self.change_effect_volume).collidepoint(event.pos):
+                    self.button = 5
+                elif pygame.Rect(self.effect_volume_plus).collidepoint(event.pos):
+                    self.button = 6
+                elif pygame.Rect(self.effect_volume_minus).collidepoint(event.pos):
+                    self.button = 7
                 else:
                     self.button = 0
 

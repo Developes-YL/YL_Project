@@ -1,30 +1,24 @@
 def check_imports(files_list="all", libraries_list="all") -> bool:
     """checking for files and libraries"""
-
-    try:
-        import os.path
-    except:
-        return False
-    
     if files_list == "all":
         try:
             from files.Support.Consts import FILES
             files_list = FILES
-        except:
+        except ImportError:
             return False
 
     if libraries_list == "all":
         try:
             from files.Support.Consts import LIBRARIES
             libraries_list = LIBRARIES
-        except:
+        except ImportError:
             return False
         
     unfounded_files = []
     for name in files_list:
         try:
             open(name)
-        except:
+        except OSError:
             unfounded_files.append(name)
     if unfounded_files:
         print("не найдены все необходимые файлы, а точнее:\n" + '\n'.join(unfounded_files))
@@ -33,7 +27,7 @@ def check_imports(files_list="all", libraries_list="all") -> bool:
     for name in libraries_list:
         try:
             exec("import " + name)
-        except:
+        except ImportError:
             unfounded_libraries.append(name)
     if unfounded_libraries:
         print("не найдены все необходимые библиотеки, а точнее:\n" + '\n'.join(unfounded_libraries))
@@ -54,12 +48,16 @@ class Manager:
         self.size = self.width, self.height = WINDOW_SIZE
         self.screen = pygame.display.set_mode(self.size, pygame.HWSURFACE)
         pygame.display.set_caption(TITLE)
-        # self.window = SelectionLevel(self.screen)
         self.window = LoadingWindow(self.screen)
 
     def run(self):
         """start main loop"""
         self.running = True
+
+        # Настройка звука и музыки
+        self.soundManager = SoundManager()
+        pygame.event.post(pygame.event.Event(BACKGROUND_MUSIC_EVENT))
+
         while self.running:
             self.screen.fill(BLACK)
             self.handle_events()  # обработка событий
@@ -82,18 +80,24 @@ class Manager:
         if pygame.QUIT in [event.type for event in events]:
             self.running = False
             return None
-        #
+
         for event in events:
             self.change_window(event)
 
+        events += pygame.event.get()
+
         # обработка событий и выполнение действий между кадрами
         self.window.update(events)
+
+        # обработка событий со звуком
+        self.soundManager.update(events)
 
         if pygame.QUIT in pygame.event.get():
             self.running = False
             return None
 
-        self.window.render()  # отрисовка окна
+        # отрисовка окна
+        self.window.render()
 
     def change_window(self, event):
         # смена окон происходит посредством создания новых событий
@@ -116,6 +120,7 @@ if __name__ == "__main__":
     if check_imports():
         from Objects.Windows import *
         from Support.Consts import *
+        from Objects.SoundManager import SoundManager
         import pygame
 
         manager = Manager()
