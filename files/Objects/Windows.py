@@ -1,14 +1,13 @@
 # все окна
-import pygame
-
+import pygame.event
 
 from files.Objects.Game import Game
 from files.Support.events import *
 from files.Support.ui import *
 from files.Support.colors import *
 from files.Support.Consts import VOL, VOL_EFFECTS
-game_start = pygame.mixer.Sound('sounds/game_start.ogg')
-test_effect_sound = pygame.mixer.Sound('sounds/effect_test.ogg')
+
+
 class Window:
     """общий класс окон для данного проекта"""
     def __init__(self, screen):
@@ -188,7 +187,6 @@ class GameWindow(Window):
                 self.pause_images_selected = self.pause_images_selected[::-1]
             elif self.button == 2:
                 pygame.event.post(pygame.event.Event(START_WINDOW))
-                pygame.mixer.music.set_volume(VOL)
             elif self.button == 3:
                 self.game.new_game()
 
@@ -212,13 +210,21 @@ class LoadingWindow(Window):
         self.pause = True
 
     def create_events(self, events):
-        if pygame.K_p in [e.key for e in events if e.type == pygame.KEYDOWN]:
+        if pygame.K_p in [event.key for event in events if event.type == pygame.KEYDOWN]:
             self.loading = self.max_loading
         if self.loading == self.max_loading:
             pygame.event.post(pygame.event.Event(START_WINDOW))
 
     def render(self):
-        pass
+        text_surface = self.font.render(self.label + "." * self.number, False, RED)
+        rect = text_surface.get_rect(midleft=self.point)
+        self.screen.blit(text_surface, rect)
+
+        rect = pygame.Rect(self.width // 100, self.height // 2, self.width // 100 * 98, self.height // 50)
+        pygame.draw.rect(self.screen, GREY, rect)
+        rect = pygame.Rect(self.width // 100, self.height // 2,
+                           self.width // 100 * 98 / self.max_loading * self.loading, self.height // 50)
+        pygame.draw.rect(self.screen, RED, rect)
 
     def update(self, events):
         if self.count < self.max_count and self.loading % 100 == 20:
@@ -240,16 +246,6 @@ class LoadingWindow(Window):
 
         if self.loading % 20 == 0 and not (self.count < self.max_count and self.loading % 100 == 20):
             self.number = (self.number + 1) % 4
-
-        text_surface = self.font.render(self.label + "." * self.number, False, RED)
-        rect = text_surface.get_rect(midleft=self.point)
-        self.screen.blit(text_surface, rect)
-
-        rect = pygame.Rect(self.width // 100, self.height // 2, self.width // 100 * 98, self.height // 50)
-        pygame.draw.rect(self.screen, GREY, rect)
-        rect = pygame.Rect(self.width // 100, self.height // 2,
-                           self.width // 100 * 98 / self.max_loading * self.loading, self.height // 50)
-        pygame.draw.rect(self.screen, RED, rect)
 
 
 class SelectionLevel(Window):
@@ -278,7 +274,6 @@ class SelectionLevel(Window):
             if pygame.MOUSEBUTTONDOWN in [event.type for event in events]:
                 if self.button in range(self.level_count):
                     pygame.event.post(pygame.event.Event(GAME_WINDOW, count=self.count_players, level=self.button))
-                    pygame.mixer.music.set_volume(0.02)
                 elif self.button == -2:
                     pygame.event.post(pygame.event.Event(START_WINDOW))
 
@@ -345,7 +340,6 @@ class SettingsWindow(Window):
         self.change_music_volume = ((self.width - size[0]) // 2, self.height * 3 // 10, *size)
         self.change_effect_volume = ((self.width - size[0]) // 2, self.height * 4 // 10, *size)
 
-
         size = [150, 150]
         self.music_volume_plus = ((self.width - size[0]) // 1.5, self.height * 2.7 // 10, *size)
         self.music_volume_minus = ((self.width - size[0]) // 3, self.height * 2.7 // 10, *size)
@@ -370,26 +364,25 @@ class SettingsWindow(Window):
     def create_events(self, events):
         for event in events:
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if self.button == 1:
-                    pygame.mixer.music.set_volume(VOL)
-                elif self.button == 2:
+                if self.button == 2:
                     pygame.event.post(pygame.event.Event(START_WINDOW))
+
                 elif self.button == 3:
-                    pygame.mixer.music.set_volume(VOL + 0.08)
+                    pygame.event.post(pygame.event.Event(VOLUME_UP, music=True))
                 elif self.button == 4:
-                    pygame.mixer.music.set_volume(VOL - 0.05)
-                elif self.button == 5:
-                    game_start.set_volume(VOL_EFFECTS)
-                    test_effect_sound.set_volume(VOL_EFFECTS)
-                    test_effect_sound.play()
+                    pygame.event.post(pygame.event.Event(VOLUME_DOWN, music=True))
+                elif self.button == 1:
+                    pygame.event.post(pygame.event.Event(STANDART_VOLUME, music=True))
+
                 elif self.button == 6:
-                    game_start.set_volume(VOL_EFFECTS + 0.2)
-                    test_effect_sound.set_volume(VOL_EFFECTS)
-                    test_effect_sound.play()
+                    pygame.event.post(pygame.event.Event(VOLUME_UP, music=False))
+                    pygame.event.post(pygame.event.Event(TEST_EFFECT_EVENT))
                 elif self.button == 7:
-                    game_start.set_volume(VOL_EFFECTS - 0.1)
-                    test_effect_sound.set_volume(VOL_EFFECTS)
-                    test_effect_sound.play()
+                    pygame.event.post(pygame.event.Event(VOLUME_DOWN, music=False))
+                    pygame.event.post(pygame.event.Event(TEST_EFFECT_EVENT))
+                elif self.button == 5:
+                    pygame.event.post(pygame.event.Event(STANDART_VOLUME, music=False))
+                    pygame.event.post(pygame.event.Event(TEST_EFFECT_EVENT))
 
     def update(self, events):
         for event in events:
@@ -409,7 +402,6 @@ class SettingsWindow(Window):
                     self.button = 6
                 elif pygame.Rect(self.effect_volume_minus).collidepoint(event.pos):
                     self.button = 7
-
                 else:
                     self.button = 0
 

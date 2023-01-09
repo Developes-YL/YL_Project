@@ -1,4 +1,4 @@
-from pygame import image
+from pygame import image, mixer
 
 # backgrounds
 BG1 = image.load('images/bg1.png')
@@ -43,9 +43,15 @@ PLAY_WHITE = image.load('images/PLAY_WHITE.png')
 RESTART_RED = image.load('images/RESTART_RED.png')
 RESTART_WHITE = image.load('images/RESTART_WHITE.png')
 
-
 fs = image.load('images/fs.png')
 base = image.load('images/base.png')
 dbase = image.load('images/dbase.png')
 ggu = image.load('images/ggu.png')
 e = image.load('images/e.png')
+
+# sounds
+BACKGROUND_MUSIC = "sounds/background_music.mp3"
+START_EFFECT = "sounds/game_start.ogg"
+TEST_EFFECT = "sounds/test_effect.ogg"
+HIT_EFFECT = "sounds/hit_effect.ogg"
+READY_EFFECT = "sounds/ready.ogg"
