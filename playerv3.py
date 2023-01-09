@@ -106,6 +106,3 @@ class Player(pygame.sprite.Sprite):
                 self.wall = 4
             elif (X_axisl == 1 or X_axisl == 2 or X_axisl == 4 or X_axisl == 6) and self.orient == 3:
                 self.wall = 3
-
-    def render(self, screen):
-        screen.blit(self.pu, (self.px * 2, self.py * 2))
