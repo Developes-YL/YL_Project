@@ -6,7 +6,7 @@ from files.Objects.AI import AI
 from files.Objects.Player import Player
 from files.Objects.fields import Field1
 from files.Support.Consts import FPS
-from files.Support.events import PAUSE
+from files.Support.events import PAUSE, START_EFFECT_EVENT
 
 
 class Game:
@@ -37,6 +37,8 @@ class Game:
         self.ai_time_max = (190 - level * 4 - (player_count - 1) * 20) // 16
         self.ai_time = self.ai_time_max
 
+        pygame.event.post(pygame.event.Event(START_EFFECT_EVENT))
+
         self.new_game()
 
     def load_queue(self):
@@ -52,15 +54,15 @@ class Game:
         self.player_1 = Player(self.all_sprites, 1, self.cell_size * 2, self.positions["player"][0])
         if self.player_count == 2:
             self.player_2 = Player(self.all_sprites, 2, self.cell_size * 2, self.positions["player"][1])
+        self.queue = [0] * 20  # временно
 
     def render(self):
         self.all_sprites.draw(self.screen)
 
     def process_events(self, events):
-        self.all_sprites.update()
+        self.all_sprites.update(events)
         if PAUSE in [event.type for event in events]:
             self.pause = not self.pause
-            self.all_sprites.update(pygame.event.Event(PAUSE))
         if self.pause:
             return
         self.ai_time += 1 / FPS
@@ -68,7 +70,7 @@ class Game:
             self.ai_time = 0
             n = random.choice(range(3))
             ai = AI(self.all_sprites, self.cell_size * 2, self.positions["ai"][n],
-                    self.queue[0], 1, self.number_bot % 5 == 0)
+                    self.queue[0], self.number_bot % 5 == 0)
             self.queue.pop(0)
             self.all_sprites.change_layer(ai, 1)
             self.number_bot += 1
