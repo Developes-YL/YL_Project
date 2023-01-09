@@ -64,7 +64,7 @@ class AI(pygame.sprite.Sprite):
             self.spawned = True
         del sprite
 
-    def update(self, *events):
+    def update(self, events):
         if not self.spawned:
             self.spawn()
         if not self.spawned:
