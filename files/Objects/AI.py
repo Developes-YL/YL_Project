@@ -1,28 +1,27 @@
-
 import random
 
 import pygame.sprite
 
 from files.Objects.Player import Bullet, BigExplosion
 from files.Support.Consts import *
-from files.Support.events import PAUSE, AI_DESTROYED
-from files.Support.ui import TANK_AI
+from files.Support.events import PAUSE
+from files.Support.ui import *
 
 
 class AI(pygame.sprite.Sprite):
     def __init__(self, group: pygame.sprite.LayeredUpdates, size: int = 30, rect: tuple = (0, 0, 0, 0),
-                 sort: int = 0, is_boss: bool = False):
+                 sort: int = 0, lives: int = 1, is_boss: bool = False):
 
         # сохранение начальных значений
         self.group = group
         self.size = size
         self.coord, self.pos = rect[:2], rect[2:]  # pos - позиция на поле, coord - на экране
         self.sort = sort
+        self.lives = lives
         self.is_boss = is_boss
 
         # настройка спрайтов и анимаций
-        self.images = list(map(lambda x: pygame.transform.scale(x, (size * 90 // 100, size  * 90// 100)),
-                               TANK_AI[sort])).copy()
+        self.images = list(map(lambda x: pygame.transform.scale(x, (size, size)), TANK_AI[sort])).copy()
         self.default_images = self.images.copy()
 
         self.animation_time = 0
@@ -31,28 +30,23 @@ class AI(pygame.sprite.Sprite):
         self.rect = pygame.Rect(0, 0, 0, 0)
 
         # стартовые значения
-        with open("./Support/ai_settings.txt", "r") as f:
-            self.settings = f.readlines()[1 + self.sort].split(";")
-        self.lives = int(self.settings[3])
-        if is_boss:
-            self.lives += 1
-        self.ram = self.settings[4] == "t"
-
         self.pause = False
         self.stage = 0  # стадия игры
         self.direction = DOWN
-        self.freeze = 0
 
-        self.default_speed = size // 32 * float(self.settings[1])
+        self.default_speed = size // 32
+        if self.sort == 1:
+            self.default_speed *= 2
         self.speed = self.default_speed
 
         # движение в сторону
         self.direction_time = 0
         self.keep_direction_time = 0
 
+        self.freeze = 0
+
         # стрельба
         self.fire_time = 0
-        self.reload_time = RELOAD_TIME * float(self.settings[2])
         self.bullet_speed = int(self.size * BULLET_SPEED)
 
         super().__init__(group)
@@ -70,7 +64,7 @@ class AI(pygame.sprite.Sprite):
             self.spawned = True
         del sprite
 
-    def update(self, events):
+    def update(self, *events):
         if not self.spawned:
             self.spawn()
         if not self.spawned:
@@ -85,22 +79,21 @@ class AI(pygame.sprite.Sprite):
         else:
             self.animation_time += 1
             self.direction_time += 1
-            self.fire_time += 1
+        self.fire_time += 1
 
-        if self.stage == 0:
-            if self.direction_time > self.keep_direction_time:
-                self.new_move()
-            elif self.freeze == 0:
-                self.move()
+        if self.direction_time > self.keep_direction_time:
+            self.new_move()
+        elif self.freeze == 0:
+            self.move()
 
-            if self.fire_time > RELOAD_TIME:
-                self.fire_time = 0
-                self.make_shot()
+        if self.fire_time > RELOAD_TIME:
+            self.fire_time = 0
+            self.make_shot()
 
-            if self.animation_time > MOVE_ANIMATION:
-                self.animation_time = 0
-                self.image = self.images[0]
-                self.images[:2] = self.images[:2][::-1]
+        if self.animation_time > MOVE_ANIMATION:
+            self.animation_time = 0
+            self.image = self.images[0]
+            self.images[:2] = self.images[:2][::-1]
 
     def new_move(self):
         self.direction_time = 0
@@ -132,9 +125,6 @@ class AI(pygame.sprite.Sprite):
         for sprite in sprites:
             if sprite.__class__.__name__ not in NON_CONFLICT_OBJECTS:
                 if sprite == self:
-                    continue
-                if sprite.__class__.__name__ == PLAYER and self.ram:
-                    sprite.kill()
                     continue
 
                 self.speed = 0
@@ -206,8 +196,4 @@ class AI(pygame.sprite.Sprite):
         # self.default_images = self.images.copy()
 
     def __del__(self):
-        try:
-            pygame.event.post(pygame.event.Event(AI_DESTROYED, score=int(self.settings[0])))
-        except Exception:
-            pass
         BigExplosion(self.group, self.rect.size[0], self.rect.x, self.rect.y)
