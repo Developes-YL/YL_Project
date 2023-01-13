@@ -24,7 +24,7 @@ BUSH_IMAGE = load_image('images/cells/bush.png')
 ICE_IMAGE = load_image('images/cells/ice.png')
 
 # tanks
-TANK = load_image('images/tank_1_player.png')
+TANK = load_image('images/original/tank_1_player.png')
 TANK2 = image.load('images/original/tank_2_player.png')
 TANK_PLAYER_1 = [TANK, TANK2]
 

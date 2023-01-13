@@ -53,3 +53,19 @@ class Bush(Cell):
 class Ice(Cell):
     def set_up(self):
         self.image = ICE_IMAGE
+
+
+class Base(Cell):
+    def set_up(self):
+        self.image = base
+
+    def boom(self, flag) -> bool:
+        self.set_up()
+        print("DESTROED")
+        self.lose()
+        self.image = pygame.transform.scale(dbase, (95, 95))
+        return True
+
+    #функция на пройгрыш
+    def lose(self):
+        pygame.event.post(pygame.event.Event(GAME_OVER_EVENT))
