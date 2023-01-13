@@ -1,5 +1,6 @@
 import pygame.sprite
 
+from files.Support.events import GAME_OVER_EVENT, PAUSE
 from files.Support.ui import *
 
 
@@ -12,6 +13,7 @@ class Cell(pygame.sprite.Sprite):
         self.mask = pygame.mask.from_surface(self.image)
         self.rect.x = pos[0]
         self.rect.y = pos[1]
+        self.group = group
         super().__init__(group)
         group.change_layer(self, self._layer)
 
@@ -53,3 +55,29 @@ class Bush(Cell):
 class Ice(Cell):
     def set_up(self):
         self.image = ICE_IMAGE
+
+
+class Base1(Cell):
+    def set_up(self):
+        self.image = BASE_1
+        self.flag = True
+
+    def boom(self, flag) -> bool:
+        if self.flag:
+            self.lose()
+            self.flag = False
+        return True
+
+    def lose(self):
+        # функция на пройгрыш
+        pygame.event.post(pygame.event.Event(GAME_OVER_EVENT))
+        Base2(self.rect.size[0], (self.rect.x, self.rect.y), self.group)
+        self.kill()
+
+
+class Base2(Cell):
+    def set_up(self):
+        self.image = BASE_2
+
+    def boom(self, flag):
+        return True

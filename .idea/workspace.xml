@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AnalysisUIOptions">
+    <option name="ANALYZE_INJECTED_CODE" value="false" />
+    <option name="SCOPE_TYPE" value="3" />
+  </component>
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="85d21ad2-7455-4793-affe-69b704f1c255" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/files/Objects/Windows.py~Stashed changes" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/files/Objects/AI.py" beforeDir="false" afterPath="$PROJECT_DIR$/files/Objects/AI.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/files/Objects/Cells.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/files/Objects/Game.py" beforeDir="false" afterPath="$PROJECT_DIR$/files/Objects/Game.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/files/Objects/Player.py" beforeDir="false" afterPath="$PROJECT_DIR$/files/Objects/Player.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/files/Objects/Windows.py" beforeDir="false" afterPath="$PROJECT_DIR$/files/Objects/Windows.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/files/Objects/cells.py" beforeDir="false" afterPath="$PROJECT_DIR$/files/Objects/cells.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/files/Objects/fields.py" beforeDir="false" afterPath="$PROJECT_DIR$/files/Objects/fields.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/files/Objects/windows.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/files/Support/Consts.py" beforeDir="false" afterPath="$PROJECT_DIR$/files/Support/Consts.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/files/Support/colors.py" beforeDir="false" afterPath="$PROJECT_DIR$/files/Support/colors.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/files/Support/events.py" beforeDir="false" afterPath="$PROJECT_DIR$/files/Support/events.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/files/Support/ui.py" beforeDir="false" afterPath="$PROJECT_DIR$/files/Support/ui.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/files/images/Loading Bar.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/files/images/base.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/files/images/bg1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/files/images/brick.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/files/images/brick2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/files/images/concrete.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/files/images/dbase.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/files/images/e.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/files/images/forest.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/files/images/fs.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/files/images/ggu.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/files/images/ice.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/files/images/original/brick.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/files/images/original/bullet.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/files/images/original/bush.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/files/images/original/concrete.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/files/images/original/explosion_1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/files/images/original/explosion_2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/files/images/original/explosion_3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/files/images/original/ice.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/files/images/original/tank_1_ai.png" beforeDir="false" afterPath="$PROJECT_DIR$/files/images/original/tank_1_ai.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/files/images/original/tank_1_player.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/files/images/original/tank_2_ai.png" beforeDir="false" afterPath="$PROJECT_DIR$/files/images/original/tank_2_ai.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/files/images/original/tank_3_ai.png" beforeDir="false" afterPath="$PROJECT_DIR$/files/images/original/tank_3_ai.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/files/images/original/tank_4_ai.png" beforeDir="false" afterPath="$PROJECT_DIR$/files/images/original/tank_4_ai.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/files/images/original/tank_ai_1_1.png" beforeDir="false" afterPath="$PROJECT_DIR$/files/images/original/tank_ai_1_1.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/files/images/original/tank_ai_1_2.png" beforeDir="false" afterPath="$PROJECT_DIR$/files/images/original/tank_ai_1_2.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/files/images/original/tank_ai_2_1.png" beforeDir="false" afterPath="$PROJECT_DIR$/files/images/original/tank_ai_2_1.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/files/images/original/tank_ai_2_2.png" beforeDir="false" afterPath="$PROJECT_DIR$/files/images/original/tank_ai_2_2.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/files/images/original/water1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/files/images/original/water2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/files/images/tank.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/files/images/tanks/tank_2_player.png" beforeDir="false" afterPath="$PROJECT_DIR$/files/images/tanks/tank_2_player.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/files/images/water.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/files/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/files/main.py" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="alpha" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectId" id="2Je1LrvBb0EbpVWN3cnnUsT9npM" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToStringList": {
+    "ChangesTree.GroupingKeys": [
+      "directory"
+    ]
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\maksi\source\repos\YL_Project\files\Objects" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\maksi\source\repos\GitHub\Yl_project\YL_Project\files\images\tanks" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Python.yl_project">
+    <configuration name="Windows" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="YL_Project" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/files/Objects" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/files/Objects/Windows.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="YL_Project" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="D:\anaconda\python.exe" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../../yl_file" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/../../yl_file/main.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="vibor_urovnia" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="YL_Project" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/files/Ruslan" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/files/Ruslan/vibor_urovnia.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="yl_project" type="PythonConfigurationType" factoryName="Python">
+      <module name="YL_Project" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/files" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/files/main.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Python.yl_project" />
+      <item itemvalue="Python.Windows" />
+      <item itemvalue="Python.main" />
+      <item itemvalue="Python.vibor_urovnia" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.main" />
+        <item itemvalue="Python.Windows" />
+        <item itemvalue="Python.vibor_urovnia" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="85d21ad2-7455-4793-affe-69b704f1c255" name="Changes" comment="перенес класс игрока в другой файл, вернул старые версии некоторых файлов" />
+      <created>1672423681270</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1672423681270</updated>
+    </task>
+    <task id="LOCAL-00001" summary="реализовал перемещение ботов по карте и стрельбу(сами пули ничего не делают), добавил оригинальные спрайты">
+      <created>1672474208204</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1672474208204</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="2e3536be-0529-4ff7-ac85-22fb658a4465">
+          <value>
+            <State>
+              <option name="SHOW_ONLY_AFFECTED_CHANGES" value="true" />
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="HEAD" />
+                      </list>
+                    </value>
+                  </entry>
+                  <entry key="roots">
+                    <value>
+                      <list>
+                        <option value="$PROJECT_DIR$" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="alpha" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="OPEN_GENERIC_TABS">
+      <map>
+        <entry key="2e3536be-0529-4ff7-ac85-22fb658a4465" value="TOOL_WINDOW" />
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="реализовал перемещение ботов по карте и стрельбу(сами пули ничего не делают), добавил оригинальные спрайты" />
+    <option name="LAST_COMMIT_MESSAGE" value="реализовал перемещение ботов по карте и стрельбу(сами пули ничего не делают), добавил оригинальные спрайты" />
+  </component>
+</project>

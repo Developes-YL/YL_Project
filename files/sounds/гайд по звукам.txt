@@ -1,0 +1,12 @@
+когда доделаете класс игрока:
+#сначала из файла констант подключить переменну VOL_EFFECTS
+как подключить звук при попадании в игрока(файл уже залит):
+popadanie = pygame.mixer.Sound('sounds/est_probitie.ogg')
+popadanie.set_volume(VOL_EFFECTS)
+в момент кода когда засчитывается попадание в игрока вписать:
+popadanie.play()
+Аналогично для попадание в противника:
+kill = pygame.mixer.Sound('sounds/gotov.ogg')
+kill.set_volume(VOL_EFFECTS)
+в момент кода когда засчитывается попадание в противника вписать:
+kill.play()
