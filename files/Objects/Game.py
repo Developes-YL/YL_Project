@@ -56,6 +56,7 @@ class Game:
             self.player_2 = Player(self.all_sprites, 2, self.cell_size * 2, self.positions["player"][1])
         self.queue = [0] * 20  # временно
 
+
     def render(self):
         self.all_sprites.draw(self.screen)
 

@@ -54,6 +54,10 @@ class Field1:
     def create_cells(self):
         field = ""
         with open("./Support/levels.txt", 'r') as f:
+            a = len(f.readlines())
+            if self.level >= a:
+                self.level = 0
+            print(self.level, a)
             field += f.readlines()[self.level]
 
         for x in range(FIELD_SIZE[0]):

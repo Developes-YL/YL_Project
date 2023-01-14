@@ -117,7 +117,8 @@ class Manager:
             self.window = SelectionLevel(self.screen, event.count)
         elif event.type == SETTINGS_WINDOW:
             self.window = SettingsWindow(self.screen)
-
+        elif event.type == FINISH_WINDOW:
+            self.window = EndWindow(self.screen, event.settings)
 
 if __name__ == "__main__":
     if check_imports():
