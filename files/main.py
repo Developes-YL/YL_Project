@@ -1,4 +1,3 @@
-
 def check_imports(files_list="all", libraries_list="all") -> bool:
     """проверка на наличие файлов"""
     # скрипты, текстовые документы и спрайты
@@ -18,7 +17,7 @@ def check_imports(files_list="all", libraries_list="all") -> bool:
         except ImportError:
             print("Файл files.Support.Consts не найден")
             return False
-        
+
     unfounded_files = []
     for name in files_list:
         try:
@@ -42,6 +41,7 @@ def check_imports(files_list="all", libraries_list="all") -> bool:
 
 class Manager:
     """данный класс отвечает за работу приложения в целом"""
+
     def __init__(self):
         # настройка игры
         self.running = True
@@ -94,9 +94,6 @@ class Manager:
         self.window.update(events)
 
         events += pygame.event.get()
-        if pygame.QUIT in events:
-            self.running = False
-            return None
 
         # обработка событий со звуком
         self.soundManager.update(events)
