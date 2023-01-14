@@ -28,9 +28,6 @@ with open("levels.txt", 'w') as f:
                     a += "5"
                 else:
                     a += "9"
-                # a += " "
-            # a += "\n"
-        # print(a)
         f.write(a + "\n")
 # 0 пусто
 # 1 кирпич
