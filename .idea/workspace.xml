@@ -5,50 +5,62 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ad1e8dbe-3e0a-40e4-bdb9-da8a6e041223" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.name" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/YL_Project.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/YL_Project.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/files/Objects/AI.py" beforeDir="false" afterPath="$PROJECT_DIR$/files/Objects/AI.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/files/Objects/Game.py" beforeDir="false" afterPath="$PROJECT_DIR$/files/Objects/Game.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/files/Objects/Player.py" beforeDir="false" afterPath="$PROJECT_DIR$/files/Objects/Player.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/files/Objects/SoundManager.py" beforeDir="false" afterPath="$PROJECT_DIR$/files/Objects/SoundManager.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/files/Objects/Windows.py" beforeDir="false" afterPath="$PROJECT_DIR$/files/Objects/Windows.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/files/Objects/cells.py" beforeDir="false" afterPath="$PROJECT_DIR$/files/Objects/cells.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/files/Objects/fields.py" beforeDir="false" afterPath="$PROJECT_DIR$/files/Objects/fields.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/files/Ruslan/loading.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/files/Ruslan/main.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/files/Support/Consts.py" beforeDir="false" afterPath="$PROJECT_DIR$/files/Support/Consts.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/files/Support/ai_settings.txt" beforeDir="false" afterPath="$PROJECT_DIR$/files/Support/ai_settings.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/files/Support/colors.py" beforeDir="false" afterPath="$PROJECT_DIR$/files/Support/colors.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/files/Support/convertor.py" beforeDir="false" afterPath="$PROJECT_DIR$/files/Support/convertor.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/files/Support/events.py" beforeDir="false" afterPath="$PROJECT_DIR$/files/Support/events.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/files/Support/levels.txt" beforeDir="false" afterPath="$PROJECT_DIR$/files/Support/levels.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/files/Support/ui.py" beforeDir="false" afterPath="$PROJECT_DIR$/files/Support/ui.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/files/images/animations/explosion_1.png" beforeDir="false" afterPath="$PROJECT_DIR$/files/images/animations/explosion_1.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/files/images/animations/explosion_2.png" beforeDir="false" afterPath="$PROJECT_DIR$/files/images/animations/explosion_2.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/files/images/animations/explosion_3.png" beforeDir="false" afterPath="$PROJECT_DIR$/files/images/animations/explosion_3.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/files/images/buttons/pause_red.png" beforeDir="false" afterPath="$PROJECT_DIR$/files/images/buttons/pause_red.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/files/images/buttons/pause_white.png" beforeDir="false" afterPath="$PROJECT_DIR$/files/images/buttons/pause_white.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/files/images/buttons/play_red.png" beforeDir="false" afterPath="$PROJECT_DIR$/files/images/buttons/play_red.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/files/images/buttons/play_white.png" beforeDir="false" afterPath="$PROJECT_DIR$/files/images/buttons/play_white.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/files/images/buttons/restart_red.png" beforeDir="false" afterPath="$PROJECT_DIR$/files/images/buttons/restart_red.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/files/images/buttons/restart_white.png" beforeDir="false" afterPath="$PROJECT_DIR$/files/images/buttons/restart_white.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/files/images/cells/brick.png" beforeDir="false" afterPath="$PROJECT_DIR$/files/images/cells/brick.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/files/images/cells/bullet.png" beforeDir="false" afterPath="$PROJECT_DIR$/files/images/cells/bullet.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/files/images/cells/bush.png" beforeDir="false" afterPath="$PROJECT_DIR$/files/images/cells/bush.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/files/images/cells/concrete.png" beforeDir="false" afterPath="$PROJECT_DIR$/files/images/cells/concrete.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/files/images/cells/ice.png" beforeDir="false" afterPath="$PROJECT_DIR$/files/images/cells/ice.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/files/images/cells/water1.png" beforeDir="false" afterPath="$PROJECT_DIR$/files/images/cells/water1.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/files/images/cells/water2.png" beforeDir="false" afterPath="$PROJECT_DIR$/files/images/cells/water2.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/files/images/other/bg1.png" beforeDir="false" afterPath="$PROJECT_DIR$/files/images/other/bg1.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/files/images/other/settings.png" beforeDir="false" afterPath="$PROJECT_DIR$/files/images/other/settings.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/files/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/files/sounds/background_music.mp3" beforeDir="false" afterPath="$PROJECT_DIR$/files/sounds/background_music.mp3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/files/sounds/game_start.ogg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/files/sounds/test_effect.ogg" beforeDir="false" afterPath="$PROJECT_DIR$/files/sounds/test_effect.ogg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/files/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/files/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/files0/Objects/AI.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/files0/Objects/Game.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/files0/Objects/Player.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/files0/Objects/SoundManager.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/files0/Objects/Windows.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/files0/Objects/cells.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/files0/Objects/fields.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/files0/Support/Consts.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/files0/Support/ai_settings.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/files0/Support/colors.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/files0/Support/convertor.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/files0/Support/events.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/files0/Support/levels.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/files0/Support/ui.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/files0/images/cells/brick.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/files0/images/cells/bullet.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/files0/images/cells/bush.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/files0/images/cells/concrete.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/files0/images/cells/ice.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/files0/images/cells/water1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/files0/images/cells/water2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/files0/images/other/Thumbs.db" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/files0/images/other/bg1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/files0/images/other/settings.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/files0/images/tanks/tank_1_ai.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/files0/images/tanks/tank_1_player.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/files0/images/tanks/tank_2_ai.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/files0/images/tanks/tank_2_player.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/files0/images/tanks/tank_3_ai.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/files0/images/tanks/tank_4_ai.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/files0/images/tanks/tank_ai_1_1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/files0/images/tanks/tank_ai_1_2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/files0/images/tanks/tank_ai_2_1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/files0/images/tanks/tank_ai_2_2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/files0/main.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/files0/sounds/background_music.mp3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/files0/sounds/effect_test.ogg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/files0/sounds/est_probitie.ogg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/files0/sounds/game_start.ogg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/files0/sounds/gotov.ogg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/files0/sounds/hit_effect.ogg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/files0/sounds/ready.ogg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/files0/sounds/test_effect.ogg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/files0/sounds/гайд по звукам.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -75,23 +87,47 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "last_opened_file_path": "C:/Users/maksi/source/repos/GitHub/Yl_project/files/images",
-    "settings.editor.selected.configurable": "configurable.group.tools"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/maksi/source/repos/GitHub/Yl_project/files/images&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;configurable.group.tools&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\maksi\source\repos\GitHub\Yl_project\files\images" />
       <recent name="C:\Users\maksi\source\repos\GitHub\Yl_project\files\sounds" />
     </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\maksi\source\repos\GitHub\Yl_project\files" />
+    </key>
   </component>
   <component name="RunManager">
+    <configuration default="true" type="PythonConfigurationType" factoryName="Python">
+      <module name="YL_Project" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="main" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
-      <module name="YL_project" />
+      <module name="YL_Project" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
@@ -110,6 +146,81 @@
       <option name="MODULE_MODE" value="false" />
       <option name="REDIRECT_INPUT" value="false" />
       <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="Tox" factoryName="Tox">
+      <module name="YL_Project" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="docs" factoryName="Docutils task">
+      <module name="YL_Project" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="docutils_input_file" value="" />
+      <option name="docutils_output_file" value="" />
+      <option name="docutils_params" value="" />
+      <option name="docutils_task" value="" />
+      <option name="docutils_open_in_browser" value="false" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="docs" factoryName="Sphinx task">
+      <module name="YL_Project" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="docutils_input_file" value="" />
+      <option name="docutils_output_file" value="" />
+      <option name="docutils_params" value="" />
+      <option name="docutils_task" value="" />
+      <option name="docutils_open_in_browser" value="false" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="tests" factoryName="Autodetect">
+      <module name="YL_Project" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;&quot;" />
+      <option name="_new_targetType" value="&quot;PATH&quot;" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="tests" factoryName="Doctests">
+      <module name="YL_Project" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="CLASS_NAME" value="" />
+      <option name="METHOD_NAME" value="" />
+      <option name="FOLDER_NAME" value="" />
+      <option name="TEST_TYPE" value="TEST_SCRIPT" />
+      <option name="PATTERN" value="" />
+      <option name="USE_PATTERN" value="false" />
       <method v="2" />
     </configuration>
   </component>

@@ -22,12 +22,16 @@ LIBRARIES = ["pygame"]
 FIELD_SIZE = (26, 26)
 
 RELOAD_TIME = FPS * 1 // 2
-MOVE_ANIMATION = FPS // 30
+MOVE_ANIMATION = FPS // 15
 
 SPEED_ON_ICE = 0.5
 BULLET_SPEED = 0.09
 TANK_SPEED = 1 / 32
 TANK_SIZE_KOEF = 0.85
+
+GAME_END_FREEZE = FPS * 3 * 10
+LEVELS_COUNT = 35
+
 # константы, используемые для удобства разработки
 RIGHT = 0
 UP = 3

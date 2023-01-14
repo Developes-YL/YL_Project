@@ -1,9 +1,10 @@
+
 def check_imports(files_list="all", libraries_list="all") -> bool:
     """проверка на наличие файлов"""
     # скрипты, текстовые документы и спрайты
     if files_list == "all":
         try:
-            from files.Support.Consts import FILES, SOUNDS
+            from Support.Consts import FILES, SOUNDS
             files_list = FILES + SOUNDS
         except ImportError:
             print("Файл files.Support.Consts не найден")
@@ -12,12 +13,12 @@ def check_imports(files_list="all", libraries_list="all") -> bool:
     # библиотеки
     if libraries_list == "all":
         try:
-            from files.Support.Consts import LIBRARIES
+            from Support.Consts import LIBRARIES
             libraries_list = LIBRARIES
         except ImportError:
             print("Файл files.Support.Consts не найден")
             return False
-
+        
     unfounded_files = []
     for name in files_list:
         try:
@@ -41,7 +42,6 @@ def check_imports(files_list="all", libraries_list="all") -> bool:
 
 class Manager:
     """данный класс отвечает за работу приложения в целом"""
-
     def __init__(self):
         # настройка игры
         self.running = True
@@ -94,6 +94,9 @@ class Manager:
         self.window.update(events)
 
         events += pygame.event.get()
+        if pygame.QUIT in events:
+            self.running = False
+            return None
 
         # обработка событий со звуком
         self.soundManager.update(events)
@@ -117,13 +120,17 @@ class Manager:
             self.window = SelectionLevel(self.screen, event.count)
         elif event.type == SETTINGS_WINDOW:
             self.window = SettingsWindow(self.screen)
+        elif event.type == WIN_WINDOW:
+            self.window = WinWindow(self.screen, event.settings)
+        elif event.type == GAME_OVER_WINDOW:
+            self.window = EndWindow(self.screen, event.settings)
 
 
 if __name__ == "__main__":
     if check_imports():
-        from Objects.Windows import *
-        from Support.Consts import WINDOW_SIZE, TITLE, FPS
-        from Objects.SoundManager import SoundManager
+        from files.Objects.Windows import *
+        from files.Support.Consts import WINDOW_SIZE, TITLE, FPS
+        from files.Objects.SoundManager import SoundManager
         import pygame
 
         manager = Manager()

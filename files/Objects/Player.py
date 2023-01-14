@@ -1,7 +1,7 @@
 import pygame.sprite
 
 from files.Support.Consts import *
-from files.Support.events import PAUSE
+from files.Support.events import PAUSE, PLAYER_KILLED
 from files.Support.ui import TANK_PLAYER, BULLET_IMAGE, EXPLOSION_1, EXPLOSION_2, EXPLOSION_3
 
 
@@ -27,7 +27,7 @@ class Player(pygame.sprite.Sprite):
         self.rect = pygame.Rect(0, 0, 0, 0)
 
         # стартовые значения
-        self.lives = 3
+        self.lives = 1
 
         self.pause = False
         self.direction = UP
@@ -58,7 +58,9 @@ class Player(pygame.sprite.Sprite):
             self.group.change_layer(exp, 2)
             if self.lives > 0:
                 Player(self.group, self.number, self.cell_size, self.start)
-                self.kill()
+            else:
+                pygame.time.set_timer(pygame.event.Event(PLAYER_KILLED), 1, 1)
+            self.kill()
         return True
 
     def update(self, events):
@@ -164,7 +166,7 @@ class Bullet(pygame.sprite.Sprite):
         self.rect.x, self.rect.y = pos
         self.speed = speed
         self.direction = direction
-        self.image = pygame.transform.rotate(self.image, 90 * self.direction)
+        self.image = pygame.transform.rotate(self.image, -90 * self.direction)
         if direction == UP:
             self.speed = [0, -speed]
             self.rect.x += self.size // 2 - self.size // 16

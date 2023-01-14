@@ -207,6 +207,6 @@ class AI(pygame.sprite.Sprite):
         # self.default_images = self.images.copy()
 
     def kill(self):
-        pygame.event.post(pygame.event.Event(AI_DESTROYED, score=int(self.settings[0])))
+        pygame.time.set_timer(pygame.event.Event(AI_DESTROYED, score=int(self.settings[0])), 1, 1)
         BigExplosion(self.group, self.rect.size[0], self.rect.x, self.rect.y)
         super().kill()

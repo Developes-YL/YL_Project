@@ -165,8 +165,6 @@ class GameWindow(Window):
                     self.restart_images = self.restart_images_normal
 
         self.game.process_events(events)
-        if GAME_OVER_EVENT in [event.type for event in pygame.event.get()]:
-            self.game_over = True  # пост обработка
 
     def render(self):
         self.game.render()
@@ -182,9 +180,11 @@ class GameWindow(Window):
         self.screen.blit(self.restart_images[0], self.restart_button[:2])
 
     def create_events(self, events):
+        if STOP_GAME in [event.type for event in events]:
+            self.game_over = True
         if self.game_over:
-            self.game_over = False
-            pygame.event.post(pygame.event.Event(PAUSE))
+            return
+
         if pygame.MOUSEBUTTONDOWN in [event.type for event in events]:
             if self.button == 1:
                 pygame.event.post(pygame.event.Event(PAUSE))
@@ -425,5 +425,95 @@ class SettingsWindow(Window):
                     self.button = 6
                 elif pygame.Rect(self.effect_volume_minus).collidepoint(event.pos):
                     self.button = 7
+                else:
+                    self.button = 0
+
+
+class WinWindow(Window):
+    def __init__(self, screen, settings):
+        super().__init__(screen)
+        self.score, self.player_count, self.level = settings
+
+    def _set_presets(self):
+        self.difficulty = 0
+        self.button = 0
+
+        self.colors = [RED, WHITE]
+        size = [self.width // 100 * 20, self.height // 100 * 20]
+        self.next_level = ((self.width - size[0]) // 2, self.height * 3 // 10, *size)
+        self.restart_level = ((self.width - size[0]) // 2, self.height * 5 // 10, *size)
+
+        # кнопка back
+        self.back = [0, 0, self.width // 10, self.height // 20]
+
+    def render(self):
+        # отрисовка фона и кнопок)
+        self._render_text(self.min_size // 30, 'Back to levels', self.colors[self.button == 2], self.back)
+        self._render_text(self.min_size // 15, 'Next level', self.colors[self.button == 1], self.next_level)
+        self._render_text(self.min_size // 15, 'Restart level', self.colors[self.button == 3], self.restart_level)
+
+    def create_events(self, events):
+        for event in events:
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if self.button == 2:
+                    pygame.event.post(pygame.event.Event(LEVEL_SELECTION, count=self.player_count))
+                elif self.button == 1:
+                    pygame.event.post(pygame.event.Event(GAME_WINDOW, count=self.player_count, level=self.level))
+
+    def update(self, events):
+        for event in events:
+            if event.type == pygame.MOUSEMOTION:
+                # подсветка текста у кнопок
+                if pygame.Rect(self.next_level).collidepoint(event.pos):
+                    self.button = 1
+                elif pygame.Rect(self.back).collidepoint(event.pos):
+                    self.button = 2
+                elif pygame.Rect(self.restart_level).collidepoint(event.pos):
+                    self.button = 3
+                else:
+                    self.button = 0
+
+
+class EndWindow(Window):
+    def __init__(self, screen, settings):
+        super().__init__(screen)
+        self.score, self.player_count, self.level = settings
+
+    def _set_presets(self):
+        self.difficulty = 0
+        self.button = 0
+
+        self.colors = [RED, WHITE]
+        size = [self.width // 100 * 20, self.height // 100 * 20]
+        self.next_level = ((self.width - size[0]) // 2, self.height * 3 // 10, *size)
+        self.restart_level = ((self.width - size[0]) // 2, self.height * 5 // 10, *size)
+
+        # кнопка back
+        self.back = [0, 0, self.width // 10, self.height // 20]
+
+    def render(self):
+        # отрисовка фона и кнопок)
+        self._render_text(self.min_size // 30, 'Back to levels', self.colors[self.button == 2], self.back)
+        self._render_text(self.min_size // 15, '-----', self.colors[self.button == 1], self.next_level)
+        self._render_text(self.min_size // 15, 'Restart level', self.colors[self.button == 3], self.restart_level)
+
+    def create_events(self, events):
+        for event in events:
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if self.button == 2:
+                    pygame.event.post(pygame.event.Event(LEVEL_SELECTION, count=self.player_count))
+                elif self.button == 1:
+                    pygame.event.post(pygame.event.Event(GAME_WINDOW, count=self.player_count, level=self.level))
+
+    def update(self, events):
+        for event in events:
+            if event.type == pygame.MOUSEMOTION:
+                # подсветка текста у кнопок
+                if pygame.Rect(self.next_level).collidepoint(event.pos):
+                    self.button = 1
+                elif pygame.Rect(self.back).collidepoint(event.pos):
+                    self.button = 2
+                elif pygame.Rect(self.restart_level).collidepoint(event.pos):
+                    self.button = 3
                 else:
                     self.button = 0

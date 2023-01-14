@@ -1,6 +1,7 @@
 import pygame.sprite
 
-from files.Support.events import GAME_OVER_EVENT, PAUSE
+from files.Support.Consts import AI, PLAYER, GAME_END_FREEZE
+from files.Support.events import PAUSE, STOP_GAME
 from files.Support.ui import *
 
 
@@ -70,7 +71,8 @@ class Base1(Cell):
 
     def lose(self):
         # функция на пройгрыш
-        pygame.event.post(pygame.event.Event(GAME_OVER_EVENT))
+        pygame.time.set_timer(pygame.event.Event(PAUSE), 1, 1)
+        pygame.time.set_timer(pygame.event.Event(STOP_GAME, game_over=True), GAME_END_FREEZE, 1)
         Base2(self.rect.size[0], (self.rect.x, self.rect.y), self.group)
         self.kill()
 
@@ -81,3 +83,30 @@ class Base2(Cell):
 
     def boom(self, flag):
         return True
+
+
+class Bonus(Cell):
+    def set_up(self):
+        self.image = pygame.Surface([0, 0])
+        self._layer = 3
+
+    def update(self, events):
+        self.play_animation()
+        for sprite in pygame.sprite.spritecollide(self, self.group, False):
+            if sprite == self:
+                continue
+            if sprite.__class__.__name__ == AI:
+                self.ai_get(sprite)
+                self.kill()
+            if sprite.__class__.__name__ == PLAYER:
+                self.player_get(sprite)
+                self.kill()
+
+    def play_animation(self):
+        pass
+
+    def ai_get(self, sprite):
+        pass
+
+    def player_get(self, sprite):
+        pass
