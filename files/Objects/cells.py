@@ -1,6 +1,6 @@
 import pygame.sprite
 
-from files.Support.consts import AI, PLAYER, GAME_END_FREEZE
+from files.Support.consts import AI, PLAYER, GAME_END_FREEZE, BONUS_ANIMATION
 from files.Support.events import PAUSE, STOP_GAME
 from files.Support.ui import *
 
@@ -8,8 +8,11 @@ from files.Support.ui import *
 class Cell(pygame.sprite.Sprite):
     def __init__(self, size, pos, group):
         self._layer = 0
-        self.set_up()
         self.size = size
+        self.rect = pygame.Rect(0, 0, 0, 0)
+        self.rect.x = pos[0]
+        self.rect.y = pos[1]
+        self.set_up()
         self.image = pygame.transform.scale(self.image, (size, size))
         self.rect = self.image.get_rect()
         self.rect.x = pos[0]
@@ -52,6 +55,8 @@ class Concrete(Cell):
         self.image = CONCRETE_IMAGE
 
     def boom(self, flag) -> bool:
+        if flag:
+            self.kill()
         return True
 
     def degrade(self, group):
@@ -75,7 +80,7 @@ class Ice(Cell):
 
 class Base1(Cell):
     def set_up(self):
-        self.image = BASE_1
+        self.image = BASE_1_IMAGE
         self.flag = True
 
     def boom(self, flag) -> bool:
@@ -94,7 +99,7 @@ class Base1(Cell):
 
 class Base2(Cell):
     def set_up(self):
-        self.image = BASE_2
+        self.image = BASE_2_IMAGE
 
     def boom(self, flag):
         return True
@@ -102,8 +107,16 @@ class Base2(Cell):
 
 class Bonus(Cell):
     def set_up(self):
-        self.image = pygame.Surface([0, 0])
+        self.set_up_2()
+        self.image = pygame.transform.scale(self.image, (self.size, self.size)).copy()
         self._layer = 3
+        self.time = 0
+        self.__class__.__name__ = "Bonus"
+        self.images = [self.image, pygame.transform.scale(self.image, (self.size * 15 // 16, self.size * 15 // 16)).copy()]
+        self.poses = [(self.rect.x, self.rect.y), (self.rect.x + self.size // 32, self.rect.y + self.size // 32)]
+
+    def set_up_2(self):
+        self.image = pygame.Surface([0, 0])
 
     def update(self, events):
         self.play_animation()
@@ -118,10 +131,27 @@ class Bonus(Cell):
                 self.kill()
 
     def play_animation(self):
-        pass
+        self.time += 1
+        if self.time == BONUS_ANIMATION:
+            self.time = 0
+            self.rect.x, self.rect.y = self.poses[-1]
+            self.image = self.images[0]
+            self.images = self.images[::-1]
+            self.poses = self.poses[::-1]
 
     def ai_get(self, sprite):
         pass
 
     def player_get(self, sprite):
         pass
+
+
+class StarBonus(Bonus):
+    def set_up_2(self):
+        self.image = STAR_BONUS
+
+    def ai_get(self, sprite):
+        pass
+
+    def player_get(self, sprite):
+        sprite.upgrade()

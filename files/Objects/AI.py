@@ -22,7 +22,7 @@ class AI(pygame.sprite.Sprite):
 
         # стартовые значения
         with open("./Support/ai_settings.txt", "r") as f:
-            self.settings = f.readlines()[1 + self.sort].split(";")
+            self.settings = f.readlines()[self.sort + 1].split(";")
         self.lives = int(self.settings[3])
         if is_boss:
             self.settings[2] = 0.9 * float(self.settings[2])
@@ -134,7 +134,7 @@ class AI(pygame.sprite.Sprite):
                 if sprite == self:
                     continue
                 if sprite.__class__.__name__ == PLAYER and self.ram:
-                    sprite.kill()
+                    sprite.boom(False)
                     continue
 
                 self.speed = 0
@@ -207,6 +207,6 @@ class AI(pygame.sprite.Sprite):
         self.rotate_image()
 
     def kill(self):
-        pygame.time.set_timer(pygame.event.Event(AI_DESTROYED, score=int(self.settings[0])), 1, 1)
+        pygame.time.set_timer(pygame.event.Event(AI_DESTROYED, score=int(self.settings[0])), 2, 1)
         BigExplosion(self.group, self.rect.size[0], self.rect.x, self.rect.y)
         super().kill()

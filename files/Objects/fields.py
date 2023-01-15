@@ -41,6 +41,13 @@ class Field1:
         pos = (self.left + self.cell_size * (FIELD_SIZE[0] - 2), self.top)
         positions["ai"].append([*pos, 25, 0])
 
+        left = self.cell_size * 3 + self.left
+        top = self.cell_size * 3 + self.top
+        for x in range(4):
+            for y in range(4):
+                pos = left + self.cell_size * x * 6, top + self.cell_size * y * 6
+                positions["bonuses"].append(pos)
+
         return positions
 
     def get_cell_size(self) -> int:

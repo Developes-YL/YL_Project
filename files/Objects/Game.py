@@ -4,8 +4,9 @@ import pygame
 
 from files.Objects.AI import AI
 from files.Objects.Player import Player
+from files.Objects.cells import StarBonus
 from files.Objects.fields import Field1
-from files.Support.consts import FPS, GAME_END_FREEZE, LEVELS_COUNT, UPGRADE_CELLS_TIME
+from files.Support.consts import FPS, GAME_END_FREEZE, LEVELS_COUNT, UPGRADE_CELLS_TIME, BONUS_TIME
 from files.Support.events import PAUSE, START_EFFECT_EVENT, AI_DESTROYED, WIN_WINDOW, STOP_GAME, GAME_OVER_WINDOW, \
     PLAYER_KILLED, PLAYER_GET_BONUS, BASE_UPGRADE, BASE_DEGRADE
 
@@ -29,7 +30,7 @@ class Game:
         self.queue = []
         self.count_ai = 0
         self.kills = 0
-        self.load_queue()
+        self.bonus_time = 0
         self.number_bot = 0
         self.players_killed = 0
 
@@ -42,9 +43,11 @@ class Game:
 
     def load_queue(self):
         # загрузка очередности появления ботов
-        ...
-        self.queue = [0] * 5  # временно
-        self.count_ai = 5
+        with open("./Support/ai_queue.txt", 'r') as f:
+            queue = list(map(int, f.readlines()[self.level + 1].split(";")[:-1]))
+            self.queue = [*[0] * queue[0], *[1] * queue[1], *[2] * queue[2], *[3] * queue[3]]
+            random.shuffle(self.queue)
+        self.count_ai = len(self.queue)
 
     def get_score(self):
         return self.score
@@ -53,6 +56,7 @@ class Game:
         self.pause = False
         self.score = 0
         self.freeze = 0
+        self.bonus_time = 0
         self.kills = 0
         self.players_killed = 0
         self.number_bot = 0
@@ -105,12 +109,18 @@ class Game:
         self.ai_time += 1 / FPS
         if self.ai_time > self.ai_time_max and len(self.queue) > 0:
             self.ai_time = 0
-            n = random.choice(range(3))
+            n = random.choice(range(len(self.positions["ai"])))
             ai = AI(self.all_sprites, self.cell_size * 2, self.positions["ai"][n],
                     self.queue[0], self.number_bot % 5 == 4)
             self.queue.pop(0)
             self.all_sprites.change_layer(ai, 1)
             self.number_bot += 1
+        self.bonus_time += 1
+        if self.bonus_time > BONUS_TIME:
+            self.bonus_time = 0
+            n = len(self.positions["bonuses"])
+            pos = self.positions["bonuses"][random.choice(range(n))]
+            StarBonus(self.cell_size * 2, pos, self.all_sprites)
 
     def get_size(self):
         return self.field.get_size()

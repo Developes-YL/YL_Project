@@ -33,6 +33,7 @@ class Player(pygame.sprite.Sprite):
         self.pause = False
         self.direction = UP
         self.freeze = 0
+        self.upgrade_status = 0
 
         self.speed = int(size * TANK_SPEED)
         self.move_buttons = [False] * 4  # ulrd
@@ -141,7 +142,7 @@ class Player(pygame.sprite.Sprite):
     def make_shot(self, direction):
         self.fire_time = 0
         pygame.time.set_timer(pygame.event.Event(SHOT_EFFECT_EVENT), 1, 1)
-        Bullet(self.bullet_speed, direction, self.rect, self.group, True)
+        Bullet(self.bullet_speed, direction, self.rect, self.group, True, self.upgrade_status >= 3)
 
     def rotate(self):
         self.images[0] = pygame.transform.rotate(self.default_images[0], -90 * self.direction)
@@ -158,3 +159,17 @@ class Player(pygame.sprite.Sprite):
             self.rect.x, self.rect.y = self.pos
             self.spawned = True
         del sprite
+
+    def upgrade(self):
+        print(0)
+        self.upgrade_status += 1
+        if self.upgrade_status == 1:
+            self.reload_time = int(self.reload_time * 0.8)
+        elif self.upgrade_status == 2:
+            self.speed = int(self.speed * 1.5)
+        elif self.upgrade_status == 3:
+            self.images = list(map(lambda x: pygame.transform.scale(x, (self.size, self.size)),
+                                   TANK_PLAYER[1])).copy()
+            self.default_images = self.images.copy()
+            self.rotate()
+            self.lives += 1

@@ -1,13 +1,13 @@
 import pygame
 
 from files.Objects.explosions import Explosion
-from files.Support.consts import UP, RIGHT, DOWN, LEFT
+from files.Support.consts import UP, RIGHT, DOWN, LEFT, CONCRETE
 from files.Support.events import PAUSE
 from files.Support.ui import BULLET_IMAGE
 
 
 class Bullet(pygame.sprite.Sprite):
-    def __init__(self, speed, direction, rect, group, from_player=True):
+    def __init__(self, speed, direction, rect, group, from_player=True, mega=False):
         self._layer = 1
         super().__init__(group)
         self.from_player = from_player
@@ -18,6 +18,7 @@ class Bullet(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x, self.rect.y = pos
         self.speed = speed
+        self.mega = mega
         self.direction = direction
         self.image = pygame.transform.rotate(self.image, -90 * self.direction)
         if direction == UP:
@@ -51,7 +52,9 @@ class Bullet(pygame.sprite.Sprite):
         for sprite in pygame.sprite.spritecollide(self, self.group, False):
             if sprite == self:
                 continue
-
+            if sprite.__class__.__name__ == CONCRETE:
+                flag = True
+                sprite.boom(self.mega)
             else:
                 try:
                     flag = sprite.boom(self.from_player)

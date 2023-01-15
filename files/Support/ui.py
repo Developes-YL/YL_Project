@@ -24,8 +24,11 @@ CONCRETE_IMAGE = load_image('images/cells/concrete.png')
 WATER_IMAGE = load_image('images/cells/water1.png')
 BUSH_IMAGE = load_image('images/cells/bush.png')
 ICE_IMAGE = load_image('images/cells/ice.png')
-BASE_1 = load_image('images/cells/BASE_1.png')
-BASE_2 = load_image('images/cells/BASE_2.png')
+
+BASE_1_IMAGE = load_image('images/cells/BASE_1.png')
+BASE_2_IMAGE = load_image('images/cells/BASE_2.png')
+
+STAR_BONUS = load_image('images/cells/star.png')
 
 # tanks
 TANK_PLAYER_1_1 = load_image('images/tanks/TANK_PLAYER_1_1.png')
@@ -33,11 +36,11 @@ TANK_PLAYER_1_2 = load_image('images/tanks/TANK_PLAYER_1_2.png')
 TANK_PLAYER_1 = [TANK_PLAYER_1_1, TANK_PLAYER_1_2]
 
 
-TANK_PLAYER_4_1 = load_image('images/tanks/TANK_PLAYER_1_1.png')
-TANK_PLAYER_4_2 = load_image('images/tanks/TANK_PLAYER_1_2.png')
+TANK_PLAYER_4_1 = load_image('images/tanks/TANK_PLAYER_4_1.png')
+TANK_PLAYER_4_2 = load_image('images/tanks/TANK_PLAYER_4_2.png')
 TANK_PLAYER_4 = [TANK_PLAYER_4_1, TANK_PLAYER_4_2]
 
-TANK_PLAYER = [TANK_PLAYER_1, TANK_PLAYER_1]
+TANK_PLAYER = [TANK_PLAYER_1, TANK_PLAYER_4]
 
 
 TANK_AI_1_1_G = load_image('images/tanks/TANK_AI_1_1_G.png')
