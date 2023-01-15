@@ -1,8 +1,10 @@
 import pygame.sprite
 
-from files.Support.Consts import *
+from files.Objects.Bullet import Bullet
+from files.Objects.explosions import BigExplosion
+from files.Support.consts import *
 from files.Support.events import PAUSE, PLAYER_KILLED
-from files.Support.ui import TANK_PLAYER, BULLET_IMAGE, EXPLOSION_1, EXPLOSION_2, EXPLOSION_3
+from files.Support.ui import TANK_PLAYER
 
 
 class Player(pygame.sprite.Sprite):
@@ -27,14 +29,13 @@ class Player(pygame.sprite.Sprite):
         self.rect = pygame.Rect(0, 0, 0, 0)
 
         # стартовые значения
-        self.lives = 1
-
+        self.lives = PLAYER_LIVES
         self.pause = False
         self.direction = UP
         self.freeze = 0
 
-        self.speed = size * TANK_SPEED // 1
-        self.is_move = False
+        self.speed = int(size * TANK_SPEED)
+        self.move_buttons = [False] * 4  # ulrd
 
         # стрельба
         self.fire_time = 0
@@ -82,26 +83,30 @@ class Player(pygame.sprite.Sprite):
         for event in events:
             if event.type == pygame.KEYDOWN and event.key == self.buttons[0]:
                 self.direction = UP
-                self.is_move = True
+                self.move_buttons = [False] * 4
+                self.move_buttons[0] = True
                 self.rotate()
             if event.type == pygame.KEYDOWN and event.key == self.buttons[1]:
                 self.direction = LEFT
-                self.is_move = True
+                self.move_buttons = [False] * 4
+                self.move_buttons[1] = True
                 self.rotate()
             if event.type == pygame.KEYDOWN and event.key == self.buttons[2]:
                 self.direction = RIGHT
-                self.is_move = True
+                self.move_buttons = [False] * 4
+                self.move_buttons[2] = True
                 self.rotate()
             if event.type == pygame.KEYDOWN and event.key == self.buttons[3]:
                 self.direction = DOWN
-                self.is_move = True
+                self.move_buttons = [False] * 4
+                self.move_buttons[3] = True
                 self.rotate()
             if event.type == pygame.KEYUP and event.key in self.buttons[:4]:
-                self.is_move = False
+                self.move_buttons[self.buttons.index(event.key)] = False
             if event.type == pygame.KEYDOWN and event.key == self.buttons[4]:
                 if self.fire_time > RELOAD_TIME:
                     self.make_shot(self.direction)
-        if self.is_move:
+        if True in self.move_buttons:
             self.move()
             if self.animation_time > MOVE_ANIMATION:
                 self.animation_time = 0
@@ -152,122 +157,3 @@ class Player(pygame.sprite.Sprite):
             self.rect.x, self.rect.y = self.pos
             self.spawned = True
         del sprite
-
-
-class Bullet(pygame.sprite.Sprite):
-    def __init__(self, speed, direction, rect, group, from_player=True):
-        self._layer = 1
-        super().__init__(group)
-        self.from_player = from_player
-        self.group = group
-        pos, self.size = [rect.x, rect.y], rect.size[0]
-        self.image = pygame.transform.scale(BULLET_IMAGE, (self.size // 8, self.size // 8))
-        self.rect = self.image.get_rect()
-        self.rect.x, self.rect.y = pos
-        self.speed = speed
-        self.direction = direction
-        self.image = pygame.transform.rotate(self.image, -90 * self.direction)
-        if direction == UP:
-            self.speed = [0, -speed]
-            self.rect.x += self.size // 2 - self.size // 16
-            self.rect.y -= self.size // 8
-        if direction == DOWN:
-            self.speed = [0, speed]
-            self.rect.x += self.size // 2 - self.size // 16
-            self.rect.y += self.size
-        if direction == RIGHT:
-            self.speed = [speed, 0]
-            self.rect.y += self.size // 2 - self.size // 16
-            self.rect.x += self.size
-        if direction == LEFT:
-            self.speed = [-speed, 0]
-            self.rect.y += self.size // 2 - self.size // 16
-            self.rect.x -= self.size // 8
-        self.pause = False
-
-    def update(self, events):
-        if PAUSE in [event.type for event in events]:
-            self.pause = not self.pause
-        if self.pause:
-            return
-
-        self.rect.x += self.speed[0]
-        self.rect.y += self.speed[1]
-
-        flag = False
-        for sprite in pygame.sprite.spritecollide(self, self.group, False):
-            if sprite == self:
-                continue
-
-            else:
-                try:
-                    flag = sprite.boom(self.from_player)
-                except:
-                    pass
-
-        if flag:
-            self.kill()
-
-    def boom(self, flag):
-        self.kill()
-
-    def kill(self, with_explosion=True):
-        if with_explosion:
-            exp = Explosion(self.group, self.size, self.rect.x, self.rect.y)
-            self.group.change_layer(exp, 2)
-        super().kill()
-
-
-class Explosion(pygame.sprite.Sprite):
-    def __init__(self, group, size, x, y):
-        super().__init__(group)
-        self.size = size
-        self.x, self.y = x, y
-        self.image = pygame.transform.scale(EXPLOSION_1, (size // 2, size // 2))
-        self.rect = self.image.get_rect()
-        self.rect.x, self.rect.y = x - size // 4, y - size // 4
-        self.time = 0
-        self.death_time_1 = 2
-        self.death_time_2 = 5
-        self.pause = False
-
-    def update(self, events):
-        if PAUSE in [event.type for event in events]:
-            self.pause = not self.pause
-        if self.pause:
-            return
-
-        self.time += 1
-        if self.time > self.death_time_2:
-            self.kill()
-        elif self.time > self.death_time_1:
-            self.image = pygame.transform.scale(EXPLOSION_2, (self.size, self.size))
-            self.rect = self.image.get_rect()
-            self.rect.x, self.rect.y = self.x - self.size // 2, self.y - self.size // 2
-
-
-class BigExplosion(pygame.sprite.Sprite):
-    def __init__(self, group, size, x, y):
-        super().__init__(group)
-        self.size = size
-        self.x, self.y = x, y
-        self.image = pygame.Surface([0, 0])
-        self.rect = self.image.get_rect()
-        self.time = 0
-        self.start_time = 4
-        self.death_time = 8
-        self.pause = False
-
-    def update(self, events):
-        if PAUSE in [event.type for event in events]:
-            self.pause = not self.pause
-        if self.pause:
-            return
-
-        self.time += 1
-        if self.time > self.death_time:
-            self.kill()
-        elif self.time > self.start_time:
-            self.image = pygame.transform.scale(EXPLOSION_3, (self.size * 5 // 4, self.size * 5 // 4))
-            self.rect = self.image.get_rect()
-            self.rect.x, self.rect.y = self.x - self.size // 8, self.y - self.size // 8

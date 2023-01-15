@@ -30,7 +30,12 @@ TANK_PLAYER_1_1 = load_image('images/tanks/TANK_PLAYER_1_1.png')
 TANK_PLAYER_1_2 = load_image('images/tanks/TANK_PLAYER_1_2.png')
 TANK_PLAYER_1 = [TANK_PLAYER_1_1, TANK_PLAYER_1_2]
 
-TANK_PLAYER = [TANK_PLAYER_1]
+
+TANK_PLAYER_4_1 = load_image('images/tanks/TANK_PLAYER_1_1.png')
+TANK_PLAYER_4_2 = load_image('images/tanks/TANK_PLAYER_1_2.png')
+TANK_PLAYER_4 = [TANK_PLAYER_4_1, TANK_PLAYER_4_2]
+
+TANK_PLAYER = [TANK_PLAYER_1, TANK_PLAYER_1]
 
 
 TANK_AI_1_1_G = load_image('images/tanks/TANK_AI_1_1_G.png')

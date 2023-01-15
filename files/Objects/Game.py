@@ -5,9 +5,9 @@ import pygame
 from files.Objects.AI import AI
 from files.Objects.Player import Player
 from files.Objects.fields import Field1
-from files.Support.Consts import FPS, GAME_END_FREEZE, LEVELS_COUNT
+from files.Support.consts import FPS, GAME_END_FREEZE, LEVELS_COUNT
 from files.Support.events import PAUSE, START_EFFECT_EVENT, AI_DESTROYED, WIN_WINDOW, STOP_GAME, GAME_OVER_WINDOW, \
-    PLAYER_KILLED
+    PLAYER_KILLED, PLAYER_GET_BONUS
 
 
 class Game:
@@ -43,8 +43,11 @@ class Game:
     def load_queue(self):
         # загрузка очередности появления ботов
         ...
-        self.queue = [0] * 1  # временно
-        self.count_ai = 1
+        self.queue = [0] * 5  # временно
+        self.count_ai = 5
+
+    def get_score(self):
+        return self.score
 
     def new_game(self):
         self.pause = False
@@ -71,7 +74,7 @@ class Game:
         for event in events:
             if event.type == STOP_GAME:
                 settings = self.score, self.player_count, min(self.level + 1, LEVELS_COUNT - 1)
-                if event.game_over:
+                if not event.game_over:
                     pygame.time.set_timer(pygame.event.Event(WIN_WINDOW, settings=settings), 1, 1)
                 else:
                     pygame.time.set_timer(pygame.event.Event(GAME_OVER_WINDOW, settings=settings), 1, 1)
@@ -80,13 +83,16 @@ class Game:
             self.pause = not self.pause
         if self.pause:
             return
+        if PLAYER_GET_BONUS in [event.type for event in events]:
+            self.score += [event.score for event in events if event.type == PLAYER_GET_BONUS][0]
         if PLAYER_KILLED in [event.type for event in events]:
+            self.score -= 200
             self.players_killed += 1
-            print(self.players_killed, self.player_count)
             if self.players_killed == self.player_count:
                 pygame.time.set_timer(pygame.event.Event(PAUSE), 1, 1)
                 pygame.time.set_timer(pygame.event.Event(STOP_GAME, game_over=True), GAME_END_FREEZE, 1)
         if AI_DESTROYED in [event.type for event in events]:
+            self.score += [event.score for event in events if event.type == AI_DESTROYED][0]
             self.kills += 1
             if self.kills == self.count_ai:
                 pygame.time.set_timer(pygame.event.Event(PAUSE), 1, 1)
@@ -96,7 +102,7 @@ class Game:
             self.ai_time = 0
             n = random.choice(range(3))
             ai = AI(self.all_sprites, self.cell_size * 2, self.positions["ai"][n],
-                    self.queue[0], self.number_bot % 5 == 0)
+                    self.queue[0], self.number_bot % 5 == 4)
             self.queue.pop(0)
             self.all_sprites.change_layer(ai, 1)
             self.number_bot += 1

@@ -143,9 +143,12 @@ class GameWindow(Window):
                                       for img in [RESTART_RED, RESTART_WHITE]]
         self.restart_images = self.restart_images_normal
 
+        self.score_label = [self.width // 50, self.height // 2, self.field_size[0], self.height // 20]
+
         self.button = -1  # выбранная кнопка
 
         self.game_over = False
+        self.score = 0
 
     def update(self, events):
         for event in events:
@@ -163,6 +166,7 @@ class GameWindow(Window):
                     self.restart_images = self.restart_images_normal[::-1]
                 else:
                     self.restart_images = self.restart_images_normal
+            self.score = self.game.get_score()
 
         self.game.process_events(events)
 
@@ -178,6 +182,7 @@ class GameWindow(Window):
 
         self.screen.blit(self.pause_images[0], self.pause_button[:2])
         self.screen.blit(self.restart_images[0], self.restart_button[:2])
+        self._render_text(self.min_size // 30, str(self.score), WHITE, self.score_label)
 
     def create_events(self, events):
         if STOP_GAME in [event.type for event in events]:
@@ -433,6 +438,7 @@ class WinWindow(Window):
     def __init__(self, screen, settings):
         super().__init__(screen)
         self.score, self.player_count, self.level = settings
+        print(self.score)
 
     def _set_presets(self):
         self.difficulty = 0

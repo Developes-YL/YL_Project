@@ -13,8 +13,8 @@ READY_EFFECT = "sounds/ready.ogg"
 # игровые файлы
 SOUNDS = [BACKGROUND_MUSIC, START_EFFECT, TEST_EFFECT, HIT_EFFECT, READY_EFFECT]
 FILES = ["Objects/AI.py", "Objects/cells.py", "Objects/fields.py",
-         "Objects/Game.py", "Objects/Player.py", "Objects/SoundManager.py", "Objects/Windows.py",
-         "Support/colors.py", "Support/Consts.py", "Support/events.py", "Support/ui.py",
+         "Objects/Game.py", "Objects/Player.py", "Objects/SoundManager.py", "Objects/windows.py",
+         "Support/colors.py", "Support/consts.py", "Support/events.py", "Support/ui.py",
          "Support/levels.txt", "Support/ai_settings.txt"]
 LIBRARIES = ["pygame"]
 
@@ -22,15 +22,17 @@ LIBRARIES = ["pygame"]
 FIELD_SIZE = (26, 26)
 
 RELOAD_TIME = FPS * 1 // 2
-MOVE_ANIMATION = FPS // 15
+MOVE_ANIMATION = FPS // 30
 
 SPEED_ON_ICE = 0.5
-BULLET_SPEED = 0.09
+BULLET_SPEED = 0.11
 TANK_SPEED = 1 / 32
 TANK_SIZE_KOEF = 0.85
 
 GAME_END_FREEZE = FPS * 3 * 10
 LEVELS_COUNT = 35
+
+PLAYER_LIVES = 3
 
 # константы, используемые для удобства разработки
 RIGHT = 0

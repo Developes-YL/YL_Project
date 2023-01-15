@@ -1,6 +1,6 @@
 import pygame.sprite
 
-from files.Support.Consts import AI, PLAYER, GAME_END_FREEZE
+from files.Support.consts import AI, PLAYER, GAME_END_FREEZE
 from files.Support.events import PAUSE, STOP_GAME
 from files.Support.ui import *
 

@@ -4,7 +4,7 @@ import random
 import pygame.sprite
 
 from files.Objects.Player import Bullet, BigExplosion
-from files.Support.Consts import *
+from files.Support.consts import *
 from files.Support.events import PAUSE, AI_DESTROYED
 from files.Support.ui import TANK_AI
 

@@ -2,7 +2,7 @@
 import pygame
 
 from files.Objects.cells import Water, Ice, Bush, Concrete, Brick, Base1
-from files.Support.Consts import FIELD_SIZE
+from files.Support.consts import FIELD_SIZE
 
 
 class Field1:
