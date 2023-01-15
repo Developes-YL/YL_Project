@@ -1,5 +1,6 @@
 # все окна
 import pygame.event
+from aiogram.utils import emoji
 
 from files.Objects.Game import Game
 from files.Support.consts import LEVELS_COUNT
@@ -144,7 +145,11 @@ class GameWindow(Window):
                                       for img in [RESTART_RED, RESTART_WHITE]]
         self.restart_images = self.restart_images_normal
 
-        self.score_label = [self.width // 50, self.height // 2, self.field_size[0], self.height // 20]
+        self.score_label = [0, self.height // 3, self.field_size[0], self.height // 20]
+
+        self.lives_1 = [0, self.height // 2, self.field_size[0], self.height // 20]
+        self.lives_2 = [self.field_size[0] + self.field_size[2], self.height // 2,
+                        self.field_size[0], self.height // 20]
 
         self.button = -1  # выбранная кнопка
 
@@ -184,6 +189,10 @@ class GameWindow(Window):
         self.screen.blit(self.pause_images[0], self.pause_button[:2])
         self.screen.blit(self.restart_images[0], self.restart_button[:2])
         self._render_text(self.min_size // 30, str(self.score), WHITE, self.score_label)
+        lives = self.game.get_lives()
+        self._render_text(self.min_size // 30, f"PLayer1's lives: {lives[0]}", WHITE, self.lives_1)
+        if len(lives) > 1:
+            self._render_text(self.min_size // 30, f"PLayer2's lives: {lives[1]}", WHITE, self.lives_2)
 
     def create_events(self, events):
         if STOP_GAME in [event.type for event in events]:
@@ -450,7 +459,6 @@ class EndWindow(Window):
         sc = min(w_sc, h_sc)
         self.bg = pygame.transform.scale(BG_LOSE, (w * sc, h * sc))
 
-
         self.colors = [RED, WHITE]
         size = [self.width // 100 * 20, self.height // 100 * 20]
         self.restart_level = ((self.width - size[0]) // 2, self.height * 7.5 // 10, *size)
@@ -473,7 +481,7 @@ class EndWindow(Window):
                 if self.button == 2:
                     pygame.event.post(pygame.event.Event(LEVEL_SELECTION, count=self.player_count))
                 elif self.button == 3:
-                    pygame.event.post(pygame.event.Event(GAME_WINDOW, count=self.player_count, level=self.level - 1))
+                    pygame.event.post(pygame.event.Event(GAME_WINDOW, count=self.player_count, level=self.level))
 
     def update(self, events):
         for event in events:

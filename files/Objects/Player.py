@@ -8,9 +8,10 @@ from files.Support.ui import TANK_PLAYER
 
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, group, number=1, size=30, pos=(0, 0)):
+    def __init__(self, lst, group, number=1, size=30, pos=(0, 0), lives=PLAYER_LIVES):
 
         # сохранение начальных значений
+        self.lst = lst
         self.group = group
         self.size = size * TANK_SIZE_KOEF
         self.cell_size = size
@@ -29,7 +30,7 @@ class Player(pygame.sprite.Sprite):
         self.rect = pygame.Rect(0, 0, 0, 0)
 
         # стартовые значения
-        self.lives = PLAYER_LIVES
+        self.lives = lives
         self.pause = False
         self.direction = UP
         self.freeze = 0
@@ -59,7 +60,7 @@ class Player(pygame.sprite.Sprite):
             exp = BigExplosion(self.group, self.cell_size, self.rect[0], self.rect[1])
             self.group.change_layer(exp, 2)
             if self.lives > 0:
-                Player(self.group, self.number, self.cell_size, self.start)
+                self.lst[self.number - 1] = Player(self.lst, self.group, self.number, self.cell_size, self.start, self.lives)
             else:
                 pygame.time.set_timer(pygame.event.Event(PLAYER_KILLED), 1, 1)
             self.kill()
@@ -114,6 +115,9 @@ class Player(pygame.sprite.Sprite):
                 self.image = self.images[0]
                 self.images[:2] = self.images[:2][::-1]
 
+    def get_lives(self):
+        return self.lives
+
     def move(self):
         coord = self.rect.x, self.rect.y
         speed = self.speed
@@ -161,7 +165,6 @@ class Player(pygame.sprite.Sprite):
         del sprite
 
     def upgrade(self):
-        print(0)
         self.upgrade_status += 1
         if self.upgrade_status == 1:
             self.reload_time = int(self.reload_time * 0.8)

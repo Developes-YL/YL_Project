@@ -64,9 +64,10 @@ class Game:
         self.field.reset()
 
         self.ai_time = self.ai_time_max
-        self.player_1 = Player(self.all_sprites, 1, self.cell_size * 2, self.positions["player"][0])
+        self.players = [0] * 2
+        self.players[0] = Player(self.players, self.all_sprites, 1, self.cell_size * 2, self.positions["player"][0])
         if self.player_count == 2:
-            self.player_2 = Player(self.all_sprites, 2, self.cell_size * 2, self.positions["player"][1])
+            self.players[1] = Player(self.players, self.all_sprites, 2, self.cell_size * 2, self.positions["player"][1])
 
         self.queue = 0
         self.load_queue()
@@ -76,7 +77,7 @@ class Game:
 
     def process_events(self, events):
         if [event for event in events if event.type == pygame.KEYDOWN if event.key == pygame.K_k]:
-            pygame.time.set_timer(pygame.event.Event(STOP_GAME, game_over=False), 1, 1)
+            pygame.time.set_timer(pygame.event.Event(STOP_GAME, game_over=True), 1, 1)
         if BASE_UPGRADE in [event.type for event in events]:
             self.field.upgrade_base_cells()
             pygame.time.set_timer(pygame.event.Event(BASE_DEGRADE), UPGRADE_CELLS_TIME, 1)
@@ -94,7 +95,7 @@ class Game:
                     settings = self.score, self.player_count, min(self.level, max_level)
                     pygame.time.set_timer(pygame.event.Event(WIN_WINDOW, settings=settings), 1, 1)
                 else:
-                    settings = self.score, self.player_count, min(self.level, LEVELS_COUNT - 1)
+                    settings = self.score, self.player_count, self.level
                     pygame.time.set_timer(pygame.event.Event(GAME_OVER_WINDOW, settings=settings), 1, 1)
         self.all_sprites.update(events)
         if PAUSE in [event.type for event in events]:
@@ -133,3 +134,8 @@ class Game:
 
     def get_size(self):
         return self.field.get_size()
+
+    def get_lives(self):
+        if self.player_count == 2:
+            return [self.players[0].get_lives(), self.players[1].get_lives()]
+        return [self.players[0].get_lives()]
