@@ -227,6 +227,11 @@ class LoadingWindow(Window):
             pygame.event.post(pygame.event.Event(START_WINDOW))
 
     def render(self):
+        f1 = pygame.font.Font(None, 100)
+        text1 = f1.render('POWERED BY DEADBEATS ', True,
+                          (255, 0, 0))
+        label_size = [self.width // 100 * 20, self.height // 100 * 20]
+        self.screen.blit(text1, ((self.width - label_size[0]) // 3, self.height * 9 // 10))
         text_surface = self.font.render(self.label + "." * self.number, False, RED)
         rect = text_surface.get_rect(midleft=self.point)
         self.screen.blit(text_surface, rect)
