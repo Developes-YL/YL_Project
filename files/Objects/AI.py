@@ -4,7 +4,7 @@ import random
 import pygame.sprite
 
 from files.Objects.Player import Bullet, BigExplosion
-from files.Support.Consts import *
+from files.Support.consts import *
 from files.Support.events import PAUSE, AI_DESTROYED
 from files.Support.ui import TANK_AI
 
@@ -15,13 +15,13 @@ class AI(pygame.sprite.Sprite):
 
         # сохранение начальных значений
         self.group = group
-        self.size = size
+        self.size = size * TANK_SIZE_KOEF
         self.coord, self.pos = rect[:2], rect[2:]  # pos - позиция на поле, coord - на экране
         self.sort = sort
         self.is_boss = is_boss
 
         # настройка спрайтов и анимаций
-        self.images = list(map(lambda x: pygame.transform.scale(x, (size * 90 // 100, size  * 90// 100)),
+        self.images = list(map(lambda x: pygame.transform.scale(x, (self.size, self.size)),
                                TANK_AI[sort])).copy()
         self.default_images = self.images.copy()
 
@@ -43,7 +43,7 @@ class AI(pygame.sprite.Sprite):
         self.direction = DOWN
         self.freeze = 0
 
-        self.default_speed = size // 32 * float(self.settings[1])
+        self.default_speed = size * TANK_SPEED * float(self.settings[1])
         self.speed = self.default_speed
 
         # движение в сторону
@@ -56,6 +56,7 @@ class AI(pygame.sprite.Sprite):
         self.bullet_speed = int(self.size * BULLET_SPEED)
 
         super().__init__(group)
+        self.rotate_image()
         self.spawned = False
 
     def spawn(self):
@@ -146,8 +147,8 @@ class AI(pygame.sprite.Sprite):
                 break
 
     def rotate_image(self):
-        self.images[0] = pygame.transform.rotate(self.default_images[0], 90 * self.direction)
-        self.images[1] = pygame.transform.rotate(self.default_images[1], 90 * self.direction)
+        self.images[0] = pygame.transform.rotate(self.default_images[0], -90 * self.direction)
+        self.images[1] = pygame.transform.rotate(self.default_images[1], -90 * self.direction)
 
     def change_direction(self):
         self.freeze = 4
@@ -205,9 +206,7 @@ class AI(pygame.sprite.Sprite):
         # self.images = list(map(lambda x: pygame.transform.scale(x, (self.size, self.size)), TANK_AI[self.sort]))
         # self.default_images = self.images.copy()
 
-    def __del__(self):
-        try:
-            pygame.event.post(pygame.event.Event(AI_DESTROYED, score=int(self.settings[0])))
-        except Exception:
-            pass
+    def kill(self):
+        pygame.time.set_timer(pygame.event.Event(AI_DESTROYED, score=int(self.settings[0])), 1, 1)
         BigExplosion(self.group, self.rect.size[0], self.rect.x, self.rect.y)
+        super().kill()

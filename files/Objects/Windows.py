@@ -143,11 +143,15 @@ class GameWindow(Window):
                                       for img in [RESTART_RED, RESTART_WHITE]]
         self.restart_images = self.restart_images_normal
 
+        self.score_label = [self.width // 50, self.height // 2, self.field_size[0], self.height // 20]
+
         self.button = -1  # выбранная кнопка
+
+        self.game_over = False
+        self.score = 0
 
     def update(self, events):
         for event in events:
-
             if event.type == pygame.MOUSEMOTION:
                 self.button = -1
                 if pygame.Rect(self.back).collidepoint(event.pos):
@@ -162,6 +166,7 @@ class GameWindow(Window):
                     self.restart_images = self.restart_images_normal[::-1]
                 else:
                     self.restart_images = self.restart_images_normal
+            self.score = self.game.get_score()
 
         self.game.process_events(events)
 
@@ -177,11 +182,14 @@ class GameWindow(Window):
 
         self.screen.blit(self.pause_images[0], self.pause_button[:2])
         self.screen.blit(self.restart_images[0], self.restart_button[:2])
+        self._render_text(self.min_size // 30, str(self.score), WHITE, self.score_label)
 
     def create_events(self, events):
-        if pygame.K_m in [event.key for event in events if event.type == pygame.KEYDOWN]:
-            settings = [self.count_players, self.level]
-            pygame.event.post(pygame.event.Event(FINISH_WINDOW, settings=settings))
+        if STOP_GAME in [event.type for event in events]:
+            self.game_over = True
+        if self.game_over:
+            return
+
         if pygame.MOUSEBUTTONDOWN in [event.type for event in events]:
             if self.button == 1:
                 pygame.event.post(pygame.event.Event(PAUSE))
@@ -353,7 +361,7 @@ class SettingsWindow(Window):
         self.bg = pygame.transform.scale(SETTINGS1, (w * sc, h * sc))
 
         self.colors = [RED, WHITE]
-        size = [self.width // 100 * 20, self.height // 100 * 20]
+        size = [self.width // 100 * 40, self.height // 100 * 20]
         self.change_music_volume = ((self.width - size[0]) // 2, self.height * 3 // 10, *size)
         self.change_effect_volume = ((self.width - size[0]) // 2, self.height * 5 // 10, *size)
 
@@ -396,13 +404,13 @@ class SettingsWindow(Window):
 
                 elif self.button == 6:
                     pygame.event.post(pygame.event.Event(VOLUME_UP, music=False))
-                    pygame.event.post(pygame.event.Event(TEST_EFFECT_EVENT))
+                    pygame.event.post(pygame.event.Event(SHOT_EFFECT_EVENT))
                 elif self.button == 7:
                     pygame.event.post(pygame.event.Event(VOLUME_DOWN, music=False))
-                    pygame.event.post(pygame.event.Event(TEST_EFFECT_EVENT))
+                    pygame.event.post(pygame.event.Event(SHOT_EFFECT_EVENT))
                 elif self.button == 5:
                     pygame.event.post(pygame.event.Event(STANDART_VOLUME, music=False))
-                    pygame.event.post(pygame.event.Event(TEST_EFFECT_EVENT))
+                    pygame.event.post(pygame.event.Event(SHOT_EFFECT_EVENT))
 
     def update(self, events):
         for event in events:
@@ -426,14 +434,20 @@ class SettingsWindow(Window):
                     self.button = 0
 
 
-class EndWindow(Window):
+class WinWindow(Window):
     def __init__(self, screen, settings):
         super().__init__(screen)
-        self.count_players, self.level = settings
+        self.score, self.player_count, self.level = settings
 
     def _set_presets(self):
         self.difficulty = 0
         self.button = 0
+        w, h = BG_WIN.get_size()
+        w_sc = self.width / w / 2
+        h_sc = self.height / 2 / h / 2
+        sc = min(w_sc, h_sc)
+        self.bg = pygame.transform.scale(BG_WIN, (w * sc, h * sc))
+
 
         self.colors = [RED, WHITE]
         size = [self.width // 100 * 20, self.height // 100 * 20]
@@ -441,10 +455,11 @@ class EndWindow(Window):
         self.restart_level = ((self.width - size[0]) // 2, self.height * 5 // 10, *size)
 
         # кнопка back
-        self.back = [0, 0, self.width // 10, self.height // 20]
+        self.back = [0, 0, self.width // 7, self.height // 20]
 
     def render(self):
         # отрисовка фона и кнопок)
+        self.screen.blit(self.bg, ((self.width - self.bg.get_size()[0]) // 2, 0))
         self._render_text(self.min_size // 30, 'Back to levels', self.colors[self.button == 2], self.back)
         self._render_text(self.min_size // 15, 'Next level', self.colors[self.button == 1], self.next_level)
         self._render_text(self.min_size // 15, 'Restart level', self.colors[self.button == 3], self.restart_level)
@@ -453,11 +468,6 @@ class EndWindow(Window):
         for event in events:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if self.button == 2:
-<<<<<<< Updated upstream:files/Objects/Windows.py
-                    pygame.event.post(pygame.event.Event(LEVEL_SELECTION, count=self.count_players))
-                elif self.button == 1:
-                    pygame.event.post(pygame.event.Event(GAME_WINDOW, count=self.count_players, level=self.level + 1))
-=======
                     pygame.event.post(pygame.event.Event(LEVEL_SELECTION, count=self.player_count))
                 elif self.button == 3:
                     pygame.event.post(pygame.event.Event(GAME_WINDOW, count=self.player_count, level=self.level))
@@ -493,6 +503,7 @@ class EndWindow(Window):
 
         self.colors = [RED, WHITE]
         size = [self.width // 100 * 20, self.height // 100 * 20]
+        self.next_level = ((self.width - size[0]) // 2, self.height * 4 // 10, *size)
         self.restart_level = ((self.width - size[0]) // 2, self.height * 5 // 10, *size)
 
         # кнопка back
@@ -502,16 +513,16 @@ class EndWindow(Window):
         # отрисовка фона и кнопок)
         self.screen.blit(self.bg, ((self.width - self.bg.get_size()[0]) // 2, 0))
         self._render_text(self.min_size // 30, 'Back to levels', self.colors[self.button == 2], self.back)
+        self._render_text(self.min_size // 15, '-----', self.colors[self.button == 1], self.next_level)
         self._render_text(self.min_size // 15, 'Restart level', self.colors[self.button == 3], self.restart_level)
->>>>>>> Stashed changes:files/Objects/windows.py
 
+    def create_events(self, events):
+        for event in events:
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if self.button == 2:
+                    pygame.event.post(pygame.event.Event(LEVEL_SELECTION, count=self.player_count))
                 elif self.button == 3:
-<<<<<<< Updated upstream:files/Objects/Windows.py
-                    pygame.event.post(pygame.event.Event(STANDART_VOLUME, music=False))
-                    pygame.event.post(pygame.event.Event(TEST_EFFECT_EVENT))
-=======
-                    pygame.event.post(pygame.event.Event(GAME_WINDOW, count=self.player_count, level=self.level - 1))
->>>>>>> Stashed changes:files/Objects/windows.py
+                    pygame.event.post(pygame.event.Event(GAME_WINDOW, count=self.player_count, level=self.level))
 
     def update(self, events):
         for event in events:

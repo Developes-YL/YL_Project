@@ -1,8 +1,8 @@
 # поля для игры и для рисования новых уровней
 import pygame
 
-from files.Objects.cells import Water, Ice, Bush, Concrete, Brick
-from files.Support.Consts import FIELD_SIZE
+from files.Objects.cells import Water, Ice, Bush, Concrete, Brick, Base1
+from files.Support.consts import FIELD_SIZE
 
 
 class Field1:
@@ -54,10 +54,6 @@ class Field1:
     def create_cells(self):
         field = ""
         with open("./Support/levels.txt", 'r') as f:
-            a = len(f.readlines())
-            if self.level >= a:
-                self.level = 0
-            print(self.level, a)
             field += f.readlines()[self.level]
 
         for x in range(FIELD_SIZE[0]):
@@ -76,6 +72,10 @@ class Field1:
                     Ice(*preset)
                 elif cell == "5":
                     Water(*preset)
+        # база
+        pos = (self.left + (FIELD_SIZE[0] // 2 - 1) * self.cell_size,
+               self.top + (FIELD_SIZE[1] - 2) * self.cell_size)
+        Base1(self.cell_size * 2, pos, self.group)
 
         # границы поля
         # left
