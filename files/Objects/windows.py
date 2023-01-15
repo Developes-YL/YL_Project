@@ -404,13 +404,13 @@ class SettingsWindow(Window):
 
                 elif self.button == 6:
                     pygame.event.post(pygame.event.Event(VOLUME_UP, music=False))
-                    pygame.event.post(pygame.event.Event(TEST_EFFECT_EVENT))
+                    pygame.event.post(pygame.event.Event(SHOT_EFFECT_EVENT))
                 elif self.button == 7:
                     pygame.event.post(pygame.event.Event(VOLUME_DOWN, music=False))
-                    pygame.event.post(pygame.event.Event(TEST_EFFECT_EVENT))
+                    pygame.event.post(pygame.event.Event(SHOT_EFFECT_EVENT))
                 elif self.button == 5:
                     pygame.event.post(pygame.event.Event(STANDART_VOLUME, music=False))
-                    pygame.event.post(pygame.event.Event(TEST_EFFECT_EVENT))
+                    pygame.event.post(pygame.event.Event(SHOT_EFFECT_EVENT))
 
     def update(self, events):
         for event in events:
@@ -438,7 +438,6 @@ class WinWindow(Window):
     def __init__(self, screen, settings):
         super().__init__(screen)
         self.score, self.player_count, self.level = settings
-        print(self.score)
 
     def _set_presets(self):
         self.difficulty = 0
