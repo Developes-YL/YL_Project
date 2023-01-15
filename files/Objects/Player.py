@@ -3,7 +3,7 @@ import pygame.sprite
 from files.Objects.Bullet import Bullet
 from files.Objects.explosions import BigExplosion
 from files.Support.consts import *
-from files.Support.events import PAUSE, PLAYER_KILLED
+from files.Support.events import PAUSE, PLAYER_KILLED, SHOT_EFFECT_EVENT
 from files.Support.ui import TANK_PLAYER
 
 
@@ -140,6 +140,7 @@ class Player(pygame.sprite.Sprite):
 
     def make_shot(self, direction):
         self.fire_time = 0
+        pygame.time.set_timer(pygame.event.Event(SHOT_EFFECT_EVENT), 1, 1)
         Bullet(self.bullet_speed, direction, self.rect, self.group, True)
 
     def rotate(self):
