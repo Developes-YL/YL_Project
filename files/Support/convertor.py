@@ -10,7 +10,6 @@ with open("levels.txt", 'w') as f:
         pixels = image.load()
         x, y = image.size
         cell_size = x // 26
-        print(name)
         for i in range(26):
             for j in range(26):
                 pixel = pixels[6 + i * cell_size, 6 + j * cell_size][:3]

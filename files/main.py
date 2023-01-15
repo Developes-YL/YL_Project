@@ -4,7 +4,7 @@ def check_imports(files_list="all", libraries_list="all") -> bool:
     # скрипты, текстовые документы и спрайты
     if files_list == "all":
         try:
-            from Support.Consts import FILES, SOUNDS
+            from Support.consts import FILES, SOUNDS
             files_list = FILES + SOUNDS
         except ImportError:
             print("Файл files.Support.Consts не найден")
@@ -13,7 +13,7 @@ def check_imports(files_list="all", libraries_list="all") -> bool:
     # библиотеки
     if libraries_list == "all":
         try:
-            from Support.Consts import LIBRARIES
+            from Support.consts import LIBRARIES
             libraries_list = LIBRARIES
         except ImportError:
             print("Файл files.Support.Consts не найден")
@@ -128,8 +128,8 @@ class Manager:
 
 if __name__ == "__main__":
     if check_imports():
-        from files.Objects.Windows import *
-        from files.Support.Consts import WINDOW_SIZE, TITLE, FPS
+        from files.Objects.windows import *
+        from files.Support.consts import WINDOW_SIZE, TITLE, FPS
         from files.Objects.SoundManager import SoundManager
         import pygame
 
