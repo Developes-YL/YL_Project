@@ -44,7 +44,7 @@ TANK_AI_1_1_R = load_image('images/tanks/TANK_AI_1_1_R.png')
 TANK_AI_1_2_R = load_image('images/tanks/TANK_AI_1_2_R.png')
 TANK_AI_1_1_GR = load_image('images/tanks/TANK_AI_1_1_GR.png')
 TANK_AI_1_2_GR = load_image('images/tanks/TANK_AI_1_2_GR.png')
-TANK_AI_1 = [TANK_AI_1_1_G, TANK_AI_1_2_G, TANK_AI_1_1_R, TANK_AI_1_2_R, TANK_AI_1_1_GR, TANK_AI_1_2_GR]
+TANK_AI_1 = [[TANK_AI_1_1_G, TANK_AI_1_2_G], [TANK_AI_1_1_R, TANK_AI_1_2_R], [TANK_AI_1_1_GR, TANK_AI_1_2_GR]]
 
 
 TANK_AI_2_1_G = load_image('images/tanks/TANK_AI_2_1_G.png')
@@ -53,7 +53,7 @@ TANK_AI_2_1_R = load_image('images/tanks/TANK_AI_2_1_R.png')
 TANK_AI_2_2_R = load_image('images/tanks/TANK_AI_2_2_R.png')
 TANK_AI_2_1_GR = load_image('images/tanks/TANK_AI_2_1_GR.png')
 TANK_AI_2_2_GR = load_image('images/tanks/TANK_AI_2_2_GR.png')
-TANK_AI_2 = [TANK_AI_2_1_G, TANK_AI_2_2_G, TANK_AI_2_1_R, TANK_AI_2_2_R, TANK_AI_2_1_GR, TANK_AI_2_2_GR]
+TANK_AI_2 = [[TANK_AI_2_1_G, TANK_AI_2_2_G], [TANK_AI_2_1_R, TANK_AI_2_2_R], [TANK_AI_2_1_GR, TANK_AI_2_2_GR]]
 
 
 TANK_AI_3_1_G = load_image('images/tanks/TANK_AI_3_1_G.png')
@@ -62,7 +62,7 @@ TANK_AI_3_1_R = load_image('images/tanks/TANK_AI_3_1_R.png')
 TANK_AI_3_2_R = load_image('images/tanks/TANK_AI_3_2_R.png')
 TANK_AI_3_1_GR = load_image('images/tanks/TANK_AI_3_1_GR.png')
 TANK_AI_3_2_GR = load_image('images/tanks/TANK_AI_3_2_GR.png')
-TANK_AI_3 = [TANK_AI_3_1_G, TANK_AI_3_2_G, TANK_AI_3_1_R, TANK_AI_3_2_R, TANK_AI_3_1_GR, TANK_AI_3_2_GR]
+TANK_AI_3 = [[TANK_AI_3_1_G, TANK_AI_3_2_G], [TANK_AI_3_1_R, TANK_AI_3_2_R], [TANK_AI_3_1_GR, TANK_AI_3_2_GR]]
 
 
 TANK_AI_4_1_G = load_image('images/tanks/TANK_AI_4_1_G.png')
@@ -71,7 +71,7 @@ TANK_AI_4_1_R = load_image('images/tanks/TANK_AI_4_1_R.png')
 TANK_AI_4_2_R = load_image('images/tanks/TANK_AI_4_2_R.png')
 TANK_AI_4_1_GR = load_image('images/tanks/TANK_AI_4_1_GR.png')
 TANK_AI_4_2_GR = load_image('images/tanks/TANK_AI_4_2_GR.png')
-TANK_AI_4 = [TANK_AI_4_1_G, TANK_AI_4_2_G, TANK_AI_4_1_R, TANK_AI_4_2_R, TANK_AI_4_1_GR, TANK_AI_4_2_GR]
+TANK_AI_4 = [[TANK_AI_4_1_G, TANK_AI_4_2_G], [TANK_AI_4_1_R, TANK_AI_4_2_R], [TANK_AI_4_1_GR, TANK_AI_4_2_GR]]
 
 TANK_AI = [TANK_AI_1, TANK_AI_2, TANK_AI_3, TANK_AI_4]
 

@@ -5,9 +5,9 @@ import pygame
 from files.Objects.AI import AI
 from files.Objects.Player import Player
 from files.Objects.fields import Field1
-from files.Support.consts import FPS, GAME_END_FREEZE, LEVELS_COUNT
+from files.Support.consts import FPS, GAME_END_FREEZE, LEVELS_COUNT, UPGRADE_CELLS_TIME
 from files.Support.events import PAUSE, START_EFFECT_EVENT, AI_DESTROYED, WIN_WINDOW, STOP_GAME, GAME_OVER_WINDOW, \
-    PLAYER_KILLED, PLAYER_GET_BONUS
+    PLAYER_KILLED, PLAYER_GET_BONUS, BASE_UPGRADE, BASE_DEGRADE
 
 
 class Game:
@@ -71,6 +71,11 @@ class Game:
         self.all_sprites.draw(self.screen)
 
     def process_events(self, events):
+        if BASE_UPGRADE in [event.type for event in events] or pygame.K_m in [event.key for event in events if event.type == pygame.KEYDOWN]:
+            self.field.upgrade_base_cells()
+            pygame.time.set_timer(pygame.event.Event(BASE_DEGRADE), UPGRADE_CELLS_TIME, 1)
+        if BASE_DEGRADE in [event.type for event in events]:
+            self.field.degrade_base_cells()
         for event in events:
             if event.type == STOP_GAME:
                 settings = self.score, self.player_count, min(self.level + 1, LEVELS_COUNT - 1)

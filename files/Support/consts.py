@@ -34,6 +34,8 @@ LEVELS_COUNT = 35
 
 PLAYER_LIVES = 1
 
+UPGRADE_CELLS_TIME = FPS * 200
+
 # константы, используемые для удобства разработки
 RIGHT = 0
 UP = 3

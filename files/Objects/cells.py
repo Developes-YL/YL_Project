@@ -9,9 +9,9 @@ class Cell(pygame.sprite.Sprite):
     def __init__(self, size, pos, group):
         self._layer = 0
         self.set_up()
+        self.size = size
         self.image = pygame.transform.scale(self.image, (size, size))
         self.rect = self.image.get_rect()
-        self.mask = pygame.mask.from_surface(self.image)
         self.rect.x = pos[0]
         self.rect.y = pos[1]
         self.group = group
@@ -28,10 +28,18 @@ class Cell(pygame.sprite.Sprite):
 class Brick(Cell):
     def set_up(self):
         self.image = BRICK_IMAGE
+        self.time = 0
 
     def boom(self, flag) -> bool:
-        self.kill()
+        self.image = pygame.transform.scale(self.image, (0, 0))
+        pos = self.rect.x, self.rect.y
+        self.rect = self.image.get_rect()
+        self.rect.x, self.rect.y = pos
         return True
+
+    def upgrade(self, group):
+        group[group.index(self)] = Concrete(self.size, (self.rect.x, self.rect.y), self.group)
+        self.kill()
 
 
 class Water(Cell):
@@ -45,6 +53,13 @@ class Concrete(Cell):
 
     def boom(self, flag) -> bool:
         return True
+
+    def degrade(self, group):
+        group[group.index(self)] = Brick(self.size, (self.rect.x, self.rect.y), self.group)
+        self.kill()
+
+    def upgrade(self, group):
+        pass
 
 
 class Bush(Cell):

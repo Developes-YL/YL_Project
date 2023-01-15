@@ -20,22 +20,12 @@ class AI(pygame.sprite.Sprite):
         self.sort = sort
         self.is_boss = is_boss
 
-        # настройка спрайтов и анимаций
-        self.images = list(map(lambda x: pygame.transform.scale(x, (self.size, self.size)),
-                               TANK_AI[sort])).copy()
-        self.default_images = self.images.copy()
-
-        self.animation_time = 0
-
-        self.image = pygame.Surface((0, 0))
-        self.rect = pygame.Rect(0, 0, 0, 0)
-
         # стартовые значения
         with open("./Support/ai_settings.txt", "r") as f:
             self.settings = f.readlines()[1 + self.sort].split(";")
         self.lives = int(self.settings[3])
         if is_boss:
-            self.lives += 1
+            self.settings[2] = 0.9 * float(self.settings[2])
         self.ram = self.settings[4] == "t"
 
         self.pause = False
@@ -45,6 +35,16 @@ class AI(pygame.sprite.Sprite):
 
         self.default_speed = size * TANK_SPEED * float(self.settings[1])
         self.speed = self.default_speed
+
+        # настройка спрайтов и анимаций
+        self.images = []
+        self.default_images = []
+        self.change_image()
+
+        self.animation_time = 0
+
+        self.image = pygame.Surface((0, 0))
+        self.rect = pygame.Rect(0, 0, 0, 0)
 
         # движение в сторону
         self.direction_time = 0
@@ -56,7 +56,6 @@ class AI(pygame.sprite.Sprite):
         self.bullet_speed = int(self.size * BULLET_SPEED)
 
         super().__init__(group)
-        self.rotate_image()
         self.spawned = False
 
     def spawn(self):
@@ -106,7 +105,7 @@ class AI(pygame.sprite.Sprite):
     def new_move(self):
         self.direction_time = 0
         self.speed = self.default_speed
-        self.keep_direction_time = random.randint(0, 100) % 4 * 16 + 80
+        self.keep_direction_time = random.randint(0, 100) % 10 * 16 + 80
         self.change_direction()
 
     def move(self):
@@ -202,9 +201,10 @@ class AI(pygame.sprite.Sprite):
         return True
 
     def change_image(self):
-        return
-        # self.images = list(map(lambda x: pygame.transform.scale(x, (self.size, self.size)), TANK_AI[self.sort]))
-        # self.default_images = self.images.copy()
+        self.images = list(map(lambda x: pygame.transform.scale(x, (self.size, self.size)),
+                               TANK_AI[self.sort][self.lives - 1]))
+        self.default_images = self.images.copy()
+        self.rotate_image()
 
     def kill(self):
         pygame.time.set_timer(pygame.event.Event(AI_DESTROYED, score=int(self.settings[0])), 1, 1)

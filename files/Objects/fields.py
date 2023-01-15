@@ -17,11 +17,12 @@ class Field1:
         self.top = self.cell_size // 2
         self.rect = (self.left, self.top, self.cell_size * FIELD_SIZE[0], self.cell_size * FIELD_SIZE[1])
 
+        self.base_cells = []
         self.create_cells()
 
     def get_positions(self) -> dict:
         # точки появления танков
-        positions = {"ai": [], "player": []}
+        positions = {"ai": [], "player": [], "bonuses": []}
 
         # 1st
         pos = (self.left + self.cell_size * (FIELD_SIZE[0] // 2 - 5), self.top + self.cell_size * (FIELD_SIZE[1] - 2))
@@ -51,6 +52,14 @@ class Field1:
     def reset(self):
         self.create_cells()
 
+    def upgrade_base_cells(self):
+        for brick in self.base_cells:
+            brick.upgrade(self.base_cells)
+
+    def degrade_base_cells(self):
+        for brick in self.base_cells:
+            brick.degrade(self.base_cells)
+
     def create_cells(self):
         field = ""
         with open("./Support/levels.txt", 'r') as f:
@@ -72,10 +81,12 @@ class Field1:
                     Ice(*preset)
                 elif cell == "5":
                     Water(*preset)
-        # база
-        pos = (self.left + (FIELD_SIZE[0] // 2 - 1) * self.cell_size,
-               self.top + (FIELD_SIZE[1] - 2) * self.cell_size)
-        Base1(self.cell_size * 2, pos, self.group)
+                elif cell == "6":
+                    self.base_cells.append(Brick(*preset))
+                elif cell == "7":
+                    pr = list(preset)
+                    pr[0] *= 2
+                    Base1(*pr)
 
         # границы поля
         # left

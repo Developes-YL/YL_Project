@@ -63,6 +63,7 @@ class Bullet(pygame.sprite.Sprite):
 
     def boom(self, flag):
         self.kill()
+        return True
 
     def kill(self, with_explosion=True):
         if with_explosion:
