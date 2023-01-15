@@ -1,6 +1,6 @@
 import pygame.sprite
 
-from files.Support.consts import AI, PLAYER, GAME_END_FREEZE, BONUS_ANIMATION
+from files.Support.consts import AI, PLAYER, GAME_END_FREEZE, BONUS_ANIMATION, BONUS_LIFE
 from files.Support.events import PAUSE, STOP_GAME
 from files.Support.ui import *
 
@@ -113,7 +113,7 @@ class Bonus(Cell):
         self.time = 0
         self.__class__.__name__ = "Bonus"
         self.images = [self.image, pygame.transform.scale(self.image, (self.size * 15 // 16, self.size * 15 // 16)).copy()]
-        self.poses = [(self.rect.x, self.rect.y), (self.rect.x + self.size // 32, self.rect.y + self.size // 32)]
+        self.poses = [(self.rect.x, self.rect.y), (self.rect.x + self.size // 32, self.rect.y + self.size // 32)][::-1]
 
     def set_up_2(self):
         self.image = pygame.Surface([0, 0])
@@ -132,12 +132,13 @@ class Bonus(Cell):
 
     def play_animation(self):
         self.time += 1
-        if self.time == BONUS_ANIMATION:
-            self.time = 0
+        if self.time % BONUS_ANIMATION == 0:
             self.rect.x, self.rect.y = self.poses[-1]
             self.image = self.images[0]
             self.images = self.images[::-1]
             self.poses = self.poses[::-1]
+        if self.time == BONUS_LIFE:
+            self.kill()
 
     def ai_get(self, sprite):
         pass

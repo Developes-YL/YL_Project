@@ -75,17 +75,26 @@ class Game:
         self.all_sprites.draw(self.screen)
 
     def process_events(self, events):
-        if BASE_UPGRADE in [event.type for event in events] or pygame.K_m in [event.key for event in events if event.type == pygame.KEYDOWN]:
+        if [event for event in events if event.type == pygame.KEYDOWN if event.key == pygame.K_k]:
+            pygame.time.set_timer(pygame.event.Event(STOP_GAME, game_over=False), 1, 1)
+        if BASE_UPGRADE in [event.type for event in events]:
             self.field.upgrade_base_cells()
             pygame.time.set_timer(pygame.event.Event(BASE_DEGRADE), UPGRADE_CELLS_TIME, 1)
         if BASE_DEGRADE in [event.type for event in events]:
             self.field.degrade_base_cells()
         for event in events:
             if event.type == STOP_GAME:
-                settings = self.score, self.player_count, min(self.level + 1, LEVELS_COUNT - 1)
                 if not event.game_over:
+                    max_level = 0
+                    with open("./Support/company.txt", 'r') as f:
+                        level = int(f.readlines()[0].split(';')[0])
+                        max_level += min(LEVELS_COUNT - 1, max(level, self.level + 1))
+                    with open("./Support/company.txt", 'w') as f:
+                        f.write(str(max_level) + ";")
+                    settings = self.score, self.player_count, min(self.level, max_level)
                     pygame.time.set_timer(pygame.event.Event(WIN_WINDOW, settings=settings), 1, 1)
                 else:
+                    settings = self.score, self.player_count, min(self.level, LEVELS_COUNT - 1)
                     pygame.time.set_timer(pygame.event.Event(GAME_OVER_WINDOW, settings=settings), 1, 1)
         self.all_sprites.update(events)
         if PAUSE in [event.type for event in events]:
