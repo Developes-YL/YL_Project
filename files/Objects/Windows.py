@@ -231,7 +231,7 @@ class LoadingWindow(Window):
         text1 = f1.render('POWERED BY DEADBEATS ', True,
                           (255, 0, 0))
         label_size = [self.width // 100 * 20, self.height // 100 * 20]
-        self.screen.blit(text1, ((self.width - label_size[0]) // 3, self.height * 9 // 10))
+        self.screen.blit(text1, ((self.width - label_size[0]) // 2 , self.height * 9 // 10))
         text_surface = self.font.render(self.label + "." * self.number, False, RED)
         rect = text_surface.get_rect(midleft=self.point)
         self.screen.blit(text_surface, rect)
@@ -458,22 +458,19 @@ class WinWindow(Window):
         size = [self.width // 100 * 20, self.height // 100 * 20]
         self.next_level = ((self.width - size[0]) // 2, self.height * 5 // 10, *size)
         self.restart_level = ((self.width - size[0]) // 2, self.height * 6 // 10, *size)
+        self.label_size = ((self.width - size[0]) // 2, self.height * 3 // 10, *size)
 
         # кнопка back
         self.back = [0, 0, self.width // 7, self.height // 20]
 
     def render(self):
         # отрисовка фона и кнопок)
-        f1 = pygame.font.Font('Comic Sans MS', 100)
-        text1 = f1.render('Your score: ' + str(self.score), True,
-                          (255, 0, 0))
-        label_size = [self.width // 100 * 20, self.height // 100 * 20]
-        self.screen.blit(text1, ((self.width - label_size[0]) // 2.25, self.height * 5 // 10))
-        self.screen.blit(self.bg, ((self.width - self.bg.get_size()[0]) // 2, 0))
+
         self.screen.blit(self.bg, ((self.width - self.bg.get_size()[0]) // 2, 0))
         self._render_text(self.min_size // 30, 'Back to levels', self.colors[self.button == 2], self.back)
         self._render_text(self.min_size // 15, 'Next level', self.colors[self.button == 1], self.next_level)
         self._render_text(self.min_size // 15, 'Restart level', self.colors[self.button == 3], self.restart_level)
+        self._render_text(self.min_size // 15, 'Your Score:' + str(self.score), RED, self.label_size)
 
     def create_events(self, events):
         for event in events:
@@ -482,6 +479,8 @@ class WinWindow(Window):
                     pygame.event.post(pygame.event.Event(LEVEL_SELECTION, count=self.player_count))
                 elif self.button == 3:
                     pygame.event.post(pygame.event.Event(GAME_WINDOW, count=self.player_count, level=self.level - 1))
+                elif self.button == 1:
+                    pygame.event.post(pygame.event.Event(GAME_WINDOW, count=self.player_count, level=self.level))
 
     def update(self, events):
         for event in events:
@@ -516,20 +515,18 @@ class EndWindow(Window):
         self.colors = [RED, WHITE]
         size = [self.width // 100 * 20, self.height // 100 * 20]
         self.restart_level = ((self.width - size[0]) // 2, self.height * 7.5 // 10, *size)
+        self.label_size = ((self.width - size[0]) // 2, self.height * 3 // 10, *size)
 
         # кнопка back
         self.back = [0, 0, self.width // 7, self.height // 20]
 
     def render(self):
         # отрисовка фона и кнопок)
-        f1 = pygame.font.Font(None, 100, font='Comic Sans MS')
-        text1 = f1.render('Your score: ' + str(self.score), True,
-                          (255, 0, 0))
-        label_size = [self.width // 100 * 20, self.height // 100 * 20]
-        self.screen.blit(text1, ((self.width - label_size[0]) // 2.25, self.height * 5 // 10))
+
         self.screen.blit(self.bg, ((self.width - self.bg.get_size()[0]) // 2, 0))
         self._render_text(self.min_size // 30, 'Back to levels', self.colors[self.button == 2], self.back)
         self._render_text(self.min_size // 15, 'Restart level', self.colors[self.button == 3], self.restart_level)
+        self._render_text(self.min_size // 15, 'Your Score:' + str(self.score), RED, self.label_size)
 
     def create_events(self, events):
         for event in events:

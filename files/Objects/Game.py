@@ -71,6 +71,12 @@ class Game:
         self.all_sprites.draw(self.screen)
 
     def process_events(self, events):
+        if [event for event in events if event.type == pygame.KEYDOWN if event.key == pygame.K_k]:
+            settings = self.score, self.player_count, min(self.level + 1, LEVELS_COUNT - 1)
+            pygame.time.set_timer(pygame.event.Event(WIN_WINDOW, settings=settings), 1, 1)
+        if [event for event in events if event.type == pygame.KEYDOWN if event.key == pygame.K_l]:
+            settings = self.score, self.player_count, min(self.level + 1, LEVELS_COUNT - 1)
+            pygame.time.set_timer(pygame.event.Event(GAME_OVER_WINDOW, settings=settings), 1, 1)
         for event in events:
             if event.type == STOP_GAME:
                 settings = self.score, self.player_count, min(self.level + 1, LEVELS_COUNT - 1)
