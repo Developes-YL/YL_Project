@@ -14,6 +14,8 @@ def load_image(name: str):
 
 # backgrounds
 BG1 = load_image('images/other/bg1.png')
+BG_WIN = load_image('images/other/winner.png')
+BG_LOSE = load_image('images/other/defeat.png')
 SETTINGS1 = load_image('images/other/settings.png')
 
 # cells
