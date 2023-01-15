@@ -1,8 +1,8 @@
 # поля для игры и для рисования новых уровней
 import pygame
 
-from files.Objects.cells import Water, Ice, Bush, Concrete, Brick
-from files.Support.Consts import FIELD_SIZE
+from files.Objects.cells import Water, Ice, Bush, Concrete, Brick, Base1
+from files.Support.consts import FIELD_SIZE
 
 
 class Field1:
@@ -17,11 +17,12 @@ class Field1:
         self.top = self.cell_size // 2
         self.rect = (self.left, self.top, self.cell_size * FIELD_SIZE[0], self.cell_size * FIELD_SIZE[1])
 
+        self.base_cells = []
         self.create_cells()
 
     def get_positions(self) -> dict:
         # точки появления танков
-        positions = {"ai": [], "player": []}
+        positions = {"ai": [], "player": [], "bonuses": []}
 
         # 1st
         pos = (self.left + self.cell_size * (FIELD_SIZE[0] // 2 - 5), self.top + self.cell_size * (FIELD_SIZE[1] - 2))
@@ -40,6 +41,13 @@ class Field1:
         pos = (self.left + self.cell_size * (FIELD_SIZE[0] - 2), self.top)
         positions["ai"].append([*pos, 25, 0])
 
+        left = self.cell_size * 3 + self.left
+        top = self.cell_size * 3 + self.top
+        for x in range(4):
+            for y in range(4):
+                pos = left + self.cell_size * x * 6, top + self.cell_size * y * 6
+                positions["bonuses"].append(pos)
+
         return positions
 
     def get_cell_size(self) -> int:
@@ -50,6 +58,14 @@ class Field1:
 
     def reset(self):
         self.create_cells()
+
+    def upgrade_base_cells(self):
+        for brick in self.base_cells:
+            brick.upgrade(self.base_cells)
+
+    def degrade_base_cells(self):
+        for brick in self.base_cells:
+            brick.degrade(self.base_cells)
 
     def create_cells(self):
         field = ""
@@ -72,6 +88,12 @@ class Field1:
                     Ice(*preset)
                 elif cell == "5":
                     Water(*preset)
+                elif cell == "6":
+                    self.base_cells.append(Brick(*preset))
+                elif cell == "7":
+                    pr = list(preset)
+                    pr[0] *= 2
+                    Base1(*pr)
 
         # границы поля
         # left
