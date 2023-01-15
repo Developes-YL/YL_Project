@@ -57,7 +57,7 @@ class SoundManager:
                 self.music_play = True
                 mixer.music.load(BACKGROUND_MUSIC)
                 mixer.music.play(-1)
-                mixer.music.set_volume(self.music_play)
+                mixer.music.set_volume(self.music_volume)
 
             elif event.type == START_EFFECT_EVENT:
                 sound = mixer.Sound(START_EFFECT)

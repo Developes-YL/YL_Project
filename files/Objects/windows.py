@@ -218,16 +218,14 @@ class LoadingWindow(Window):
         self.loading = 0
         self.label = "LOADING"
         self.number = 0
-
         self.font = pygame.font.SysFont('Comic Sans MS', self.min_size // 15)
-
+        size = [self.width // 100 * 20, self.height // 100 * 20]
+        self.label_size = ((self.width - size[0]) // 2, self.height * 8 // 10, *size)
         text_surface = self.font.render(self.label, False, RED)
         rect = text_surface.get_rect(center=(self.width // 2, self.height // 3))
         self.point = rect.midleft
-
         self.count = 0
         self.max_count = 50
-
         self.pause = True
 
     def create_events(self, events):
@@ -237,10 +235,12 @@ class LoadingWindow(Window):
             pygame.event.post(pygame.event.Event(START_WINDOW))
 
     def render(self):
+
         text_surface = self.font.render(self.label + "." * self.number, False, RED)
         rect = text_surface.get_rect(midleft=self.point)
         self.screen.blit(text_surface, rect)
 
+        self._render_text(self.min_size // 15, 'POWERED BY DEADBEATS', RED, self.label_size)
         rect = pygame.Rect(self.width // 100, self.height // 2, self.width // 100 * 98, self.height // 50)
         pygame.draw.rect(self.screen, GREY, rect)
         rect = pygame.Rect(self.width // 100, self.height // 2,
@@ -371,7 +371,7 @@ class SettingsWindow(Window):
         self.bg = pygame.transform.scale(SETTINGS1, (w * sc, h * sc))
 
         self.colors = [RED, WHITE]
-        size = [self.width // 100 * 40, self.height // 100 * 20]
+        size = [self.width // 100 * 25, self.height // 100 * 20]
         self.change_music_volume = ((self.width - size[0]) // 2, self.height * 3 // 10, *size)
         self.change_effect_volume = ((self.width - size[0]) // 2, self.height * 5 // 10, *size)
 
@@ -389,12 +389,12 @@ class SettingsWindow(Window):
         self.screen.blit(self.bg, ((self.width - self.bg.get_size()[0]) // 2, 0))
         self._render_text(self.min_size // 30, 'Back', self.colors[self.button == 2], self.back)
 
-        self._render_text(self.min_size // 15, 'Music volume (normal)',
+        self._render_text(self.min_size // 15, 'Music volume',
                           self.colors[self.button == 1], self.change_music_volume)
         self._render_text(self.min_size // 10, '+', self.colors[self.button == 3], self.music_volume_plus)
         self._render_text(self.min_size // 10, '-', self.colors[self.button == 4], self.music_volume_minus)
 
-        self._render_text(self.min_size // 15, 'Effect volume (normal)',
+        self._render_text(self.min_size // 15, 'Effect volume',
                           self.colors[self.button == 5], self.change_effect_volume)
         self._render_text(self.min_size // 10, '+', self.colors[self.button == 6], self.effect_volume_plus)
         self._render_text(self.min_size // 10, '-', self.colors[self.button == 7], self.effect_volume_minus)
