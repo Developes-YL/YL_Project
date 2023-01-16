@@ -4,8 +4,8 @@ import pygame
 
 from files.Objects.AI import AI
 from files.Objects.Player import Player
-from files.Objects.cells import StarBonus
-from files.Objects.fields import Field1
+from files.Objects.cells import Star, Grenade, Shovel
+from files.Objects.Field import Field
 from files.Support.consts import FPS, GAME_END_FREEZE, LEVELS_COUNT, UPGRADE_CELLS_TIME, BONUS_TIME
 from files.Support.events import PAUSE, START_EFFECT_EVENT, AI_DESTROYED, WIN_WINDOW, STOP_GAME, GAME_OVER_WINDOW, \
     PLAYER_KILLED, PLAYER_GET_BONUS, BASE_UPGRADE, BASE_DEGRADE
@@ -23,7 +23,7 @@ class Game:
         self.pause = False
 
         self.all_sprites = pygame.sprite.LayeredUpdates()
-        self.field = Field1(self.screen, self.all_sprites, self.level, self.window_size)
+        self.field = Field(self.screen, self.all_sprites, self.window_size, self.level)
         self.cell_size = self.field.get_cell_size()
         self.positions = self.field.get_positions()
 
@@ -64,10 +64,10 @@ class Game:
         self.field.reset()
 
         self.ai_time = self.ai_time_max
-        self.players = [0] * 2
-        self.players[0] = Player(self.players, self.all_sprites, 1, self.cell_size * 2, self.positions["player"][0])
+        self.players = {}
+        self.players[0] = Player(self.all_sprites, self.players, self.cell_size * 2, self.positions["player"][0], 1)
         if self.player_count == 2:
-            self.players[1] = Player(self.players, self.all_sprites, 2, self.cell_size * 2, self.positions["player"][1])
+            self.players[1] = Player(self.all_sprites, self.players, self.cell_size * 2, self.positions["player"][1], 2)
 
         self.queue = 0
         self.load_queue()
@@ -76,8 +76,6 @@ class Game:
         self.all_sprites.draw(self.screen)
 
     def process_events(self, events):
-        if [event for event in events if event.type == pygame.KEYDOWN if event.key == pygame.K_k]:
-            pygame.time.set_timer(pygame.event.Event(STOP_GAME, game_over=True), 1, 1)
         if BASE_UPGRADE in [event.type for event in events]:
             self.field.upgrade_base_cells()
             pygame.time.set_timer(pygame.event.Event(BASE_DEGRADE), UPGRADE_CELLS_TIME, 1)
@@ -87,9 +85,12 @@ class Game:
             if event.type == STOP_GAME:
                 if not event.game_over:
                     max_level = 0
-                    with open("./Support/company.txt", 'r') as f:
-                        level = int(f.readlines()[0].split(';')[0])
-                        max_level += min(LEVELS_COUNT - 1, max(level, self.level + 1))
+                    try:
+                        with open("./Support/company.txt", 'r') as f:
+                            level = int(f.readlines()[0].split(';')[0])
+                            max_level += min(LEVELS_COUNT - 1, max(level, self.level + 1))
+                    except FileNotFoundError or IndexError:
+                        level, max_level = 0, 0
                     with open("./Support/company.txt", 'w') as f:
                         f.write(str(max_level) + ";")
                     settings = self.score, self.player_count, min(self.level, max_level)
@@ -130,7 +131,7 @@ class Game:
             self.bonus_time = 0
             n = len(self.positions["bonuses"])
             pos = self.positions["bonuses"][random.choice(range(n))]
-            StarBonus(self.cell_size * 2, pos, self.all_sprites)
+            [Star, Grenade, Shovel][random.choice(range(3))](self.all_sprites, self.cell_size * 2, pos)
 
     def ai_killed(self, score):
         self.score += score

@@ -1,4 +1,3 @@
-
 import random
 
 import pygame.sprite
@@ -17,16 +16,21 @@ class AI(pygame.sprite.Sprite):
         self.group = group
         self.size = size * TANK_SIZE_KOEF
         self.coord, self.pos = rect[:2], rect[2:]  # pos - позиция на поле, coord - на экране
-        self.sort = sort
-        self.func = func
+        self.sort = sort  # тип танка
+        self.func = func  # функция для увелечения счета при уничтожении
         self.is_boss = is_boss
 
         # стартовые значения
-        with open("./Support/ai_settings.txt", "r") as f:
-            self.settings = f.readlines()[self.sort + 1].split(";")
+        try:
+            # загрузка настроек из файла
+            with open("./Support/ai_settings.txt", "r") as f:
+                self.settings = f.readlines()[self.sort + 1].split(";")
+        except FileNotFoundError or IndexError:
+            self.settings = ["0"] * 5
+            print("Ошибка при чтении ./Support/ai_settings.txt")
         self.lives = int(self.settings[3])
         if is_boss:
-            self.settings[2] = 0.9 * float(self.settings[2])
+            self.settings[2] = 0.8 * float(self.settings[2])  # перезарядка
         self.ram = self.settings[4] == "t"
 
         self.pause = False
@@ -40,14 +44,14 @@ class AI(pygame.sprite.Sprite):
         # настройка спрайтов и анимаций
         self.images = []
         self.default_images = []
-        self.change_image()
+        self._change_image()  # загрузка начальных изображений
 
         self.animation_time = 0
 
         self.image = pygame.Surface((0, 0))
         self.rect = pygame.Rect(0, 0, 0, 0)
 
-        # движение в сторону
+        # время движения
         self.direction_time = 0
         self.keep_direction_time = 0
 
@@ -59,8 +63,8 @@ class AI(pygame.sprite.Sprite):
         super().__init__(group)
         self.spawned = False
 
-    def spawn(self):
-        # анимация появление запускается только если рядом нет танков
+    def _spawn(self):
+        # бот спавнится только, если место свободное
         sprite = pygame.sprite.Sprite()
         sprite.rect = self.images[0].get_rect()
         sprite.rect.x, sprite.rect.y = self.coord
@@ -73,9 +77,10 @@ class AI(pygame.sprite.Sprite):
 
     def update(self, events):
         if not self.spawned:
-            self.spawn()
+            self._spawn()
         if not self.spawned:
             return
+
         if PAUSE in [event.type for event in events]:
             self.pause = not self.pause
         if self.pause:
@@ -83,33 +88,34 @@ class AI(pygame.sprite.Sprite):
 
         if self.freeze != 0:
             self.freeze -= 1
+            return
         else:
             self.animation_time += 1
             self.direction_time += 1
             self.fire_time += 1
 
-        if self.stage == 0:
+        if self.stage == 0:  # в первый период игры боты действуют случайно
             if self.direction_time > self.keep_direction_time:
-                self.new_move()
-            elif self.freeze == 0:
-                self.move()
+                self._new_move()
 
-            if self.fire_time > RELOAD_TIME:
+            self._move()
+
+            if self.fire_time > self.reload_time:
                 self.fire_time = 0
-                self.make_shot()
+                self._make_shot()
 
             if self.animation_time > MOVE_ANIMATION:
                 self.animation_time = 0
                 self.image = self.images[0]
-                self.images[:2] = self.images[:2][::-1]
+                self.images = self.images[::-1]
 
-    def new_move(self):
+    def _new_move(self):
         self.direction_time = 0
         self.speed = self.default_speed
-        self.keep_direction_time = random.randint(0, 100) % 10 * 16 + 80
-        self.change_direction()
+        self.keep_direction_time = random.randint(0, 200) % 20 * 16 + 80
+        self._change_direction()
 
-    def move(self):
+    def _move(self):
         coord = self.rect.x, self.rect.y
         speed = self.speed
         if ICE in [a.__class__.__name__ for a in pygame.sprite.spritecollide(self, self.group, False)]:
@@ -134,52 +140,56 @@ class AI(pygame.sprite.Sprite):
             if sprite.__class__.__name__ not in NON_CONFLICT_OBJECTS:
                 if sprite == self:
                     continue
+
                 if sprite.__class__.__name__ == PLAYER and self.ram:
-                    sprite.boom(False)
+                    sprite.boom(False)  # некоторые боты могут уничтожить игрока тараном
                     continue
 
+                # танк уперся во что то
                 self.speed = 0
                 self.keep_direction_time = 0
                 self.direction_time = 0
-
+                # возвращаемся на старое место
                 self.rect.x, self.rect.y = coord
                 self.pos = pos
                 break
 
-    def rotate_image(self):
+    def _rotate_image(self):
+        # получаем новые сроайты для анимации движения после поворота танка
         self.images[0] = pygame.transform.rotate(self.default_images[0], -90 * self.direction)
         self.images[1] = pygame.transform.rotate(self.default_images[1], -90 * self.direction)
 
-    def change_direction(self):
-        self.freeze = 4
+    def _change_direction(self):
+        # после смены танк замораживается ненадолго, чтобы не вращался быстро
+        self.freeze = 5
         amounts = [0, FIELD_SIZE[0] // 2 - 1]
         if self.pos[0] in amounts and self.pos[1] in amounts:
             # в углу
             if random.randint(0, 3) != 0:
-                self.invert_direction()
+                self._invert_direction()
             else:
-                self.near_direction()
+                self._near_direction()
         elif self.pos[0] in amounts or self.pos[1] in amounts:
             # у границы
             if random.randint(0, 16) == 0:
-                self.invert_direction()
+                self._invert_direction()
             else:
-                self.near_direction()
+                self._near_direction()
         else:
-            self.random_direction()
-        self.rotate_image()
+            self._random_direction()
+        self._rotate_image()
 
-    def random_direction(self):
+    def _random_direction(self):
         a = self.direction
         while a == self.direction:
             a = random.choice([LEFT, RIGHT, UP, DOWN])
         self.direction = a
 
-    def near_direction(self):
+    def _near_direction(self):
         a = random.choice([1, -1])
         self.direction = (self.direction + a) % 4
 
-    def invert_direction(self):
+    def _invert_direction(self):
         if self.direction == UP:
             self.direction = DOWN
         elif self.direction == DOWN:
@@ -189,26 +199,28 @@ class AI(pygame.sprite.Sprite):
         elif self.direction == RIGHT:
             self.direction = LEFT
 
-    def make_shot(self):
-        Bullet(self.bullet_speed, self.direction, self.rect, self.group, False)
+    def _make_shot(self):
+        Bullet(self.group, self.rect, self.bullet_speed, self.direction, False)
 
-    def boom(self, flag: bool = True) -> bool:
-        if flag:
+    def boom(self, from_player: bool = True) -> bool:
+        """попадание пули в танк"""
+        if from_player:
             self.lives -= 1
-            if self.lives == 0:
+            if self.lives <= 0:
                 self.kill()
             else:
-                self.change_image()
+                self._change_image()
         return True
 
-    def change_image(self):
+    def _change_image(self):
+        # загрузка соответствующих спрайтов
         self.images = list(map(lambda x: pygame.transform.scale(x, (self.size, self.size)),
                                TANK_AI[self.sort][self.lives - 1]))
         self.default_images = self.images.copy()
-        self.rotate_image()
+        self._rotate_image()
 
     def kill(self):
-        self.func(int(self.settings[0]))
-        #pygame.time.set_timer(pygame.event.Event(AI_DESTROYED, score=int(self.settings[0])), 2, 1)
-        BigExplosion(self.group, self.rect.size[0], self.rect.x, self.rect.y)
+        """уничтожение танка"""
+        self.func(int(self.settings[0]))  # увелечение счета игроков
+        BigExplosion(self.group, self.rect.size[0], (self.rect.x, self.rect.y))
         super().kill()
