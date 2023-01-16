@@ -8,7 +8,7 @@ from files.Support.ui import TANK_PLAYER
 
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, lst, group, number=1, size=30, pos=(0, 0), lives=PLAYER_LIVES):
+    def __init__(self, group, lst, size=30, pos=(0, 0), number=1, lives=PLAYER_LIVES):
 
         # сохранение начальных значений
         self.lst = lst
@@ -57,10 +57,11 @@ class Player(pygame.sprite.Sprite):
     def boom(self, flag):
         if not flag:
             self.lives -= 1
-            exp = BigExplosion(self.group, self.cell_size, self.rect[0], self.rect[1])
+            exp = BigExplosion(self.group, self.cell_size, (self.rect.x, self.rect.y))
             self.group.change_layer(exp, 2)
             if self.lives > 0:
-                self.lst[self.number - 1] = Player(self.lst, self.group, self.number, self.cell_size, self.start, self.lives)
+                self.lst[self.number - 1] = Player(self.group, self.lst, self.cell_size,
+                                                   self.start, self.number, self.lives)
             else:
                 pygame.time.set_timer(pygame.event.Event(PLAYER_KILLED), 1, 1)
             self.kill()
@@ -106,14 +107,14 @@ class Player(pygame.sprite.Sprite):
             if event.type == pygame.KEYUP and event.key in self.buttons[:4]:
                 self.move_buttons[self.buttons.index(event.key)] = False
             if event.type == pygame.KEYDOWN and event.key == self.buttons[4]:
-                if self.fire_time > RELOAD_TIME:
+                if self.fire_time > self.reload_time:
                     self.make_shot(self.direction)
         if True in self.move_buttons:
             self.move()
             if self.animation_time > MOVE_ANIMATION:
                 self.animation_time = 0
                 self.image = self.images[0]
-                self.images[:2] = self.images[:2][::-1]
+                self.images = self.images[::-1]
 
     def get_lives(self):
         return self.lives
@@ -146,7 +147,7 @@ class Player(pygame.sprite.Sprite):
     def make_shot(self, direction):
         self.fire_time = 0
         pygame.time.set_timer(pygame.event.Event(SHOT_EFFECT_EVENT), 1, 1)
-        Bullet(self.bullet_speed, direction, self.rect, self.group, True, self.upgrade_status >= 3)
+        Bullet(self.group, self.rect, self.bullet_speed, direction, True, self.upgrade_status >= 3)
 
     def rotate(self):
         self.images[0] = pygame.transform.rotate(self.default_images[0], -90 * self.direction)

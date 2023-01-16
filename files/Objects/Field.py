@@ -1,13 +1,12 @@
-# поля для игры и для рисования новых уровней
 import pygame
 
 from files.Objects.cells import Water, Ice, Bush, Concrete, Brick, Base1
 from files.Support.consts import FIELD_SIZE
 
 
-class Field1:
+class Field:
     def __init__(self, screen: pygame.display, group: pygame.sprite.LayeredUpdates,
-                 level: int = 0, size: tuple = (500, 500)):
+                 size: tuple = (500, 500), level: int = 0):
         self.screen = screen
         self.level = level
         self.group = group
@@ -18,7 +17,7 @@ class Field1:
         self.rect = (self.left, self.top, self.cell_size * FIELD_SIZE[0], self.cell_size * FIELD_SIZE[1])
 
         self.base_cells = []
-        self.create_cells()
+        self._create_cells()
 
     def get_positions(self) -> dict:
         # точки появления танков
@@ -41,6 +40,7 @@ class Field1:
         pos = (self.left + self.cell_size * (FIELD_SIZE[0] - 2), self.top)
         positions["ai"].append([*pos, 25, 0])
 
+        # точки появления бонусов
         left = self.cell_size * 3 + self.left
         top = self.cell_size * 3 + self.top
         for x in range(4):
@@ -57,7 +57,7 @@ class Field1:
         return [self.left, self.top, self.cell_size * FIELD_SIZE[0], self.cell_size * FIELD_SIZE[1]]
 
     def reset(self):
-        self.create_cells()
+        self._create_cells()
 
     def upgrade_base_cells(self):
         for brick in self.base_cells:
@@ -67,15 +67,19 @@ class Field1:
         for brick in self.base_cells:
             brick.degrade(self.base_cells)
 
-    def create_cells(self):
+    def _create_cells(self):
         field = ""
-        with open("./Support/levels.txt", 'r') as f:
-            field += f.readlines()[self.level]
+        try:
+            with open("./Support/levels.txt", 'r') as f:
+                field += f.readlines()[self.level]
+        except FileNotFoundError or IndexError as exc:
+            print("ошибка при чтении ./Support/levels.txt")
+            field += "0" * 309 + "666" + "0" * 26 + "67" + "0" * 24 + "6" + "0" * 25 + "666" + "0" * 283
 
         for x in range(FIELD_SIZE[0]):
             for y in range(FIELD_SIZE[1]):
                 pos = (self.left + x * self.cell_size, self.top + y * self.cell_size)
-                preset = self.cell_size, pos, self.group
+                preset = self.group, self.cell_size, pos
                 cell = field[x * FIELD_SIZE[0] + y]
 
                 if cell == "1":
@@ -89,10 +93,10 @@ class Field1:
                 elif cell == "5":
                     Water(*preset)
                 elif cell == "6":
-                    self.base_cells.append(Brick(*preset))
+                    self.base_cells.append(Brick(*preset))  # кирпичи вокруг базы
                 elif cell == "7":
                     pr = list(preset)
-                    pr[0] *= 2
+                    pr[1] *= 2
                     Base1(*pr)
 
         # границы поля
