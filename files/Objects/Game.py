@@ -121,7 +121,7 @@ class Game:
             self.ai_time = 0
             n = random.choice(range(len(self.positions["ai"])))
             ai = AI(self.all_sprites, self.cell_size * 2, self.positions["ai"][n],
-                    self.queue[0], self.number_bot % 5 == 4)
+                    self.queue[0], self.ai_killed, self.number_bot % 5 == 4)
             self.queue.pop(0)
             self.all_sprites.change_layer(ai, 1)
             self.number_bot += 1
@@ -131,6 +131,13 @@ class Game:
             n = len(self.positions["bonuses"])
             pos = self.positions["bonuses"][random.choice(range(n))]
             StarBonus(self.cell_size * 2, pos, self.all_sprites)
+
+    def ai_killed(self, score):
+        self.score += score
+        self.kills += 1
+        if self.kills == self.count_ai:
+            pygame.time.set_timer(pygame.event.Event(PAUSE), 1, 1)
+            pygame.time.set_timer(pygame.event.Event(STOP_GAME, game_over=False), GAME_END_FREEZE, 1)
 
     def get_size(self):
         return self.field.get_size()
