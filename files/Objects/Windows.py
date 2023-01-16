@@ -1,6 +1,5 @@
 # все окна
 import pygame.event
-from aiogram.utils import emoji
 
 from files.Objects.Game import Game
 from files.Support.consts import LEVELS_COUNT
