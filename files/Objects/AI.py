@@ -11,13 +11,14 @@ from files.Support.ui import TANK_AI
 
 class AI(pygame.sprite.Sprite):
     def __init__(self, group: pygame.sprite.LayeredUpdates, size: int = 30, rect: tuple = (0, 0, 0, 0),
-                 sort: int = 0, is_boss: bool = False):
+                 sort: int = 0, func=None, is_boss: bool = False):
 
         # сохранение начальных значений
         self.group = group
         self.size = size * TANK_SIZE_KOEF
         self.coord, self.pos = rect[:2], rect[2:]  # pos - позиция на поле, coord - на экране
         self.sort = sort
+        self.func = func
         self.is_boss = is_boss
 
         # стартовые значения
@@ -207,6 +208,7 @@ class AI(pygame.sprite.Sprite):
         self.rotate_image()
 
     def kill(self):
-        pygame.time.set_timer(pygame.event.Event(AI_DESTROYED, score=int(self.settings[0])), 2, 1)
+        self.func(int(self.settings[0]))
+        #pygame.time.set_timer(pygame.event.Event(AI_DESTROYED, score=int(self.settings[0])), 2, 1)
         BigExplosion(self.group, self.rect.size[0], self.rect.x, self.rect.y)
         super().kill()
