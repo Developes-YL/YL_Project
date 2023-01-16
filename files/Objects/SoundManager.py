@@ -16,25 +16,25 @@ class SoundManager:
         self.music_volume = NORMAL_MUSIC_VOLUME
         self.music_play = False
 
-    def volume_up(self, is_music: bool = True):
+    def _volume_up(self, for_music: bool = True):
         """увелечение громкости"""
-        if is_music:
+        if for_music:
             self.music_volume += self.step
         else:
             self.effect_volume += self.step
-        if self.music_play and is_music:
+        if self.music_play and for_music:
             mixer.music.set_volume(self.music_volume)
 
-    def volume_down(self, is_music: bool = True):
+    def _volume_down(self, for_music: bool = True):
         """уменьшение громкости"""
-        if is_music:
+        if for_music:
             self.music_volume = max(self.music_volume - self.step, 0)
         else:
             self.effect_volume = max(self.effect_volume - self.step, 0)
-        if self.music_play and is_music:
+        if self.music_play and for_music:
             mixer.music.set_volume(self.music_volume)
 
-    def standart_volume(self, is_music: bool = True):
+    def _standart_volume(self, is_music: bool = True):
         """возрват звука по умолчанию"""
         if is_music:
             self.music_volume = NORMAL_MUSIC_VOLUME
@@ -47,11 +47,11 @@ class SoundManager:
         """обработка звуковых событий"""
         for event in events:
             if event.type == VOLUME_UP:
-                self.volume_up(event.music)
+                self._volume_up(event.music)
             elif event.type == VOLUME_DOWN:
-                self.volume_down(event.music)
+                self._volume_down(event.music)
             elif event.type == STANDART_VOLUME:
-                self.standart_volume(event.music)
+                self._standart_volume(event.music)
 
             elif event.type == BACKGROUND_MUSIC_EVENT:
                 self.music_play = True
@@ -73,5 +73,5 @@ class SoundManager:
                 sound.play()
             elif event.type == PLAYER_KILLED:
                 sound = mixer.Sound(KILLED_EFFECT)
-                sound.set_volume(self.effect_volume * 20)
+                sound.set_volume(self.effect_volume * 15)
                 sound.play()

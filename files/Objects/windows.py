@@ -1,6 +1,5 @@
 # все окна
 import pygame.event
-from aiogram.utils import emoji
 
 from files.Objects.Game import Game
 from files.Support.consts import LEVELS_COUNT
@@ -53,15 +52,15 @@ class StartWindow(Window):
         # 4 - настройки
         self.button = 0
 
-        # надпись 'Tank 1990'
+        # надпись 'Tank 2023'
         w, h = BG1.get_size()
-        w_sc = self.width / w / 2
-        h_sc = self.height / 2 / h / 2
+        w_sc = self.width / w // 2
+        h_sc = self.height / 2 / h // 2
         sc = min(w_sc, h_sc)
         self.bg = pygame.transform.scale(BG1, (w * sc, h * sc))
 
         self.colors = [RED, WHITE]  # цвета для кнопок
-        size = [247, 75]
+        size = [self.width // 8, self.height // 8]
 
         # кнопки
         self.one_player = ((self.width - size[0]) // 2, self.height * 6 // 10, *size)
@@ -69,16 +68,16 @@ class StartWindow(Window):
         self.settings_main_window = ((self.width - size[0]) // 2, self.height * 5 // 10, *size)
 
         # кнопка exit
-        size = [154, 45]
+        size = [self.width // 9, self.height // 25]
         self.exit = (self.width * 75 // 100, self.height * 9 // 10, *size)
 
     def render(self):
         """отрисовка фона и кнопок"""
         self.screen.blit(self.bg, ((self.width - self.bg.get_size()[0]) // 2, 0))
-        self._render_text(64, '1 Player', self.colors[self.button == 1], self.one_player)
-        self._render_text(64, '2 Players', self.colors[self.button == 2], self.two_player)
-        self._render_text(64, 'Exit', self.colors[self.button == 3], self.exit)
-        self._render_text(64, 'Settings', self.colors[self.button == 4], self.settings_main_window)
+        self._render_text(self.min_size // 15, '1 Player', self.colors[self.button == 1], self.one_player)
+        self._render_text(self.min_size // 15, '2 Players', self.colors[self.button == 2], self.two_player)
+        self._render_text(self.min_size // 20, 'Exit', self.colors[self.button == 3], self.exit)
+        self._render_text(self.min_size // 15, 'Settings', self.colors[self.button == 4], self.settings_main_window)
 
     def create_events(self, events):
         """обработка нажатий на кнопки"""
@@ -91,7 +90,7 @@ class StartWindow(Window):
                 elif self.button == 3:
                     pygame.event.post(pygame.event.Event(pygame.QUIT))
                 elif self.button == 4:
-                    pygame.event.post(pygame.event.Event(SETTINGS_WINDOW, count=0))
+                    pygame.event.post(pygame.event.Event(SETTINGS_WINDOW))
 
     def update(self, events):
         for event in events:
@@ -230,19 +229,21 @@ class LoadingWindow(Window):
 
     def create_events(self, events):
         if pygame.K_p in [event.key for event in events if event.type == pygame.KEYDOWN]:
-            self.loading = self.max_loading
+            self.loading = self.max_loading  # скип загрузки :)
         if self.loading == self.max_loading:
             pygame.event.post(pygame.event.Event(START_WINDOW))
 
     def render(self):
-
         text_surface = self.font.render(self.label + "." * self.number, False, RED)
         rect = text_surface.get_rect(midleft=self.point)
         self.screen.blit(text_surface, rect)
 
         self._render_text(self.min_size // 15, 'POWERED BY DEADBEATS', RED, self.label_size)
+
+        # линии прогресса загрузки
         rect = pygame.Rect(self.width // 100, self.height // 2, self.width // 100 * 98, self.height // 50)
         pygame.draw.rect(self.screen, GREY, rect)
+
         rect = pygame.Rect(self.width // 100, self.height // 2,
                            self.width // 100 * 98 / self.max_loading * self.loading, self.height // 50)
         pygame.draw.rect(self.screen, RED, rect)
@@ -278,8 +279,12 @@ class SelectionLevel(Window):
     def _set_presets(self):
         self.level_count = 0
         # загрузка количества уровней
-        with open("./Support/company.txt", 'r') as f:
-            self.level_count = int(f.readlines()[0].split(';')[0]) + 1
+        try:
+            with open("./Support/company.txt", 'r') as f:
+                self.level_count = int(f.readlines()[0].split(';')[0]) + 1
+        except FileNotFoundError or IndexError as exc:
+            print("ошибка при чтении ./Support/company.txt")
+            self.level_count = 1
 
         # параметры отривки кнопок уровней
         self.labels = ["level " + str(number + 1) for number in range(self.level_count)]
@@ -365,8 +370,8 @@ class SettingsWindow(Window):
         self.button = 0
 
         w, h = SETTINGS1.get_size()
-        w_sc = self.width / w / 2
-        h_sc = self.height / 2 / h / 2
+        w_sc = self.width / w // 2
+        h_sc = self.height / 2 / h // 2
         sc = min(w_sc, h_sc)
         self.bg = pygame.transform.scale(SETTINGS1, (w * sc, h * sc))
 
@@ -454,8 +459,8 @@ class EndWindow(Window):
         self.button = 0
 
         w, h = BG_LOSE.get_size()
-        w_sc = self.width / w / 2
-        h_sc = self.height / 2 / h / 2
+        w_sc = self.width / w // 2
+        h_sc = self.height / 2 / h // 2
         sc = min(w_sc, h_sc)
         self.bg = pygame.transform.scale(BG_LOSE, (w * sc, h * sc))
 
@@ -504,8 +509,8 @@ class WinWindow(Window):
         self.difficulty = 0
         self.button = 0
         w, h = BG_WIN.get_size()
-        w_sc = self.width / w / 2
-        h_sc = self.height / 2 / h / 2
+        w_sc = self.width / w // 2
+        h_sc = self.height / 2 / h // 2
         sc = min(w_sc, h_sc)
         self.bg = pygame.transform.scale(BG_WIN, (w * sc, h * sc))
 

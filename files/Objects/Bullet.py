@@ -7,20 +7,25 @@ from files.Support.ui import BULLET_IMAGE
 
 
 class Bullet(pygame.sprite.Sprite):
-    def __init__(self, speed, direction, rect, group, from_player=True, mega=False):
-        self._layer = 1
+    def __init__(self, group, rect: pygame.rect.Rect, speed: int = 30, direction: int = DOWN,
+                 from_player: bool = True, mega: bool = False):
         super().__init__(group)
-        self.from_player = from_player
+        # сохранение начальных значений
         self.group = group
         pos, self.size = [rect.x, rect.y], rect.size[0]
+        self.speed = speed
+        self.direction = direction
+        self.from_player = from_player
+        self.mega = mega
+
+        # настройка спрайта
         size = self.size // 3, self.size // 3
         self.image = pygame.transform.scale(BULLET_IMAGE, size)
         self.rect = self.image.get_rect()
         self.rect.x, self.rect.y = pos
-        self.speed = speed
-        self.mega = mega
-        self.direction = direction
         self.image = pygame.transform.rotate(self.image, -90 * self.direction)
+
+        # выставление начальной позиции относительно направления
         if direction == UP:
             self.speed = [0, -speed]
             self.rect.x += self.size // 2 - self.size // 6
@@ -37,6 +42,7 @@ class Bullet(pygame.sprite.Sprite):
             self.speed = [-speed, 0]
             self.rect.y += self.size // 2 - self.size // 6
             self.rect.x -= self.size // 3
+
         self.pause = False
 
     def update(self, events):
@@ -46,30 +52,34 @@ class Bullet(pygame.sprite.Sprite):
             return
 
         self.rect.x += self.speed[0]
-        self.rect.y += self.speed[1]
+        self.rect.y += self.speed[1]  # speed всегда содержит 1 ноль, потому перемещение всегда по одной оси
 
-        flag = False
+        destroy = False
         for sprite in pygame.sprite.spritecollide(self, self.group, False):
             if sprite == self:
                 continue
+                
             if sprite.__class__.__name__ == CONCRETE:
-                flag = True
+                # уничтожение пули происходит только при достижении игроком 3 уровня апгрейда
+                destroy = True
                 sprite.boom(self.mega)
             else:
                 try:
-                    flag = sprite.boom(self.from_player)
+                    destroy = sprite.boom(self.from_player)  # попытка уничтожения препятствия
                 except AttributeError:
                     pass
 
-        if flag:
+        if destroy:
             self.kill()
 
-    def boom(self, flag):
-        self.kill()
-        return True
+    def boom(self, flag: bool = True):
+        if flag != self.from_player:
+            self.kill()
+            return True
+        return False
 
-    def kill(self, with_explosion=True):
+    def kill(self, with_explosion: bool = True):
         if with_explosion:
-            exp = Explosion(self.group, self.size, self.rect.x, self.rect.y)
-            self.group.change_layer(exp, 2)
+            explosion = Explosion(self.group, self.size, (self.rect.x, self.rect.y))
+            self.group.change_layer(explosion, 2)
         super().kill()
