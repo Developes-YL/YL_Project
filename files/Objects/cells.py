@@ -106,34 +106,39 @@ class Base2(Cell):
         return True
 
 
-class Bonus(Cell):
-    def _set_up(self):
-        self.set_up_2()
+class Bonus(pygame.sprite.Sprite):
+    def __init__(self, group, size, pos):
+        self.group = group
+        self.size = size
         self._layer = 4
         self.time = 0
+        self.rect = pygame.Rect(*pos, size, size)
         self.__class__.__name__ = "Bonus"
-
+        self._set_up()
         self.image = pygame.transform.scale(self.image, (self.size, self.size)).copy()
         self.images = [self.image, pygame.transform.scale(self.image,
                                                           (self.size * 15 // 16, self.size * 15 // 16)).copy()]
         self.poses = [(self.rect.x, self.rect.y), (self.rect.x + self.size // 32, self.rect.y + self.size // 32)][::-1]
 
-    def set_up_2(self):
+        super().__init__(group)
+        group.change_layer(self, self._layer)
+
+    def _set_up(self):
         self.image = pygame.Surface([0, 0])
 
     def update(self, events):
-        self.play_animation()
+        self._play_animation()
         for sprite in pygame.sprite.spritecollide(self, self.group, False):
             if sprite == self:
                 continue
             if sprite.__class__.__name__ == AI:
-                self.ai_get(sprite)
+                self._ai_get(sprite)
                 self.kill()
             if sprite.__class__.__name__ == PLAYER:
-                self.player_get(sprite)
+                self._player_get(sprite)
                 self.kill()
 
-    def play_animation(self):
+    def _play_animation(self):
         self.time += 1
         print(self.time, BONUS_LIFE)
         if self.time % BONUS_ANIMATION == 0:
@@ -144,29 +149,29 @@ class Bonus(Cell):
         if self.time == BONUS_LIFE:
             self.kill()
 
-    def ai_get(self, sprite):
+    def _ai_get(self, sprite):
         pass
 
-    def player_get(self, sprite):
+    def _player_get(self, sprite):
         pass
 
 
 class Star(Bonus):
-    def set_up_2(self):
+    def _set_up(self):
         self.image = STAR_BONUS
 
-    def ai_get(self, sprite):
+    def _ai_get(self, sprite):
         pass
 
-    def player_get(self, sprite):
+    def _player_get(self, sprite):
         sprite.upgrade()
 
 
 class Grenade(Bonus):
-    def set_up_2(self):
+    def _set_up(self):
         self.image = GRENADE_BONUS
 
 
 class Shovel(Bonus):
-    def set_up_2(self):
+    def _set_up(self):
         self.image = SHOVEL_BONUS

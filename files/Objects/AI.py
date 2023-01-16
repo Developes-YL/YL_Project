@@ -22,6 +22,7 @@ class AI(pygame.sprite.Sprite):
 
         # стартовые значения
         try:
+            # загрузка настроек из файла
             with open("./Support/ai_settings.txt", "r") as f:
                 self.settings = f.readlines()[self.sort + 1].split(";")
         except FileNotFoundError or IndexError:
@@ -50,7 +51,7 @@ class AI(pygame.sprite.Sprite):
         self.image = pygame.Surface((0, 0))
         self.rect = pygame.Rect(0, 0, 0, 0)
 
-        # движение в сторону
+        # время движения
         self.direction_time = 0
         self.keep_direction_time = 0
 
@@ -144,7 +145,7 @@ class AI(pygame.sprite.Sprite):
                     sprite.boom(False)  # некоторые боты могут уничтожить игрока тараном
                     continue
 
-                # танк упертся во что то
+                # танк уперся во что то
                 self.speed = 0
                 self.keep_direction_time = 0
                 self.direction_time = 0
@@ -212,6 +213,7 @@ class AI(pygame.sprite.Sprite):
         return True
 
     def _change_image(self):
+        # загрузка соответствующих спрайтов
         self.images = list(map(lambda x: pygame.transform.scale(x, (self.size, self.size)),
                                TANK_AI[self.sort][self.lives - 1]))
         self.default_images = self.images.copy()

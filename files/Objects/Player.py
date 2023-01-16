@@ -8,7 +8,8 @@ from files.Support.ui import TANK_PLAYER
 
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, group, lst, size=30, pos=(0, 0), number=1, lives=PLAYER_LIVES):
+    def __init__(self, group, lst: list, size: int = 30, pos: tuple = (0, 0),
+                 number: int = 1, lives: int = PLAYER_LIVES):
 
         # сохранение начальных значений
         self.lst = lst
@@ -46,6 +47,7 @@ class Player(pygame.sprite.Sprite):
 
         self.spawned = False
 
+        # назаначение кнопок упрваления up, left, right, down, shot
         if number == 1:
             self.buttons = [pygame.K_w, pygame.K_a, pygame.K_d, pygame.K_s, pygame.K_SPACE]
         if number == 2:
@@ -54,16 +56,20 @@ class Player(pygame.sprite.Sprite):
         super().__init__(group)
         self.rotate()
 
-    def boom(self, flag):
-        if not flag:
+    def boom(self, from_player: bool = False):
+        """реакция на столкновение с пулей"""
+        if not from_player:
             self.lives -= 1
+
             exp = BigExplosion(self.group, self.cell_size, (self.rect.x, self.rect.y))
             self.group.change_layer(exp, 2)
+
             if self.lives > 0:
                 self.lst[self.number - 1] = Player(self.group, self.lst, self.cell_size,
                                                    self.start, self.number, self.lives)
             else:
                 pygame.time.set_timer(pygame.event.Event(PLAYER_KILLED), 1, 1)
+
             self.kill()
         return True
 
@@ -72,6 +78,7 @@ class Player(pygame.sprite.Sprite):
             self.spawn()
         if not self.spawned:
             return
+
         if PAUSE in [event.type for event in events]:
             self.pause = not self.pause
         if self.pause:
@@ -104,22 +111,26 @@ class Player(pygame.sprite.Sprite):
                 self.move_buttons = [False] * 4
                 self.move_buttons[3] = True
                 self.rotate()
+
             if event.type == pygame.KEYUP and event.key in self.buttons[:4]:
                 self.move_buttons[self.buttons.index(event.key)] = False
+
             if event.type == pygame.KEYDOWN and event.key == self.buttons[4]:
                 if self.fire_time > self.reload_time:
                     self.make_shot(self.direction)
+
         if True in self.move_buttons:
             self.move()
-            if self.animation_time > MOVE_ANIMATION:
-                self.animation_time = 0
-                self.image = self.images[0]
-                self.images = self.images[::-1]
 
     def get_lives(self):
         return self.lives
 
     def move(self):
+        if self.animation_time > MOVE_ANIMATION:
+            self.animation_time = 0
+            self.image = self.images[0]
+            self.images = self.images[::-1]
+
         coord = self.rect.x, self.rect.y
         speed = self.speed
 
@@ -176,4 +187,6 @@ class Player(pygame.sprite.Sprite):
                                    TANK_PLAYER[1])).copy()
             self.default_images = self.images.copy()
             self.rotate()
+            self.lives += 1
+        else:
             self.lives += 1

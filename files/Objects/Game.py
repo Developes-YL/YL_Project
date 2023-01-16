@@ -76,8 +76,6 @@ class Game:
         self.all_sprites.draw(self.screen)
 
     def process_events(self, events):
-        if [event for event in events if event.type == pygame.KEYDOWN if event.key == pygame.K_k]:
-            pygame.time.set_timer(pygame.event.Event(STOP_GAME, game_over=True), 1, 1)
         if BASE_UPGRADE in [event.type for event in events]:
             self.field.upgrade_base_cells()
             pygame.time.set_timer(pygame.event.Event(BASE_DEGRADE), UPGRADE_CELLS_TIME, 1)
