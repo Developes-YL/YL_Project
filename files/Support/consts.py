@@ -11,12 +11,13 @@ SHOT_EFFECT = "sounds/shot.ogg"
 KILLED_EFFECT = "sounds/destroy.ogg"
 
 # игровые файлы
-SOUNDS = [BACKGROUND_MUSIC, START_EFFECT, KILLED_EFFECT, BOOM_EFFECT]
+SOUNDS = [BACKGROUND_MUSIC, START_EFFECT, KILLED_EFFECT, BOOM_EFFECT, SHOT_EFFECT]
 FILES = ["Objects/AI.py", "Objects/cells.py", "Objects/fields.py",
          "Objects/Game.py", "Objects/Player.py", "Objects/SoundManager.py", "Objects/windows.py",
+         "Objects/Bullet.py", "Objects/explosions.py",
          "Support/colors.py", "Support/consts.py", "Support/events.py", "Support/ui.py",
-         "Support/levels.txt", "Support/ai_settings.txt"]
-LIBRARIES = ["pygame"]
+         "Support/levels.txt", "Support/ai_settings.txt", "Support/company.txt", "Support/ai_queue.txt"]
+LIBRARIES = ["pygame", "random"]
 
 # игровые константы
 FIELD_SIZE = (26, 26)
