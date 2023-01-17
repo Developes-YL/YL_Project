@@ -3,7 +3,7 @@ import pygame.sprite
 from files.Objects.Bullet import Bullet
 from files.Objects.explosions import BigExplosion
 from files.Support.consts import *
-from files.Support.events import PAUSE, PLAYER_KILLED, SHOT_EFFECT_EVENT
+from files.Support.events import PAUSE, PLAYER_KILLED, SHOT_EFFECT_EVENT, PLAYER_KILL
 from files.Support.ui import TANK_PLAYER
 
 
@@ -54,7 +54,7 @@ class Player(pygame.sprite.Sprite):
             self.buttons = [pygame.K_UP, pygame.K_LEFT, pygame.K_RIGHT, pygame.K_DOWN, pygame.K_KP_0]
 
         super().__init__(group)
-        self.rotate()
+        self._rotate()
 
     def boom(self, from_player: bool = False):
         """реакция на столкновение с пулей"""
@@ -75,13 +75,17 @@ class Player(pygame.sprite.Sprite):
 
     def update(self, events):
         if not self.spawned:
-            self.spawn()
+            self._spawn()
         if not self.spawned:
             return
 
         if PAUSE in [event.type for event in events]:
             self.pause = not self.pause
         if self.pause:
+            return
+
+        if PLAYER_KILL in [event.type for event in events]:
+            self.boom()
             return
 
         if self.freeze != 0:
@@ -95,37 +99,37 @@ class Player(pygame.sprite.Sprite):
                 self.direction = UP
                 self.move_buttons = [False] * 4
                 self.move_buttons[0] = True
-                self.rotate()
+                self._rotate()
             if event.type == pygame.KEYDOWN and event.key == self.buttons[1]:
                 self.direction = LEFT
                 self.move_buttons = [False] * 4
                 self.move_buttons[1] = True
-                self.rotate()
+                self._rotate()
             if event.type == pygame.KEYDOWN and event.key == self.buttons[2]:
                 self.direction = RIGHT
                 self.move_buttons = [False] * 4
                 self.move_buttons[2] = True
-                self.rotate()
+                self._rotate()
             if event.type == pygame.KEYDOWN and event.key == self.buttons[3]:
                 self.direction = DOWN
                 self.move_buttons = [False] * 4
                 self.move_buttons[3] = True
-                self.rotate()
+                self._rotate()
 
             if event.type == pygame.KEYUP and event.key in self.buttons[:4]:
                 self.move_buttons[self.buttons.index(event.key)] = False
 
             if event.type == pygame.KEYDOWN and event.key == self.buttons[4]:
                 if self.fire_time > self.reload_time:
-                    self.make_shot(self.direction)
+                    self._make_shot(self.direction)
 
         if True in self.move_buttons:
-            self.move()
+            self._move()
 
     def get_lives(self):
         return self.lives
 
-    def move(self):
+    def _move(self):
         if self.animation_time > MOVE_ANIMATION:
             self.animation_time = 0
             self.image = self.images[0]
@@ -155,16 +159,16 @@ class Player(pygame.sprite.Sprite):
                 self.rect.x, self.rect.y = coord
                 break
 
-    def make_shot(self, direction):
+    def _make_shot(self, direction):
         self.fire_time = 0
         pygame.time.set_timer(pygame.event.Event(SHOT_EFFECT_EVENT), 1, 1)
         Bullet(self.group, self.rect, self.bullet_speed, direction, True, self.upgrade_status >= 3)
 
-    def rotate(self):
+    def _rotate(self):
         self.images[0] = pygame.transform.rotate(self.default_images[0], -90 * self.direction)
         self.images[1] = pygame.transform.rotate(self.default_images[1], -90 * self.direction)
 
-    def spawn(self):
+    def _spawn(self):
         # анимация появление запускается только если рядом нет танков
         sprite = pygame.sprite.Sprite()
         sprite.rect = self.images[0].get_rect()
@@ -186,7 +190,7 @@ class Player(pygame.sprite.Sprite):
             self.images = list(map(lambda x: pygame.transform.scale(x, (self.size, self.size)),
                                    TANK_PLAYER[1])).copy()
             self.default_images = self.images.copy()
-            self.rotate()
+            self._rotate()
             self.lives += 1
         else:
             self.lives += 1

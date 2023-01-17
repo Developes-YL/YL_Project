@@ -41,7 +41,7 @@ class Game:
         pygame.event.post(pygame.event.Event(START_EFFECT_EVENT))
         self.new_game()
 
-    def load_queue(self):
+    def _load_queue(self):
         # загрузка очередности появления ботов
         with open("./Support/ai_queue.txt", 'r') as f:
             queue = list(map(int, f.readlines()[self.level + 1].split(";")[:-1]))
@@ -70,17 +70,12 @@ class Game:
             self.players[1] = Player(self.all_sprites, self.players, self.cell_size * 2, self.positions["player"][1], 2)
 
         self.queue = 0
-        self.load_queue()
+        self._load_queue()
 
     def render(self):
         self.all_sprites.draw(self.screen)
 
     def process_events(self, events):
-        if BASE_UPGRADE in [event.type for event in events]:
-            self.field.upgrade_base_cells()
-            pygame.time.set_timer(pygame.event.Event(BASE_DEGRADE), UPGRADE_CELLS_TIME, 1)
-        if BASE_DEGRADE in [event.type for event in events]:
-            self.field.degrade_base_cells()
         for event in events:
             if event.type == STOP_GAME:
                 if not event.game_over:
@@ -99,33 +94,42 @@ class Game:
                     settings = self.score, self.player_count, self.level
                     pygame.time.set_timer(pygame.event.Event(GAME_OVER_WINDOW, settings=settings), 1, 1)
         self.all_sprites.update(events)
+
+        if BASE_UPGRADE in [event.type for event in events]:
+            self.field.upgrade_base_cells()
+            pygame.time.set_timer(pygame.event.Event(BASE_DEGRADE), UPGRADE_CELLS_TIME, 1)
+        if BASE_DEGRADE in [event.type for event in events]:
+            self.field.degrade_base_cells()
+
         if PAUSE in [event.type for event in events]:
             self.pause = not self.pause
         if self.pause:
             return
-        if PLAYER_GET_BONUS in [event.type for event in events]:
-            self.score += [event.score for event in events if event.type == PLAYER_GET_BONUS][0]
+
         if PLAYER_KILLED in [event.type for event in events]:
             self.score -= 200
             self.players_killed += 1
             if self.players_killed == self.player_count:
                 pygame.time.set_timer(pygame.event.Event(PAUSE), 1, 1)
                 pygame.time.set_timer(pygame.event.Event(STOP_GAME, game_over=True), GAME_END_FREEZE, 1)
+
         if AI_DESTROYED in [event.type for event in events]:
             self.score += [event.score for event in events if event.type == AI_DESTROYED][0]
             self.kills += 1
             if self.kills == self.count_ai:
                 pygame.time.set_timer(pygame.event.Event(PAUSE), 1, 1)
                 pygame.time.set_timer(pygame.event.Event(STOP_GAME, game_over=False), GAME_END_FREEZE, 1)
+
         self.ai_time += 1 / FPS
         if self.ai_time > self.ai_time_max and len(self.queue) > 0:
             self.ai_time = 0
             n = random.choice(range(len(self.positions["ai"])))
             ai = AI(self.all_sprites, self.cell_size * 2, self.positions["ai"][n],
-                    self.queue[0], self.ai_killed, self.number_bot % 5 == 4)
+                    self.queue[0], self._ai_killed, self.number_bot % 5 == 4)
             self.queue.pop(0)
             self.all_sprites.change_layer(ai, 1)
             self.number_bot += 1
+
         self.bonus_time += 1
         if self.bonus_time > BONUS_TIME:
             self.bonus_time = 0
@@ -133,7 +137,7 @@ class Game:
             pos = self.positions["bonuses"][random.choice(range(n))]
             [Star, Grenade, Shovel][random.choice(range(3))](self.all_sprites, self.cell_size * 2, pos)
 
-    def ai_killed(self, score):
+    def _ai_killed(self, score):
         self.score += score
         self.kills += 1
         if self.kills == self.count_ai:

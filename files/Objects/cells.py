@@ -1,7 +1,7 @@
 import pygame.sprite
 
 from files.Support.consts import AI, PLAYER, GAME_END_FREEZE, BONUS_ANIMATION, BONUS_LIFE
-from files.Support.events import PAUSE, STOP_GAME
+from files.Support.events import PAUSE, STOP_GAME, PLAYER_KILL, AI_KILL_ALL, BASE_UPGRADE, BASE_DEGRADE
 from files.Support.ui import *
 
 
@@ -43,6 +43,9 @@ class Brick(Cell):
         """улучшение кирпича до бетона"""
         group[group.index(self)] = Concrete(self.group, self.size, (self.rect.x, self.rect.y))
         self.kill()
+
+    def degrade(self, group):
+        self.boom(False)
 
 
 class Water(Cell):
@@ -140,7 +143,6 @@ class Bonus(pygame.sprite.Sprite):
 
     def _play_animation(self):
         self.time += 1
-        print(self.time, BONUS_LIFE)
         if self.time % BONUS_ANIMATION == 0:
             self.rect.x, self.rect.y = self.poses[-1]
             self.image = self.images[0]
@@ -161,7 +163,7 @@ class Star(Bonus):
         self.image = STAR_BONUS
 
     def _ai_get(self, sprite):
-        pass
+        sprite.upgrade()
 
     def _player_get(self, sprite):
         sprite.upgrade()
@@ -171,7 +173,19 @@ class Grenade(Bonus):
     def _set_up(self):
         self.image = GRENADE_BONUS
 
+    def _ai_get(self, sprite):
+        pygame.time.set_timer(pygame.event.Event(PLAYER_KILL), 1000, 1)
+
+    def _player_get(self, sprite):
+        pygame.time.set_timer(pygame.event.Event(AI_KILL_ALL), 1000, 1)
+
 
 class Shovel(Bonus):
     def _set_up(self):
         self.image = SHOVEL_BONUS
+
+    def _ai_get(self, sprite):
+        pygame.time.set_timer(pygame.event.Event(BASE_DEGRADE), 1000, 1)
+
+    def _player_get(self, sprite):
+        pygame.time.set_timer(pygame.event.Event(BASE_UPGRADE), 1000, 1)

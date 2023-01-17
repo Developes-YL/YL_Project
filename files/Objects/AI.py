@@ -4,7 +4,7 @@ import pygame.sprite
 
 from files.Objects.Player import Bullet, BigExplosion
 from files.Support.consts import *
-from files.Support.events import PAUSE
+from files.Support.events import PAUSE, AI_KILL_ALL
 from files.Support.ui import TANK_AI
 
 
@@ -75,6 +75,9 @@ class AI(pygame.sprite.Sprite):
             self.spawned = True
         del sprite
 
+    def upgrade(self):
+        self.reload_time *= 0.9
+
     def update(self, events):
         if not self.spawned:
             self._spawn()
@@ -84,6 +87,10 @@ class AI(pygame.sprite.Sprite):
         if PAUSE in [event.type for event in events]:
             self.pause = not self.pause
         if self.pause:
+            return
+
+        if AI_KILL_ALL in [event.type for event in events]:
+            self.kill()
             return
 
         if self.freeze != 0:
@@ -207,6 +214,7 @@ class AI(pygame.sprite.Sprite):
         if from_player:
             self.lives -= 1
             if self.lives <= 0:
+                self.func(int(self.settings[0]))  # увелечение счета игроков
                 self.kill()
             else:
                 self._change_image()
@@ -221,6 +229,5 @@ class AI(pygame.sprite.Sprite):
 
     def kill(self):
         """уничтожение танка"""
-        self.func(int(self.settings[0]))  # увелечение счета игроков
         BigExplosion(self.group, self.rect.size[0], (self.rect.x, self.rect.y))
         super().kill()
