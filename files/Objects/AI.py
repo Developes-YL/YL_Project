@@ -214,7 +214,6 @@ class AI(pygame.sprite.Sprite):
         if from_player:
             self.lives -= 1
             if self.lives <= 0:
-                self.func(int(self.settings[0]))  # увелечение счета игроков
                 self.kill()
             else:
                 self._change_image()
@@ -229,5 +228,6 @@ class AI(pygame.sprite.Sprite):
 
     def kill(self):
         """уничтожение танка"""
+        self.func(int(self.settings[0]))  # увелечение счета игроков
         BigExplosion(self.group, self.rect.size[0], (self.rect.x, self.rect.y))
         super().kill()
