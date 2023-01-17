@@ -1,7 +1,12 @@
 import pygame.sprite
 
+<<<<<<< Updated upstream
 from files.Support.consts import AI, PLAYER, GAME_END_FREEZE
 from files.Support.events import PAUSE, STOP_GAME
+=======
+from files.Support.consts import AI, PLAYER, GAME_END_FREEZE, BONUS_ANIMATION, BONUS_LIFE
+from files.Support.events import PAUSE, STOP_GAME, BASE_DEGRADE, BASE_UPGRADE
+>>>>>>> Stashed changes
 from files.Support.ui import *
 
 
@@ -33,6 +38,8 @@ class Brick(Cell):
         self.kill()
         return True
 
+    def degrage(self, group):
+        self.boom(False)
 
 class Water(Cell):
     def set_up(self):
@@ -110,3 +117,26 @@ class Bonus(Cell):
 
     def player_get(self, sprite):
         pass
+<<<<<<< Updated upstream
+=======
+
+    def _player_get(self, sprite):
+        sprite.upgrade()
+
+
+class Grenade(Bonus):
+    def _set_up(self):
+        self.image = GRENADE_BONUS
+
+
+class Shovel(Bonus):
+    def _set_up(self):
+        self.image = SHOVEL_BONUS
+
+    def _ai_get(self, sprite):
+        pygame.time.set_timer(pygame.event.Event(BASE_DEGRADE), 1, 1)
+
+    def _player_get(self, sprite):
+        pygame.time.set_timer(pygame.event.Event(BASE_UPGRADE), 1, 1)
+
+>>>>>>> Stashed changes

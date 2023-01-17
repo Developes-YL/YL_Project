@@ -32,7 +32,14 @@ TANK_SIZE_KOEF = 0.85
 GAME_END_FREEZE = FPS * 3 * 10
 LEVELS_COUNT = 35
 
+<<<<<<< Updated upstream:files/Support/Consts.py
 PLAYER_LIVES = 1
+=======
+UPGRADE_CELLS_TIME = FPS * 200
+BONUS_TIME = FPS * 2
+BONUS_ANIMATION = 10
+BONUS_LIFE = FPS * 9
+>>>>>>> Stashed changes:files/Support/consts.py
 
 # константы, используемые для удобства разработки
 RIGHT = 0

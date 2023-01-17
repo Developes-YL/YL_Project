@@ -112,6 +112,22 @@ class Game:
             self.queue.pop(0)
             self.all_sprites.change_layer(ai, 1)
             self.number_bot += 1
+<<<<<<< Updated upstream
+=======
+        self.bonus_time += 1
+        if self.bonus_time > BONUS_TIME:
+            self.bonus_time = 0
+            n = len(self.positions["bonuses"])
+            pos = self.positions["bonuses"][random.choice(range(n))]
+            [Shovel, Shovel, Shovel][random.choice(range(3))](self.all_sprites, self.cell_size * 2, pos)
+
+    def ai_killed(self, score):
+        self.score += score
+        self.kills += 1
+        if self.kills == self.count_ai:
+            pygame.time.set_timer(pygame.event.Event(PAUSE), 1, 1)
+            pygame.time.set_timer(pygame.event.Event(STOP_GAME, game_over=False), GAME_END_FREEZE, 1)
+>>>>>>> Stashed changes
 
     def get_size(self):
         return self.field.get_size()
