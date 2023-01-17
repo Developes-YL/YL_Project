@@ -4,7 +4,7 @@ import pygame.sprite
 
 from files.Objects.Player import Bullet, BigExplosion
 from files.Support.consts import *
-from files.Support.events import PAUSE
+from files.Support.events import PAUSE, AI_KILL_ALL
 from files.Support.ui import TANK_AI
 
 
@@ -75,6 +75,9 @@ class AI(pygame.sprite.Sprite):
             self.spawned = True
         del sprite
 
+    def upgrade(self):
+        self.reload_time *= 0.9
+
     def update(self, events):
         if not self.spawned:
             self._spawn()
@@ -84,6 +87,10 @@ class AI(pygame.sprite.Sprite):
         if PAUSE in [event.type for event in events]:
             self.pause = not self.pause
         if self.pause:
+            return
+
+        if AI_KILL_ALL in [event.type for event in events]:
+            self.kill()
             return
 
         if self.freeze != 0:

@@ -65,6 +65,7 @@ class StartWindow(Window):
         # кнопки
         self.one_player = ((self.width - size[0]) // 2, self.height * 6 // 10, *size)
         self.two_player = ((self.width - size[0]) // 2, self.height * 7 // 10, *size)
+        self.three_player = ((self.width - size[0]) // 2, self.height * 8 // 10, *size)
         self.settings_main_window = ((self.width - size[0]) // 2, self.height * 5 // 10, *size)
 
         # кнопка exit
@@ -76,6 +77,7 @@ class StartWindow(Window):
         self.screen.blit(self.bg, ((self.width - self.bg.get_size()[0]) // 2, 0))
         self._render_text(self.min_size // 15, '1 Player', self.colors[self.button == 1], self.one_player)
         self._render_text(self.min_size // 15, '2 Players', self.colors[self.button == 2], self.two_player)
+        self._render_text(self.min_size // 15, '3 Players', self.colors[self.button == 5], self.three_player)
         self._render_text(self.min_size // 20, 'Exit', self.colors[self.button == 3], self.exit)
         self._render_text(self.min_size // 15, 'Settings', self.colors[self.button == 4], self.settings_main_window)
 
@@ -87,6 +89,8 @@ class StartWindow(Window):
                     pygame.event.post(pygame.event.Event(LEVEL_SELECTION, count=1))
                 elif self.button == 2:
                     pygame.event.post(pygame.event.Event(LEVEL_SELECTION, count=2))
+                elif self.button == 5:
+                    pygame.event.post(pygame.event.Event(LEVEL_SELECTION, count=3))
                 elif self.button == 3:
                     pygame.event.post(pygame.event.Event(pygame.QUIT))
                 elif self.button == 4:
@@ -100,6 +104,8 @@ class StartWindow(Window):
                     self.button = 1
                 elif pygame.Rect(self.two_player).collidepoint(event.pos):
                     self.button = 2
+                elif pygame.Rect(self.three_player).collidepoint(event.pos):
+                    self.button = 5
                 elif pygame.Rect(self.exit).collidepoint(event.pos):
                     self.button = 3
                 elif pygame.Rect(self.settings_main_window).collidepoint(event.pos):
@@ -149,6 +155,7 @@ class GameWindow(Window):
         self.lives_1 = [0, self.height // 2, self.field_size[0], self.height // 20]
         self.lives_2 = [self.field_size[0] + self.field_size[2], self.height // 2,
                         self.field_size[0], self.height // 20]
+        self.lives_3 = [0, self.height // 3 * 2, self.field_size[0], self.height // 20]
 
         self.button = -1  # выбранная кнопка
 
@@ -192,6 +199,8 @@ class GameWindow(Window):
         self._render_text(self.min_size // 30, f"PLayer1's lives: {lives[0]}", WHITE, self.lives_1)
         if len(lives) > 1:
             self._render_text(self.min_size // 30, f"PLayer2's lives: {lives[1]}", WHITE, self.lives_2)
+        if len(lives) > 2:
+            self._render_text(self.min_size // 30, f"PLayer3's lives: {lives[1]}", WHITE, self.lives_3)
 
     def create_events(self, events):
         if STOP_GAME in [event.type for event in events]:
