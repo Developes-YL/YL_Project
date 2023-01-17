@@ -66,8 +66,10 @@ class Game:
         self.ai_time = self.ai_time_max
         self.players = {}
         self.players[0] = Player(self.all_sprites, self.players, self.cell_size * 2, self.positions["player"][0], 1)
-        if self.player_count == 2:
+        if self.player_count > 1:
             self.players[1] = Player(self.all_sprites, self.players, self.cell_size * 2, self.positions["player"][1], 2)
+        if self.player_count > 2:
+            self.players[2] = Player(self.all_sprites, self.players, self.cell_size * 2, self.positions["player"][0], 3)
 
         self.queue = 0
         self._load_queue()
@@ -150,4 +152,6 @@ class Game:
     def get_lives(self):
         if self.player_count == 2:
             return [self.players[0].get_lives(), self.players[1].get_lives()]
+        if self.player_count == 3:
+            return [self.players[0].get_lives(), self.players[1].get_lives(), self.players[2].get_lives()]
         return [self.players[0].get_lives()]

@@ -52,6 +52,8 @@ class Player(pygame.sprite.Sprite):
             self.buttons = [pygame.K_w, pygame.K_a, pygame.K_d, pygame.K_s, pygame.K_SPACE]
         if number == 2:
             self.buttons = [pygame.K_UP, pygame.K_LEFT, pygame.K_RIGHT, pygame.K_DOWN, pygame.K_KP_0]
+        if number == 3:
+            self.buttons = [pygame.K_i, pygame.K_j, pygame.K_l, pygame.K_k, pygame.K_h]
 
         super().__init__(group)
         self._rotate()
