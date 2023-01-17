@@ -39,6 +39,9 @@ UPGRADE_CELLS_TIME = FPS * 200
 BONUS_TIME = FPS * 2
 BONUS_ANIMATION = 10
 BONUS_LIFE = FPS * 9
+<<<<<<< Updated upstream:files/Support/Consts.py
+>>>>>>> Stashed changes:files/Support/consts.py
+=======
 >>>>>>> Stashed changes:files/Support/consts.py
 
 # константы, используемые для удобства разработки

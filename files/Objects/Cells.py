@@ -1,8 +1,13 @@
 import pygame.sprite
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 from files.Support.consts import AI, PLAYER, GAME_END_FREEZE
 from files.Support.events import PAUSE, STOP_GAME
+=======
+from files.Support.consts import AI, PLAYER, GAME_END_FREEZE, BONUS_ANIMATION, BONUS_LIFE
+from files.Support.events import PAUSE, STOP_GAME, BASE_DEGRADE, BASE_UPGRADE
+>>>>>>> Stashed changes
 =======
 from files.Support.consts import AI, PLAYER, GAME_END_FREEZE, BONUS_ANIMATION, BONUS_LIFE
 from files.Support.events import PAUSE, STOP_GAME, BASE_DEGRADE, BASE_UPGRADE
@@ -139,4 +144,7 @@ class Shovel(Bonus):
     def _player_get(self, sprite):
         pygame.time.set_timer(pygame.event.Event(BASE_UPGRADE), 1, 1)
 
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
